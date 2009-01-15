@@ -1,0 +1,39 @@
+<+ header_file = open("header_part1.html", 'r')#
+|= header = header_file.read()#
+|= header_file.close()#
+->
+<%header%>
+<+ style_file = open("style.css", 'r')#
+|= style_css = style_file.read()#
+|= style_file.close()#
+->
+<style type="text/css">
+<%style_css%>
+</style>
+<+ f = open("header_part2.html", 'r') #
+|= s = f.readlines() #
+|= f.close() #
+|= rex=re.compile('\<\%([^\<\%]+)\%\>') #
+|= rbe=re.compile('\<\+') #
+|= ren=re.compile('\-\>') #
+|= rco=re.compile('\|= ') #
+|= cop = yaptu.copier(rex, globals(), rbe, ren, rco) #
+|= cop.copy(s) #
+->
+
+
+<h2 class="main">Registration</h2>
+
+<form action="<%target_page%>" method="post">
+<p>Name: <input type="text" name="name" size=50/></p>
+<p>e-mail: <input type="text" name="email" size=50/></p>
+<p>password: <input type="password" name="passwd1" size=50/></p>
+<p>password: <input type="password" name="passwd2" size=50/></p>
+<p><input type="submit" name="submit" value="Register"/><p>
+</form>
+
+<+ footer_file = open("footer.html", 'r')#
+|= footer = footer_file.read()#
+|= footer_file.close()#
+->
+<%footer%>

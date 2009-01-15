@@ -1,0 +1,40 @@
+<+ header_file = open("header_part1.html", 'r')#
+|= header = header_file.read()#
+|= header_file.close()#
+->
+<%header%>
+<+ f = open("header_part2.html", 'r') #
+|= s = f.readlines() #
+|= f.close() #
+|= rex=re.compile('\<\%([^\<\%]+)\%\>') #
+|= rbe=re.compile('\<\+') #
+|= ren=re.compile('\-\>') #
+|= rco=re.compile('\|= ') #
+|= cop = yaptu.copier(rex, globals(), rbe, ren, rco) #
+|= cop.copy(s) #
+->
+
+
+<h2 class="main">Please Login</h2>
+
+<form action="<%target_page%>" method="post">
+<p>E-Mail: <input type="text" name="email" size=50/></p>
+<p>password: <input type="password" name="passwd" size=50/></p>
+<p><input type="submit" name="submit" value="Log In"/><p>
+</form>
+
+<p><a href="register.py">Register</a></p>
+
+<p>
+<form action="<%target_page%>" method="post">
+<input type="hidden" name="email" value="guest" size=50/>
+<input type="hidden" name="passwd" value="guest" size=50/>
+<input type="submit" name="submit" value="Use Masran as Guest"/>
+</form>
+</p>
+
+<+ footer_file = open("footer.html", 'r')#
+|= footer = footer_file.read()#
+|= footer_file.close()#
+->
+<%footer%>
