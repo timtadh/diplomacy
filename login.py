@@ -9,16 +9,20 @@ import os, re, yaptu
 import Cookie, time
 import cookie_session, user_manager
 import config_db_con
-from upload_toolchain import db
 import MySQLdb
 from MySQLdb.cursors import DictCursor
 
 form = cgi.FieldStorage()
+
+#print cookie_session.get_dbConnection()
+
 ses_dict, user_dict = user_manager.init_user_session(form)
 
+print ses_dict, user_dict
+
 if user_dict == {}:
-    target_page = "/masran/main.py"
-    f = open("login_template.html", 'r')
+    target_page = "login.py"
+    f = open("templates/login_template.html", 'r')
     #f = open("htmltest.html", 'r')
     s = f.readlines()
     f.close()

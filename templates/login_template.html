@@ -1,9 +1,9 @@
-<+ header_file = open("header_part1.html", 'r')#
+<+ header_file = open("templates/header_part1.html", 'r')#
 |= header = header_file.read()#
 |= header_file.close()#
 ->
 <%header%>
-<+ f = open("header_part2.html", 'r') #
+<+ f = open("templates/header_part2.html", 'r') #
 |= s = f.readlines() #
 |= f.close() #
 |= rex=re.compile('\<\%([^\<\%]+)\%\>') #
@@ -33,7 +33,7 @@
 </form>
 </p>
 
-<+ footer_file = open("footer.html", 'r')#
+<+ footer_file = open("templates/footer.html", 'r')#
 |= footer = footer_file.read()#
 |= footer_file.close()#
 ->

@@ -1,0 +1,64 @@
+<+ if 'user_dict' in globals() and user_dict != {}:
+<+ name = user_dict['name'] #
+|= status_msg = user_dict['status'] #
+->
+|= else:
+<+ name = None #
+|= status_msg = None #
+->
+->
+
+
+
+</head>
+<body class="defualt" onload="clearCheckBoxs()">
+
+<center>
+<div class="container">
+
+<div class="header">
+<table width='100%' style="border-style: hidden;">  
+    <tr>
+        <td rowspan=2 width="55%" style="border-style: hidden;">
+            <a href="main.py">
+            <h1 class="header" width="300">Diplomacy</h1>
+            </a>
+        </td>
+        
+<+ if name != None:
+        <td align=right colspan=2>
+            User: <%name%>&nbsp;&nbsp;&nbsp;
+            <a class="inline" href="main.py?logout=true" style="background-color:#e1e1e1;">Logout</a>
+        </td>
+|= else:
+        <td align=right colspan=2>
+            <a class="inline" href="login.py" style="background-color:#e1e1e1;">Login</a>
+        </td>
+->
+
+    </tr>
+    <tr style="border-style: hidden;">
+        <td style="max-width: 1em;"><!--status message:--></td>
+        <td style="border-style: hidden;">
+<+ if status_msg:
+            <table align=right style="text-align: right;"><tr><td>
+            <span style="color: #aa0000;"><%status_msg%></span>
+            </td></tr></table>
+->
+        </td>
+    </tr>
+    <tr>
+        <td colspan=2 style="border-style: hidden;">
+            <span class="dark_green">The online game of strategy, deviousness, and skill<span>
+        </td>
+<+ if status_msg:
+        <td align=right>
+            <a class="inline" 
+                href="main.py?clear_status=true" style="background-color:#e1e1e1; font-size: xx-small;">
+                clear status
+            </a>
+        </td>
+->
+    </tr>
+</table>
+</div>

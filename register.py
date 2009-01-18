@@ -5,10 +5,9 @@ sys.stderr = sys.stdout
 import os
 import cgi
 import cgitb; cgitb.enable( )
-import os, re, data_parser, yaptu
-from Masran import Masran
+import os, re, yaptu
 import Cookie, time
-import cookie_session, user_manager, db_manager
+import cookie_session, user_manager
 import config_db_con
 
 form = cgi.FieldStorage()
@@ -33,8 +32,8 @@ if user_dict == {}:
             cop.copy(s)
             sys.exit()
         user_manager.add_user(user_manager.gen_userID(), form["name"].value, form["email"].value, form["passwd1"].value)
-        target_page = "/masran2/main.py"
-        f = open("login_template.html", 'r')
+        target_page = "main.py"
+        f = open("templates/login_template.html", 'r')
         #f = open("htmltest.html", 'r')
         s = f.readlines()
         f.close()
@@ -45,8 +44,8 @@ if user_dict == {}:
         cop = yaptu.copier(rex, globals(), rbe, ren, rco)
         cop.copy(s)
     else:
-        target_page = "/masran2/register.py"
-        f = open("register.html", 'r')
+        target_page = "register.py"
+        f = open("templates/register.html", 'r')
         #f = open("htmltest.html", 'r')
         s = f.readlines()
         f.close()

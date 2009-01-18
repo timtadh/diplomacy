@@ -16,13 +16,13 @@ import cookie_session
 
 HOST = "localhost"
 PORT = 3306
-USER = 'root'
-PASSWD = "gurkan12"
-DB = "hendersont"
+USER = 'diplomacy'
+PASSWD = "d!plomacy12"
+DB = "diplomacy"
 
 class DBError(Exception): pass
 
-def get_dbConnection():#host="serine.case.edu", port=3306, user="root", passwd="gurkan12", db="hendersont"):
+def get_dbConnection():
     '''returns the connection object from a MySQL database. The parameters are specified by module wide
     variables. If you would like to change them simply reset them before any connections are made by this
     module with the following syntax:
