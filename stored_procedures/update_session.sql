@@ -5,7 +5,7 @@ USE diplomacy
 DROP PROCEDURE IF EXISTS update_session $$
 
 CREATE PROCEDURE update_session(IN session_id VARCHAR(64), IN sig_id VARCHAR(64), IN msg_sig VARCHAR(64),
-                                IN user_id VARCHAR(64), IN last_update DATETIME)
+                                IN user_id VARCHAR(64))
 BEGIN
     UPDATE session
     SET sig_id = sig_id 
@@ -16,11 +16,11 @@ BEGIN
     WHERE session_id = session_id;
     
     UPDATE session
-    SET user_id = user_id 
+    SET usr_id = user_id 
     WHERE session_id = session_id;
     
     UPDATE session
-    SET last_update = last_update 
+    SET last_update = NOW() 
     WHERE session_id = session_id;
 END
 $$
