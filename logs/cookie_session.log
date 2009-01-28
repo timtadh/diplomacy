@@ -1,0 +1,315 @@
+
+
+
+------------2009-01-27 21:44:30------------
+ip-addr:  129.22.164.147
+session_id:  d78f8ea40853ad74b2825688daefe3f53da8bcd5349e1bbf9dabfe05994824b7
+session_dict:  {'rest': ({...},), 'msg_sig': '9a927b77611c0e225877cde23765c98ca8c87cbb8e08abc92cc79689546a04ce', 'sig_id': '78500d6a66cca28f4045e1896fc1c83ffa6ffdf41fabd1e82a3b0bf21646e3ea', 'usr_id': 'unknown', 'session_id': 'd78f8ea40853ad74b2825688daefe3f53da8bcd5349e1bbf9dabfe05994824b7', 'last_update': datetime.datetime(2009, 1, 27, 21, 21, 39)}
+cookie_check:  True
+sigID:  e88233ba2b507ae7eace04789a635f2cb2b6e7f419e46b83d86ae12eca26f34b
+epochtime:  1233110671.2
+user:  unknown
+c:  Set-Cookie: session=sessionID|d78f8ea40853ad74b2825688daefe3f53da8bcd5349e1bbf9dabfe05994824b7^time|1233110671.2^~^
+Set-Cookie: session_sig=dc1b3f8fff6be54a53ba6a349d9fe4cff524351483e1558d050c4912bb065ad4
+msg_sig:  dc1b3f8fff6be54a53ba6a349d9fe4cff524351483e1558d050c4912bb065ad4
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:44:31', 'msg_sig': 'dc1b3f8fff6be54a53ba6a349d9fe4cff524351483e1558d050c4912bb065ad4', 'session_id': 'd78f8ea40853ad74b2825688daefe3f53da8bcd5349e1bbf9dabfe05994824b7', 'sig_id': 'e88233ba2b507ae7eace04789a635f2cb2b6e7f419e46b83d86ae12eca26f34b'}
+
+
+
+------------2009-01-27 21:45:02------------
+ip-addr:  129.22.164.147
+session_id:  d78f8ea40853ad74b2825688daefe3f53da8bcd5349e1bbf9dabfe05994824b7
+session_dict:  {'rest': ({...},), 'msg_sig': 'dc1b3f8fff6be54a53ba6a349d9fe4cff524351483e1558d050c4912bb065ad4', 'sig_id': 'e88233ba2b507ae7eace04789a635f2cb2b6e7f419e46b83d86ae12eca26f34b', 'usr_id': 'unknown', 'session_id': 'd78f8ea40853ad74b2825688daefe3f53da8bcd5349e1bbf9dabfe05994824b7', 'last_update': datetime.datetime(2009, 1, 27, 21, 44, 31)}
+cookie_check:  True
+sigID:  210268908dc3de41c3e3d732f639615bde7e72246deab1675c2fca2ba9399461
+epochtime:  1233110702.92
+user:  unknown
+c:  Set-Cookie: session=sessionID|d78f8ea40853ad74b2825688daefe3f53da8bcd5349e1bbf9dabfe05994824b7^time|1233110702.92^~^
+Set-Cookie: session_sig=e7c037220e8c302489377524d75b304ff4586f77be18b09daba35d65c89f7683
+msg_sig:  e7c037220e8c302489377524d75b304ff4586f77be18b09daba35d65c89f7683
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:45:02', 'msg_sig': 'e7c037220e8c302489377524d75b304ff4586f77be18b09daba35d65c89f7683', 'session_id': 'd78f8ea40853ad74b2825688daefe3f53da8bcd5349e1bbf9dabfe05994824b7', 'sig_id': '210268908dc3de41c3e3d732f639615bde7e72246deab1675c2fca2ba9399461'}
+
+
+
+------------2009-01-27 21:45:40------------
+ip-addr:  129.22.164.147
+session_id:  d78f8ea40853ad74b2825688daefe3f53da8bcd5349e1bbf9dabfe05994824b7
+session_dict:  {}
+cookie_check:  None
+made new session 370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732
+
+
+
+------------2009-01-27 21:49:43------------
+ip-addr:  129.22.164.147
+session_id:  370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732
+session_dict:  {'rest': ({...},), 'msg_sig': 'b608b6ab8093c1e47018a2fcbbc077f8fe5e52357b79504f43102a917f8dc6c9', 'sig_id': '0e13423100fcc1fafc6b392369385ec395778676c880a9635f8ee53068a6beed', 'usr_id': 'unknown', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'last_update': datetime.datetime(2009, 1, 27, 21, 45, 40)}
+cookie_check:  True
+sigID:  a66917a44c481d7cf95ce372d816b1a7ceb5b3c3bb988f80a196b3117ba5fff6
+epochtime:  1233110983.87
+user:  unknown
+c:  Set-Cookie: session=sessionID|370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732^time|1233110983.87^~^
+Set-Cookie: session_sig=c5a93e04916bfc3e1c2dae3ead89852d16d721a042dfef82c808654dcf515cc5
+msg_sig:  c5a93e04916bfc3e1c2dae3ead89852d16d721a042dfef82c808654dcf515cc5
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:49:43', 'msg_sig': 'c5a93e04916bfc3e1c2dae3ead89852d16d721a042dfef82c808654dcf515cc5', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': 'a66917a44c481d7cf95ce372d816b1a7ceb5b3c3bb988f80a196b3117ba5fff6'}
+
+
+
+------------2009-01-27 21:49:59------------
+ip-addr:  129.22.164.147
+session_id:  370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732
+session_dict:  {'rest': ({...},), 'msg_sig': 'c5a93e04916bfc3e1c2dae3ead89852d16d721a042dfef82c808654dcf515cc5', 'sig_id': 'a66917a44c481d7cf95ce372d816b1a7ceb5b3c3bb988f80a196b3117ba5fff6', 'usr_id': 'unknown', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'last_update': datetime.datetime(2009, 1, 27, 21, 49, 43)}
+cookie_check:  True
+sigID:  be7563bb7e49d524798d0dcceeda67a2dce1a77955755c55566d18efdfab336d
+epochtime:  1233110999.74
+user:  unknown
+c:  Set-Cookie: session=sessionID|370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732^time|1233110999.74^~^
+Set-Cookie: session_sig=289f6da3b338c1384b88c9fd1ff3d99bc7bd2c94f7910c70771ab9be8678e4b6
+msg_sig:  289f6da3b338c1384b88c9fd1ff3d99bc7bd2c94f7910c70771ab9be8678e4b6
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:49:59', 'msg_sig': '289f6da3b338c1384b88c9fd1ff3d99bc7bd2c94f7910c70771ab9be8678e4b6', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': 'be7563bb7e49d524798d0dcceeda67a2dce1a77955755c55566d18efdfab336d'}
+
+
+
+------------2009-01-27 21:50:07------------
+ip-addr:  129.22.164.147
+session_id:  370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732
+session_dict:  {'rest': ({...},), 'msg_sig': '289f6da3b338c1384b88c9fd1ff3d99bc7bd2c94f7910c70771ab9be8678e4b6', 'sig_id': 'be7563bb7e49d524798d0dcceeda67a2dce1a77955755c55566d18efdfab336d', 'usr_id': 'unknown', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'last_update': datetime.datetime(2009, 1, 27, 21, 49, 59)}
+cookie_check:  True
+sigID:  530ba3d33946dae43eea2d72e9675991ed0ad02ffc8c09050f9d72f7650d6cb8
+epochtime:  1233111008.38
+user:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+c:  Set-Cookie: session=sessionID|370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732^time|1233111008.38^~^
+Set-Cookie: session_sig=d7f3bcb36a14f6b29e9e6c1d4db12734a11d7320300cbefff56adcf7df53c232
+msg_sig:  d7f3bcb36a14f6b29e9e6c1d4db12734a11d7320300cbefff56adcf7df53c232
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 21:50:08', 'msg_sig': 'd7f3bcb36a14f6b29e9e6c1d4db12734a11d7320300cbefff56adcf7df53c232', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': '530ba3d33946dae43eea2d72e9675991ed0ad02ffc8c09050f9d72f7650d6cb8'}
+
+
+
+------------2009-01-27 21:52:36------------
+ip-addr:  129.22.164.147
+session_id:  370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732
+session_dict:  {'rest': ({...},), 'msg_sig': 'd7f3bcb36a14f6b29e9e6c1d4db12734a11d7320300cbefff56adcf7df53c232', 'sig_id': '530ba3d33946dae43eea2d72e9675991ed0ad02ffc8c09050f9d72f7650d6cb8', 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'last_update': datetime.datetime(2009, 1, 27, 21, 50, 8)}
+cookie_check:  True
+sigID:  a5a8b7e2eeb958efe1e2ad4fa602d723bd262ae69b9023d6769d21de11ce66b9
+epochtime:  1233111156.23
+user:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+c:  Set-Cookie: session=sessionID|370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732^time|1233111156.23^~^
+Set-Cookie: session_sig=54aa67db94a7f48d0409a064f8c1fc3644f4ae6cca68af52ef223252338d1a67
+msg_sig:  54aa67db94a7f48d0409a064f8c1fc3644f4ae6cca68af52ef223252338d1a67
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 21:52:36', 'msg_sig': '54aa67db94a7f48d0409a064f8c1fc3644f4ae6cca68af52ef223252338d1a67', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': 'a5a8b7e2eeb958efe1e2ad4fa602d723bd262ae69b9023d6769d21de11ce66b9'}
+
+
+
+------------2009-01-27 21:52:39------------
+ip-addr:  129.22.164.147
+session_id:  370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732
+session_dict:  {'rest': ({...},), 'msg_sig': '54aa67db94a7f48d0409a064f8c1fc3644f4ae6cca68af52ef223252338d1a67', 'sig_id': 'a5a8b7e2eeb958efe1e2ad4fa602d723bd262ae69b9023d6769d21de11ce66b9', 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'last_update': datetime.datetime(2009, 1, 27, 21, 52, 36)}
+cookie_check:  True
+sigID:  ff861be02ea98c4321d74227b70af3f679a5e35528c3a8680099b485dbfd0e72
+epochtime:  1233111159.79
+user:  
+c:  Set-Cookie: session=sessionID|370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732^time|1233111159.79^~^
+Set-Cookie: session_sig=e0ad7c3c6d129af0eb1f69a4c36e5f444262b8e8953ab44b0623646065f214c7
+msg_sig:  e0ad7c3c6d129af0eb1f69a4c36e5f444262b8e8953ab44b0623646065f214c7
+ses_dict:  {'usr_id': '', 'last_update': '2009-01-27 21:52:39', 'msg_sig': 'e0ad7c3c6d129af0eb1f69a4c36e5f444262b8e8953ab44b0623646065f214c7', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': 'ff861be02ea98c4321d74227b70af3f679a5e35528c3a8680099b485dbfd0e72'}
+session_id:  370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732
+session_dict:  {}
+cookie_check:  None
+made new session 3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe
+
+
+
+------------2009-01-27 21:56:10------------
+ip-addr:  129.22.164.147
+
+
+
+------------2009-01-27 21:56:27------------
+ip-addr:  129.22.164.147
+session_id:  3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe
+session_dict:  {'rest': ({...},), 'msg_sig': '23fe808c253b2efb903a1e6249f9b55ba94967330c65baaccf6275a5468a22e2', 'sig_id': '932c68e81a22a46e679bd4b4ef9314f8712c5fee34ec18415a41b884f1053911', 'usr_id': 'unknown', 'session_id': '3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe', 'last_update': datetime.datetime(2009, 1, 27, 21, 52, 39)}
+cookie_check:  True
+sigID:  242594c922caa9dce67a82bca5340074a76cb966144454d3b77d783f5a607d03
+epochtime:  1233111387.83
+user:  unknown
+c:  Set-Cookie: session=sessionID|3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe^time|1233111387.83^~^
+Set-Cookie: session_sig=a6b00dff0e5b99142eb6e2befa29ed824173995c60522b27da1ea464c4d7379e
+msg_sig:  a6b00dff0e5b99142eb6e2befa29ed824173995c60522b27da1ea464c4d7379e
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:56:27', 'msg_sig': 'a6b00dff0e5b99142eb6e2befa29ed824173995c60522b27da1ea464c4d7379e', 'session_id': '3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe', 'sig_id': '242594c922caa9dce67a82bca5340074a76cb966144454d3b77d783f5a607d03'}
+
+
+
+------------2009-01-27 21:56:31------------
+ip-addr:  129.22.164.147
+session_id:  3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe
+session_dict:  {'rest': ({...},), 'msg_sig': 'a6b00dff0e5b99142eb6e2befa29ed824173995c60522b27da1ea464c4d7379e', 'sig_id': '242594c922caa9dce67a82bca5340074a76cb966144454d3b77d783f5a607d03', 'usr_id': 'unknown', 'session_id': '3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe', 'last_update': datetime.datetime(2009, 1, 27, 21, 56, 27)}
+cookie_check:  True
+sigID:  89a9f239b572a05577e2f4996ab64f522532a6299a3bbe635a03abc31c2fcbb4
+epochtime:  1233111392.05
+user:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+c:  Set-Cookie: session=sessionID|3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe^time|1233111392.05^~^
+Set-Cookie: session_sig=cc91140d01a51b65c2a462fce4f84b781e17ea1cd3d11ee8458fa0e68804c903
+msg_sig:  cc91140d01a51b65c2a462fce4f84b781e17ea1cd3d11ee8458fa0e68804c903
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 21:56:32', 'msg_sig': 'cc91140d01a51b65c2a462fce4f84b781e17ea1cd3d11ee8458fa0e68804c903', 'session_id': '3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe', 'sig_id': '89a9f239b572a05577e2f4996ab64f522532a6299a3bbe635a03abc31c2fcbb4'}
+
+
+
+------------2009-01-27 21:56:36------------
+ip-addr:  129.22.164.147
+session_id:  3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe
+session_dict:  {'rest': ({...},), 'msg_sig': 'cc91140d01a51b65c2a462fce4f84b781e17ea1cd3d11ee8458fa0e68804c903', 'sig_id': '89a9f239b572a05577e2f4996ab64f522532a6299a3bbe635a03abc31c2fcbb4', 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'session_id': '3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe', 'last_update': datetime.datetime(2009, 1, 27, 21, 56, 32)}
+cookie_check:  True
+sigID:  9e96269f3585aafa2b33e98e79865eef5c60703401028172d5e020ce73202c8d
+epochtime:  1233111396.16
+user:  
+c:  Set-Cookie: session=sessionID|3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe^time|1233111396.16^~^
+Set-Cookie: session_sig=6c4f3d9e5ba4769aea2a3603bb21f866621480a35d77abdc8af8b4f5f8ac4d08
+msg_sig:  6c4f3d9e5ba4769aea2a3603bb21f866621480a35d77abdc8af8b4f5f8ac4d08
+ses_dict:  {'usr_id': '', 'last_update': '2009-01-27 21:56:36', 'msg_sig': '6c4f3d9e5ba4769aea2a3603bb21f866621480a35d77abdc8af8b4f5f8ac4d08', 'session_id': '3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe', 'sig_id': '9e96269f3585aafa2b33e98e79865eef5c60703401028172d5e020ce73202c8d'}
+session_id:  3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe
+session_dict:  {}
+cookie_check:  None
+made new session bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74
+
+
+
+------------2009-01-27 21:58:04------------
+ip-addr:  129.22.164.147
+session_id:  bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74
+session_dict:  {'rest': ({...},), 'msg_sig': 'e8e63e4e7d638b92107e7da5a5c65efef138ccaf695455b90dc22ff9126b4dc8', 'sig_id': 'b81e131e4970744c8484715542b4aeff27cbc4673ec14a967ce74e36e81216f6', 'usr_id': 'unknown', 'session_id': 'bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74', 'last_update': datetime.datetime(2009, 1, 27, 21, 56, 36)}
+cookie_check:  True
+sigID:  b287e482d05b7af3198e737cd9820767e9f7f4f9c98013b9548f6de062a34d45
+epochtime:  1233111484.23
+user:  unknown
+c:  Set-Cookie: session=sessionID|bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74^time|1233111484.23^~^
+Set-Cookie: session_sig=3eba58d87e7d6ba48f8dc30955f7fe48ad353b40c57fa4f9bc11d89d27b2288f
+msg_sig:  3eba58d87e7d6ba48f8dc30955f7fe48ad353b40c57fa4f9bc11d89d27b2288f
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:58:04', 'msg_sig': '3eba58d87e7d6ba48f8dc30955f7fe48ad353b40c57fa4f9bc11d89d27b2288f', 'session_id': 'bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74', 'sig_id': 'b287e482d05b7af3198e737cd9820767e9f7f4f9c98013b9548f6de062a34d45'}
+
+
+
+------------2009-01-27 21:58:08------------
+ip-addr:  129.22.164.147
+session_id:  bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74
+session_dict:  {'rest': ({...},), 'msg_sig': '3eba58d87e7d6ba48f8dc30955f7fe48ad353b40c57fa4f9bc11d89d27b2288f', 'sig_id': 'b287e482d05b7af3198e737cd9820767e9f7f4f9c98013b9548f6de062a34d45', 'usr_id': 'unknown', 'session_id': 'bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74', 'last_update': datetime.datetime(2009, 1, 27, 21, 58, 4)}
+cookie_check:  True
+sigID:  ecd653a109a528b478792e7a525b15111fe5409fb8edf7184b275a90db6b8eb4
+epochtime:  1233111488.47
+user:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+c:  Set-Cookie: session=sessionID|bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74^time|1233111488.47^~^
+Set-Cookie: session_sig=1acfb19228b6f4f571098101969b4da2f1a3af1cd8a63eb5f89608540a371793
+msg_sig:  1acfb19228b6f4f571098101969b4da2f1a3af1cd8a63eb5f89608540a371793
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 21:58:08', 'msg_sig': '1acfb19228b6f4f571098101969b4da2f1a3af1cd8a63eb5f89608540a371793', 'session_id': 'bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74', 'sig_id': 'ecd653a109a528b478792e7a525b15111fe5409fb8edf7184b275a90db6b8eb4'}
+
+
+
+------------2009-01-27 21:58:09------------
+ip-addr:  129.22.164.147
+session_id:  bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74
+session_dict:  {'rest': ({...},), 'msg_sig': '1acfb19228b6f4f571098101969b4da2f1a3af1cd8a63eb5f89608540a371793', 'sig_id': 'ecd653a109a528b478792e7a525b15111fe5409fb8edf7184b275a90db6b8eb4', 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'session_id': 'bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74', 'last_update': datetime.datetime(2009, 1, 27, 21, 58, 8)}
+cookie_check:  True
+sigID:  16fd83e2a7068f79458661c0aae16f3bb486cc30e9cd9bef7e75d5454e4a6b07
+epochtime:  1233111489.66
+user:  
+c:  Set-Cookie: session=sessionID|bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74^time|1233111489.66^~^
+Set-Cookie: session_sig=3b010319353ee174ab7e37644ecd15058c9bb546bb041590327681e9f4ea04be
+msg_sig:  3b010319353ee174ab7e37644ecd15058c9bb546bb041590327681e9f4ea04be
+ses_dict:  {'usr_id': '', 'last_update': '2009-01-27 21:58:09', 'msg_sig': '3b010319353ee174ab7e37644ecd15058c9bb546bb041590327681e9f4ea04be', 'session_id': 'bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74', 'sig_id': '16fd83e2a7068f79458661c0aae16f3bb486cc30e9cd9bef7e75d5454e4a6b07'}
+session_id:  bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74
+session_dict:  {}
+cookie_check:  None
+made new session a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5
+
+
+
+------------2009-01-27 22:00:27------------
+ip-addr:  129.22.164.147
+session_id:  a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5
+session_dict:  {'rest': ({...},), 'msg_sig': 'af8792355a0b22a6262bf23c9afd5fd3a95cb8f5c18cd45514e44910bc91c876', 'sig_id': 'bf4ade580352ee7ef538e8ddcf42c7a4c9fb4ad08eabe7afaffcfd4f6d2bac80', 'usr_id': 'unknown', 'session_id': 'a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5', 'last_update': datetime.datetime(2009, 1, 27, 21, 58, 9)}
+cookie_check:  True
+sigID:  3b992b7ffef5fdda7ef15c81ad9477274daff84e10be050589ac42c3a418f16b
+epochtime:  1233111627.24
+user:  unknown
+c:  Set-Cookie: session=sessionID|a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5^time|1233111627.24^~^
+Set-Cookie: session_sig=48b3c92a8f43dcfc15a7190c38990e2151fd09275d67ceb73ac4366102550038
+msg_sig:  48b3c92a8f43dcfc15a7190c38990e2151fd09275d67ceb73ac4366102550038
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 22:00:27', 'msg_sig': '48b3c92a8f43dcfc15a7190c38990e2151fd09275d67ceb73ac4366102550038', 'session_id': 'a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5', 'sig_id': '3b992b7ffef5fdda7ef15c81ad9477274daff84e10be050589ac42c3a418f16b'}
+
+
+
+------------2009-01-27 22:00:31------------
+ip-addr:  129.22.164.147
+session_id:  a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5
+session_dict:  {'rest': ({...},), 'msg_sig': '48b3c92a8f43dcfc15a7190c38990e2151fd09275d67ceb73ac4366102550038', 'sig_id': '3b992b7ffef5fdda7ef15c81ad9477274daff84e10be050589ac42c3a418f16b', 'usr_id': 'unknown', 'session_id': 'a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5', 'last_update': datetime.datetime(2009, 1, 27, 22, 0, 27)}
+cookie_check:  True
+sigID:  801d0a7825ca0767012c896d08472d4acc8c8a9f66318f41cdc0d59b6b2dbce7
+epochtime:  1233111631.72
+user:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+c:  Set-Cookie: session=sessionID|a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5^time|1233111631.72^~^
+Set-Cookie: session_sig=efa667438bfc8a0a6433b3393e72ae5416d605ad691a451173bcad34eb169486
+msg_sig:  efa667438bfc8a0a6433b3393e72ae5416d605ad691a451173bcad34eb169486
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 22:00:31', 'msg_sig': 'efa667438bfc8a0a6433b3393e72ae5416d605ad691a451173bcad34eb169486', 'session_id': 'a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5', 'sig_id': '801d0a7825ca0767012c896d08472d4acc8c8a9f66318f41cdc0d59b6b2dbce7'}
+
+
+
+------------2009-01-27 22:00:34------------
+ip-addr:  129.22.164.147
+session_id:  a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5
+session_dict:  {'rest': ({...},), 'msg_sig': 'efa667438bfc8a0a6433b3393e72ae5416d605ad691a451173bcad34eb169486', 'sig_id': '801d0a7825ca0767012c896d08472d4acc8c8a9f66318f41cdc0d59b6b2dbce7', 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'session_id': 'a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5', 'last_update': datetime.datetime(2009, 1, 27, 22, 0, 31)}
+cookie_check:  True
+sigID:  ff838bde70bd3934f0a6b470c3ad2b6d78e1683e6ce2eee15248421c043671b1
+epochtime:  1233111634.33
+user:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+c:  Set-Cookie: session=sessionID|a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5^time|1233111634.33^~^
+Set-Cookie: session_sig=a0cfac561c840e9173ca1d764b2028dba790eb2189cde167871bd0f4453bb7a6
+msg_sig:  a0cfac561c840e9173ca1d764b2028dba790eb2189cde167871bd0f4453bb7a6
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 22:00:34', 'msg_sig': 'a0cfac561c840e9173ca1d764b2028dba790eb2189cde167871bd0f4453bb7a6', 'session_id': 'a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5', 'sig_id': 'ff838bde70bd3934f0a6b470c3ad2b6d78e1683e6ce2eee15248421c043671b1'}
+session_id:  a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5
+session_dict:  {}
+cookie_check:  None
+made new session da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b
+
+
+
+------------2009-01-27 22:00:39------------
+ip-addr:  129.22.164.147
+session_id:  da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b
+session_dict:  {'rest': ({...},), 'msg_sig': 'e29be1a1bf974db9b367289311a8972cd12ae32c073fb767024d90f9d09410fb', 'sig_id': 'fd8c2f9c030af26ac614c68d79e7bebbdd145fead6943067b52e9d00db6707eb', 'usr_id': 'unknown', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'last_update': datetime.datetime(2009, 1, 27, 22, 0, 34)}
+cookie_check:  True
+sigID:  9fc6ec545da1a3590fc00d9a7bd5f65825534835e8593f4cc17a9e8a250796f0
+epochtime:  1233111639.63
+user:  unknown
+c:  Set-Cookie: session=sessionID|da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b^time|1233111639.63^~^
+Set-Cookie: session_sig=d062acc9d3ce06511ae9b0fb205d3288d059e359ea4113fe738c265de77e3c1e
+msg_sig:  d062acc9d3ce06511ae9b0fb205d3288d059e359ea4113fe738c265de77e3c1e
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 22:00:39', 'msg_sig': 'd062acc9d3ce06511ae9b0fb205d3288d059e359ea4113fe738c265de77e3c1e', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'sig_id': '9fc6ec545da1a3590fc00d9a7bd5f65825534835e8593f4cc17a9e8a250796f0'}
+
+
+
+------------2009-01-27 22:04:26------------
+ip-addr:  129.22.164.147
+session_id:  da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b
+session_dict:  {'rest': ({...},), 'msg_sig': 'd062acc9d3ce06511ae9b0fb205d3288d059e359ea4113fe738c265de77e3c1e', 'sig_id': '9fc6ec545da1a3590fc00d9a7bd5f65825534835e8593f4cc17a9e8a250796f0', 'usr_id': 'unknown', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'last_update': datetime.datetime(2009, 1, 27, 22, 0, 39)}
+cookie_check:  True
+sigID:  e18189093cd1a86b310a158c58db26fd9df02be659e7c792786a5818d1927b5e
+epochtime:  1233111866.66
+user:  unknown
+c:  Set-Cookie: session=sessionID|da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b^time|1233111866.66^~^
+Set-Cookie: session_sig=9e27c72dde39032e5d8dba69628a8ac8e6c6f1b50469b9663fa41f7b1f3472b6
+msg_sig:  9e27c72dde39032e5d8dba69628a8ac8e6c6f1b50469b9663fa41f7b1f3472b6
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 22:04:26', 'msg_sig': '9e27c72dde39032e5d8dba69628a8ac8e6c6f1b50469b9663fa41f7b1f3472b6', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'sig_id': 'e18189093cd1a86b310a158c58db26fd9df02be659e7c792786a5818d1927b5e'}
+
+
+
+------------2009-01-27 22:04:32------------
+ip-addr:  129.22.164.147
+session_id:  da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b
+session_dict:  {'rest': ({...},), 'msg_sig': '9e27c72dde39032e5d8dba69628a8ac8e6c6f1b50469b9663fa41f7b1f3472b6', 'sig_id': 'e18189093cd1a86b310a158c58db26fd9df02be659e7c792786a5818d1927b5e', 'usr_id': 'unknown', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'last_update': datetime.datetime(2009, 1, 27, 22, 4, 26)}
+cookie_check:  True
+sigID:  cc860b88f97a07ed5c3f54b5fc31a5b74a0c85145b4cbec85fe2a3a13b448bee
+epochtime:  1233111872.45
+user:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+c:  Set-Cookie: session=sessionID|da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b^time|1233111872.45^~^
+Set-Cookie: session_sig=fb68befb0bcb3aa435d676ad2662a0565f57ed9e56b400218dbe08c03d4c63c4
+msg_sig:  fb68befb0bcb3aa435d676ad2662a0565f57ed9e56b400218dbe08c03d4c63c4
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 22:04:32', 'msg_sig': 'fb68befb0bcb3aa435d676ad2662a0565f57ed9e56b400218dbe08c03d4c63c4', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'sig_id': 'cc860b88f97a07ed5c3f54b5fc31a5b74a0c85145b4cbec85fe2a3a13b448bee'}

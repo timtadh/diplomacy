@@ -10,8 +10,11 @@ from Crypto.Hash import SHA256
 import Cookie
 import nDDB
 import db
-from MySQLdb.cursors import DictCursor
 from crypt_framework import authenticator as auth
+from logger import Logger
+logger = Logger(__file__)
+
+logger.writeln('ip-addr: ', os.environ['REMOTE_ADDR'])
 
 HOST = "masran.case.edu"
 PORT = 3306
@@ -22,6 +25,8 @@ DB = "diplomacy"
 class DBError(Exception): pass
 
 #time.strftime('%Y-%m-%d %H:%M:%S')
+
+count = 0
 
 def genSessionID(prounds=50):
     '''Generates a new sessionID based on the seed, some random information from /dev/urandom and the
@@ -75,7 +80,7 @@ def check_cookie(sig, sig_id, time_signed, msg):
 def create_session(session_id, sig_id, msg_sig, usr_id):
     '''Creates a new row in the session table with the passed in parameters and the current time.'''
     con = db.connections.get_con()
-    cur = DictCursor(con)
+    cur = db.DictCursor(con)
     timestr = time.strftime('%Y-%m-%d %H:%M:%S')
     cur.callproc('create_session', (session_id, sig_id, msg_sig, usr_id))
     cur.close()
@@ -86,7 +91,7 @@ def update_session(session_id, sig_id, msg_sig, usr_id):
     '''Updates the session identified by the session ID, with passed in parameters and the current
     time.'''
     con = db.connections.get_con()
-    cur = DictCursor(con)
+    cur = db.DictCursor(con)
     timestr = time.strftime('%Y-%m-%d %H:%M:%S')
     cur.callproc('update_session', (session_id, sig_id, msg_sig, usr_id))
     cur.close()
@@ -96,14 +101,17 @@ def update_session(session_id, sig_id, msg_sig, usr_id):
 def get_session(session_id):
     '''Get the session from the session table in the database identified by the sessionID. It returns
     the session in the session dictionary format.'''
+    
     con = db.connections.get_con()
-    cur = DictCursor(con)
+    cur = db.DictCursor(con)
     cur.callproc('session_data', (session_id,))
     r = cur.fetchall()
     cur.close()
     db.connections.release_con(con)
-    if len(r) > 0: return r[0]
+    if len(r) > 0: d = r[0]
     else: return dict()
+    d.update({'rest':r})
+    return d
 
 def make_session_dict(session_id, sig_id, msg_sig, usr_id, last_update=None):
     '''Makes a dictionary from the passed in parameters. Used to make sure the sess_dicts returned by
@@ -115,7 +123,7 @@ def clear_old_sessions():
     '''This method goes through all the rows in in the table session and checks to see if they have
     expire or if there are duplicates. If either is the case it deletes them from the table.'''
     con = db.connections.get_con()
-    cur = DictCursor(con)
+    cur = db.DictCursor(con)
     cur.callproc('clear_old_sessions')
     cur.close()
     db.connections.release_con(con)
@@ -123,7 +131,7 @@ def clear_old_sessions():
 def delete_session(sessionID):
     '''This removes the session identified by its sessionID from the database in the table session'''
     con = db.connections.get_con()
-    cur = DictCursor(con)
+    cur = db.DictCursor(con)
     cur.callproc('delete_session', (session_id,))
     cur.close()
     db.connections.release_con(con)
@@ -137,6 +145,7 @@ def make_new_session():
     epochtime = str(time.time())
     c, msg_sig = create_cookie(sessionID, sigID, epochtime)
     ses_dict = create_session(sessionID, sigID, msg_sig, 'unknown')
+    logger.writeln('made new session', sessionID)  
     return c, ses_dict
 
 
@@ -150,28 +159,42 @@ def init_session(cookie, user=None):
     clear_old_sessions()
     c = cookie
     ses_dict = {}
-    
     if cookie.has_key('session') and cookie.has_key('session_sig'):
+        
         cook = cookie['session'].value
         cook_dict = nDDB.decodeDDB(cook)
         try:
+            #print "Content-type: text/html"
+            #print
+            logger.writeln('session_id: ', cook_dict['sessionID'])
             session = get_session(cook_dict['sessionID'])
+            logger.writeln('session_dict: ', session)
             if session: 
                 cookie_check = check_cookie(session['msg_sig'], session['sig_id'], 
                                                                           cook_dict['time'], cook)
             else: cookie_check = None
+            logger.writeln('cookie_check: ', cookie_check)
             if cookie_check:
                 sigID = genSigID()
+                logger.writeln('sigID: ', sigID)
                 epochtime = str(time.time())
+                logger.writeln('epochtime: ', epochtime)
                 if user == None: user = session['usr_id']
+                logger.writeln('user: ', user)
                 c, msg_sig = create_cookie(session['session_id'], sigID, epochtime)
+                logger.writeln('c: ', c)
+                logger.writeln('msg_sig: ', msg_sig)
                 ses_dict = update_session(session['session_id'], sigID, msg_sig, user)
+                logger.writeln('ses_dict: ', ses_dict)
             else:
                 c, ses_dict = make_new_session()
         except Exception, e:
             print "Content-type: text/html"
             print
+            print '<h1>Cookie Session Error</h1>'
             print e, '<br>'*5
+            logger.writeln()
+            logger.writeln('COOKIE SESSION ERROR: ', e)
             c, ses_dict = make_new_session()
     else:
         c, ses_dict = make_new_session()

@@ -1,11 +1,11 @@
 <+ if 'user_dict' in globals() and user_dict != {}:
-<+ name = user_dict['name'] #
-|= status_msg = user_dict['status'] #
-->
+    <+ name = user_dict['name'] #
+    |= status_msg = user_dict['status'] #
+    ->
 |= else:
-<+ name = None #
-|= status_msg = None #
-->
+    <+ name = None #
+    |= status_msg = None #
+    ->
 ->
 
 
@@ -20,15 +20,15 @@
 <table width='100%' style="border-style: hidden;">  
     <tr>
         <td rowspan=2 width="55%" style="border-style: hidden;">
-            <a href="main.py">
+            <a class="inline" href="main.py">
             <h1 class="header" width="300">Diplomacy</h1>
             </a>
         </td>
         
 <+ if name != None:
         <td align=right colspan=2>
-            User: <%name%>&nbsp;&nbsp;&nbsp;
-            <a class="inline" href="main.py?logout=true" style="background-color:#e1e1e1;">Logout</a>
+            User:&nbsp;&nbsp;<%name%>&nbsp;&nbsp;&nbsp;
+            <a class="inline" href="logout.py" style="background-color:#e1e1e1;">Logout</a>
         </td>
 |= else:
         <td align=right colspan=2>

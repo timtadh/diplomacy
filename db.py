@@ -1,4 +1,5 @@
 import MySQLdb
+from MySQLdb.cursors import DictCursor
 from crypt_framework import authenticator as auth
 
 HOST = "masran.case.edu"

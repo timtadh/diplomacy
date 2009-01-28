@@ -107,8 +107,6 @@ div.news
     margin-left:2ex;
     margin-right:2ex;
     text-decoration:none;
-    color:#000066;
-    background-color:#ffffff;
     top:20px;
     border:1px solid #dddddd;
 }
@@ -117,7 +115,7 @@ ul.news
 {
     list-style-type: disc; 
     display:inline;
-    margin-bottom:-1000px
+/*     margin-bottom:-1000px */
 }
 
 li.news
@@ -134,7 +132,8 @@ div.sidebar
     margin-bottom:20px;
     float:left;
     clear:left;
-    width:180px;
+    width:15em;
+    color:#000000;
     text-align:left;
     border-right:1px solid gray;
     
@@ -217,9 +216,9 @@ div.main
 {
     position:relative;
     top:5px;
-    margin-left:190px;
+    margin-left:16em;
     margin-top:-10px;
-    color:#000044;
+    color:#000000;
     background-color:#ffffff;
 }
 

@@ -1,0 +1,10 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+->
+
+<h2 class="main">You are logged out.</h2>
+    
+<p>To use, please <a class="inline" href="main.py">login in</a></p>
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

@@ -6,8 +6,8 @@ DROP PROCEDURE IF EXISTS session_data $$
 
 CREATE PROCEDURE session_data(IN session_id VARCHAR(64))
 BEGIN
-    SELECT session_id, sig_id, msg_sig, usr_id, last_update
-    FROM session as ses
+    SELECT ses.session_id, ses.sig_id, ses.msg_sig, ses.usr_id, ses.last_update
+    FROM session AS ses
     WHERE ses.session_id = session_id;
 END
 $$

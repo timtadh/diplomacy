@@ -1,0 +1,146 @@
+
+
+
+------------2009-01-27 21:49:43------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:49:43', 'msg_sig': 'c5a93e04916bfc3e1c2dae3ead89852d16d721a042dfef82c808654dcf515cc5', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': 'a66917a44c481d7cf95ce372d816b1a7ceb5b3c3bb988f80a196b3117ba5fff6'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 21:49:59------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:49:59', 'msg_sig': '289f6da3b338c1384b88c9fd1ff3d99bc7bd2c94f7910c70771ab9be8678e4b6', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': 'be7563bb7e49d524798d0dcceeda67a2dce1a77955755c55566d18efdfab336d'}
+user_id:  unknown
+user_dict:  {}
+added user:  ('a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'Tim Henderson', 'tim.tadh@gmail.com', '56ba6a3a3102883d4da0456dc88dacf5c9db515733073af076360b10328f92a3', '014d1f7c5eaa278e4125c9cd23f77015bdc5c560be8f4ae64994c033c5fc96c2')
+
+
+
+------------2009-01-27 21:50:07------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 21:50:08', 'msg_sig': 'd7f3bcb36a14f6b29e9e6c1d4db12734a11d7320300cbefff56adcf7df53c232', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': '530ba3d33946dae43eea2d72e9675991ed0ad02ffc8c09050f9d72f7650d6cb8'}
+logging in
+user_id:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+user_dict:  {'status': None, 'name': 'Tim Henderson', 'creation': datetime.datetime(2009, 1, 27, 21, 50), 'last_login': datetime.datetime(2009, 1, 27, 21, 50, 8), 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'pass_hash': '56ba6a3a3102883d4da0456dc88dacf5c9db515733073af076360b10328f92a3', 'salt': '014d1f7c5eaa278e4125c9cd23f77015bdc5c560be8f4ae64994c033c5fc96c2', 'email': 'tim.tadh@gmail.com'}
+
+
+
+------------2009-01-27 21:52:36------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 21:52:36', 'msg_sig': '54aa67db94a7f48d0409a064f8c1fc3644f4ae6cca68af52ef223252338d1a67', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': 'a5a8b7e2eeb958efe1e2ad4fa602d723bd262ae69b9023d6769d21de11ce66b9'}
+user_id:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+user_dict:  {'status': None, 'name': 'Tim Henderson', 'creation': datetime.datetime(2009, 1, 27, 21, 50), 'last_login': datetime.datetime(2009, 1, 27, 21, 50, 8), 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'pass_hash': '56ba6a3a3102883d4da0456dc88dacf5c9db515733073af076360b10328f92a3', 'salt': '014d1f7c5eaa278e4125c9cd23f77015bdc5c560be8f4ae64994c033c5fc96c2', 'email': 'tim.tadh@gmail.com'}
+
+
+
+------------2009-01-27 21:52:39------------
+ip-addr:  129.22.164.147
+logging out:  {'usr_id': '', 'last_update': '2009-01-27 21:52:39', 'msg_sig': 'e0ad7c3c6d129af0eb1f69a4c36e5f444262b8e8953ab44b0623646065f214c7', 'session_id': '370929e8611c293451dedb0cd2024f0e5cf697a58740d0dd917acdd890dee732', 'sig_id': 'ff861be02ea98c4321d74227b70af3f679a5e35528c3a8680099b485dbfd0e72'}
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:52:39', 'msg_sig': '23fe808c253b2efb903a1e6249f9b55ba94967330c65baaccf6275a5468a22e2', 'session_id': '3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe', 'sig_id': '932c68e81a22a46e679bd4b4ef9314f8712c5fee34ec18415a41b884f1053911'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 21:56:27------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:56:27', 'msg_sig': 'a6b00dff0e5b99142eb6e2befa29ed824173995c60522b27da1ea464c4d7379e', 'session_id': '3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe', 'sig_id': '242594c922caa9dce67a82bca5340074a76cb966144454d3b77d783f5a607d03'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 21:56:31------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 21:56:32', 'msg_sig': 'cc91140d01a51b65c2a462fce4f84b781e17ea1cd3d11ee8458fa0e68804c903', 'session_id': '3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe', 'sig_id': '89a9f239b572a05577e2f4996ab64f522532a6299a3bbe635a03abc31c2fcbb4'}
+logging in
+user_id:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+user_dict:  {'status': None, 'name': 'Tim Henderson', 'creation': datetime.datetime(2009, 1, 27, 21, 50), 'last_login': datetime.datetime(2009, 1, 27, 21, 56, 32), 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'pass_hash': '56ba6a3a3102883d4da0456dc88dacf5c9db515733073af076360b10328f92a3', 'salt': '014d1f7c5eaa278e4125c9cd23f77015bdc5c560be8f4ae64994c033c5fc96c2', 'email': 'tim.tadh@gmail.com'}
+
+
+
+------------2009-01-27 21:56:36------------
+ip-addr:  129.22.164.147
+logging out -> session_id:  3a41d51c58664b507851e673fe3ed8d0a9823ce329d9e50aa792e1b5b40da4fe    usr_id: 
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:56:36', 'msg_sig': 'e8e63e4e7d638b92107e7da5a5c65efef138ccaf695455b90dc22ff9126b4dc8', 'session_id': 'bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74', 'sig_id': 'b81e131e4970744c8484715542b4aeff27cbc4673ec14a967ce74e36e81216f6'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 21:58:04------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:58:04', 'msg_sig': '3eba58d87e7d6ba48f8dc30955f7fe48ad353b40c57fa4f9bc11d89d27b2288f', 'session_id': 'bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74', 'sig_id': 'b287e482d05b7af3198e737cd9820767e9f7f4f9c98013b9548f6de062a34d45'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 21:58:08------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 21:58:08', 'msg_sig': '1acfb19228b6f4f571098101969b4da2f1a3af1cd8a63eb5f89608540a371793', 'session_id': 'bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74', 'sig_id': 'ecd653a109a528b478792e7a525b15111fe5409fb8edf7184b275a90db6b8eb4'}
+logging in
+user_id:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+user_dict:  {'status': None, 'name': 'Tim Henderson', 'creation': datetime.datetime(2009, 1, 27, 21, 50), 'last_login': datetime.datetime(2009, 1, 27, 21, 58, 8), 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'pass_hash': '56ba6a3a3102883d4da0456dc88dacf5c9db515733073af076360b10328f92a3', 'salt': '014d1f7c5eaa278e4125c9cd23f77015bdc5c560be8f4ae64994c033c5fc96c2', 'email': 'tim.tadh@gmail.com'}
+
+
+
+------------2009-01-27 21:58:09------------
+ip-addr:  129.22.164.147
+logging out -> usr_id:     session_id: bcaf51f047b91c827245486b83471e8f562df53368b7147275de6fa3cecd3b74
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 21:58:09', 'msg_sig': 'af8792355a0b22a6262bf23c9afd5fd3a95cb8f5c18cd45514e44910bc91c876', 'session_id': 'a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5', 'sig_id': 'bf4ade580352ee7ef538e8ddcf42c7a4c9fb4ad08eabe7afaffcfd4f6d2bac80'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 22:00:27------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 22:00:27', 'msg_sig': '48b3c92a8f43dcfc15a7190c38990e2151fd09275d67ceb73ac4366102550038', 'session_id': 'a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5', 'sig_id': '3b992b7ffef5fdda7ef15c81ad9477274daff84e10be050589ac42c3a418f16b'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 22:00:31------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 22:00:31', 'msg_sig': 'efa667438bfc8a0a6433b3393e72ae5416d605ad691a451173bcad34eb169486', 'session_id': 'a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5', 'sig_id': '801d0a7825ca0767012c896d08472d4acc8c8a9f66318f41cdc0d59b6b2dbce7'}
+logging in
+user_id:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+user_dict:  {'status': None, 'name': 'Tim Henderson', 'creation': datetime.datetime(2009, 1, 27, 21, 50), 'last_login': datetime.datetime(2009, 1, 27, 22, 0, 31), 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'pass_hash': '56ba6a3a3102883d4da0456dc88dacf5c9db515733073af076360b10328f92a3', 'salt': '014d1f7c5eaa278e4125c9cd23f77015bdc5c560be8f4ae64994c033c5fc96c2', 'email': 'tim.tadh@gmail.com'}
+
+
+
+------------2009-01-27 22:00:34------------
+ip-addr:  129.22.164.147
+logging out -> usr_id: a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333    session_id: a13260d03058fddbf5e4137d0fa91ed6f224a9a03d0692cd5a9bf36187526cc5
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 22:00:34', 'msg_sig': 'e29be1a1bf974db9b367289311a8972cd12ae32c073fb767024d90f9d09410fb', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'sig_id': 'fd8c2f9c030af26ac614c68d79e7bebbdd145fead6943067b52e9d00db6707eb'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 22:00:39------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 22:00:39', 'msg_sig': 'd062acc9d3ce06511ae9b0fb205d3288d059e359ea4113fe738c265de77e3c1e', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'sig_id': '9fc6ec545da1a3590fc00d9a7bd5f65825534835e8593f4cc17a9e8a250796f0'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 22:04:26------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-01-27 22:04:26', 'msg_sig': '9e27c72dde39032e5d8dba69628a8ac8e6c6f1b50469b9663fa41f7b1f3472b6', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'sig_id': 'e18189093cd1a86b310a158c58db26fd9df02be659e7c792786a5818d1927b5e'}
+user_id:  unknown
+user_dict:  {}
+
+
+
+------------2009-01-27 22:04:32------------
+ip-addr:  129.22.164.147
+ses_dict:  {'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'last_update': '2009-01-27 22:04:32', 'msg_sig': 'fb68befb0bcb3aa435d676ad2662a0565f57ed9e56b400218dbe08c03d4c63c4', 'session_id': 'da282307f2fc92b6306463348e87198fbec873f20b2d826d59ca34439592ca7b', 'sig_id': 'cc860b88f97a07ed5c3f54b5fc31a5b74a0c85145b4cbec85fe2a3a13b448bee'}
+logging in
+user_id:  a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333
+user_dict:  {'status': None, 'name': 'Tim Henderson', 'creation': datetime.datetime(2009, 1, 27, 21, 50), 'last_login': datetime.datetime(2009, 1, 27, 22, 4, 32), 'usr_id': 'a24b8bacbff2ef1287214018bd7d7ca0da228cada0c54e29fe4d6240bdc6a333', 'pass_hash': '56ba6a3a3102883d4da0456dc88dacf5c9db515733073af076360b10328f92a3', 'salt': '014d1f7c5eaa278e4125c9cd23f77015bdc5c560be8f4ae64994c033c5fc96c2', 'email': 'tim.tadh@gmail.com'}

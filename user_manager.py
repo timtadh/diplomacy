@@ -10,10 +10,12 @@ from Crypto.Hash import SHA256
 import Cookie
 import nDDB
 import db
-import MySQLdb
-from MySQLdb.cursors import DictCursor
 from crypt_framework import authenticator as auth, qcrypt
 import cookie_session
+from logger import Logger
+logger = Logger(__file__)
+
+logger.writeln('ip-addr: ', os.environ['REMOTE_ADDR'])
 
 HOST = "localhost"
 PORT = 3306
@@ -42,7 +44,7 @@ def get_user_byemail(email):
     '''Gets the user information for the user with the name passed in the parameter user_name. Returns
     the information as a dictionary.'''
     con = db.connections.get_con()
-    cur = DictCursor(con)
+    cur = db.DictCursor(con)
     cur.callproc('user_data_byemail', (email,))
     r = cur.fetchall()
     cur.close()
@@ -54,7 +56,7 @@ def get_user_byid(usr_id):
     '''Gets the user information for the user with the id passed in the parameter user_id. Returns
     the information as a dictionary.'''
     con = db.connections.get_con()
-    cur = DictCursor(con)
+    cur = db.DictCursor(con)
     cur.callproc('user_data_byid', (usr_id,))
     r = cur.fetchall()
     cur.close()
@@ -66,7 +68,7 @@ def update_last_login_time(usr_id):
     '''Updates the users table. Specifically the row where user_id matches the user_id passed into
     this function. It only updates one column (last_login) in the users table with the current time.'''
     con = db.connections.get_con()
-    cur = DictCursor(con)
+    cur = db.DictCursor(con)
     cur.callproc('update_user_login_time', (usr_id,))
     cur.close()
     db.connections.release_con(con)
@@ -78,21 +80,24 @@ def add_user(usr_id, name, email, password):
     pass_hash = auth.saltedhash_hex(password, salt)
     
     con = db.connections.get_con()
-    cur = DictCursor(con)
+    cur = db.DictCursor(con)
     cur.callproc('create_user', (usr_id, name, email, pass_hash, salt))
     cur.close()
     db.connections.release_con(con)
+    
+    logger.writeln('added user: ', (usr_id, name, email, pass_hash, salt))
     
 def logout_session():
     cookie = Cookie.SimpleCookie()
     cookieHdr = os.environ.get("HTTP_COOKIE", "") #get the cookie from the enviroment
     cookie.load(cookieHdr) #load it into a Cookie class
     
-    c, ses_dict = cookie_session.init_session(cookie, '') #initializes the session returns the session dictionary and the cookie to push to browser
+    c, ses_dict = cookie_session.init_session(cookie) #initializes the session returns the session dictionary and the cookie to push to browser
+    logger.writeln('logging out -> usr_id:', ses_dict['usr_id'], '   session_id:', ses_dict['session_id'])
     
     con = db.connections.get_con()
-    cur = DictCursor(con)
-    cur.callproc('update_user_login_time', (ses_dict['session_id'],ses_dict['usr_id']))
+    cur = db.DictCursor(con)
+    cur.callproc('logout_session', (ses_dict['session_id'],ses_dict['usr_id']))
     cur.close()
     db.connections.release_con(con)
 
@@ -136,11 +141,15 @@ def init_user_session(form={}):
     
     user_id = verify_login(form) #only actually gives you a user_id if you are logging in
     c, ses_dict = cookie_session.init_session(cookie, user_id) #initializes the session returns the session dictionary and the cookie to push to browser
+    logger.writeln('ses_dict: ', ses_dict)
     cookie_session.print_header(c) #print the header
     
     if user_id == ses_dict['usr_id']: #means you are logging in with good credentials
+        logger.writeln('logging in')
         update_last_login_time(user_id) #so update the time
     
     user_id = ses_dict['usr_id'] #if you are logged in gives you the current user_id
+    logger.writeln('user_id: ', user_id)
     user_dict = get_user_byid(user_id) #get the user dictionary
+    logger.writeln('user_dict: ', user_dict)
     return ses_dict, user_dict

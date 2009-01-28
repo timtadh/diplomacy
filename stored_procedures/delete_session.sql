@@ -4,11 +4,11 @@ USE diplomacy
 
 DROP PROCEDURE IF EXISTS delete_session $$
 
-CREATE PROCEDURE delete_session(IN session_id VARCHAR(64))
+CREATE PROCEDURE delete_session(IN sessionID VARCHAR(64))
 BEGIN
     DELETE ses
     FROM session as ses
-    WHERE (ses.session_id = session_id);
+    WHERE (ses.session_id = sessionID);
 END
 $$
 

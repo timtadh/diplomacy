@@ -1,19 +1,7 @@
-<+ header_file = open("templates/header_part1.html", 'r')#
-|= header = header_file.read()#
-|= header_file.close()#
+<+ templater.print_template("templates/header_part1.html", globals()) #
 ->
-<%header%>
-<+ f = open("templates/header_part2.html", 'r') #
-|= s = f.readlines() #
-|= f.close() #
-|= rex=re.compile('\<\%([^\<\%]+)\%\>') #
-|= rbe=re.compile('\<\+') #
-|= ren=re.compile('\-\>') #
-|= rco=re.compile('\|= ') #
-|= cop = yaptu.copier(rex, globals(), rbe, ren, rco) #
-|= cop.copy(s) #
+<+ templater.print_template("templates/header_part2.html", globals()) #
 ->
-
 
 <h2 class="main">Registration</h2>
 
@@ -25,8 +13,5 @@
 <p><input type="submit" name="submit" value="Register"/><p>
 </form>
 
-<+ footer_file = open("templates/footer.html", 'r')#
-|= footer = footer_file.read()#
-|= footer_file.close()#
+<+ templater.print_template("templates/footer.html", globals()) #
 ->
-<%footer%>

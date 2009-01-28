@@ -1,0 +1,16 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+->
+<+ templater.print_template("templates/header_part2.html", globals()) #
+->
+
+<h1>Error</h1>
+
+<p><%error%></p>
+
+<p align="center">
+<a href="main.py" class="inline">Return to Main Page</a>
+</p>
+<br>
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

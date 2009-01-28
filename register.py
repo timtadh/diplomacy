@@ -1,14 +1,9 @@
 #!/usr/bin/python
 
-import sys
-sys.stderr = sys.stdout
-import os
-import cgi
-import cgitb; cgitb.enable( )
-import os, re, yaptu
-import Cookie, time
+import config
+import os, re, cgi, templater, db
 import cookie_session, user_manager
-import config_db_con
+import sys
 
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
@@ -20,56 +15,12 @@ if user_dict == {}:
                 error = "passwords were not equal"
             else:
                 error = "that email address already has a user registered to it"
-            f = open("error_template.html", 'r')
-            s = f.readlines()
-            f.close()
-            rex=re.compile('\<\%([^\<\%]+)\%\>')
-            rbe=re.compile('\<\+')
-            ren=re.compile('\-\>')
-            rco=re.compile('\|= ')
-            
-            cop = yaptu.copier(rex, locals(), rbe, ren, rco)
-            cop.copy(s)
+            templater.print_error(error)
             sys.exit()
+        print 'heyhey<br><br>'
         user_manager.add_user(user_manager.gen_userID(), form["name"].value, form["email"].value, form["passwd1"].value)
-        target_page = "main.py"
-        f = open("templates/login_template.html", 'r')
-        #f = open("htmltest.html", 'r')
-        s = f.readlines()
-        f.close()
-        rex=re.compile('\<\%([^\<\%]+)\%\>')
-        rbe=re.compile('\<\+')
-        ren=re.compile('\-\>')
-        rco=re.compile('\|= ')
-        cop = yaptu.copier(rex, globals(), rbe, ren, rco)
-        cop.copy(s)
+        templater.print_template("templates/login_template.html", {'target_page':'login.py'})
     else:
-        target_page = "register.py"
-        f = open("templates/register.html", 'r')
-        #f = open("htmltest.html", 'r')
-        s = f.readlines()
-        f.close()
-        rex=re.compile('\<\%([^\<\%]+)\%\>')
-        rbe=re.compile('\<\+')
-        ren=re.compile('\-\>')
-        rco=re.compile('\|= ')
-        cop = yaptu.copier(rex, globals(), rbe, ren, rco)
-        cop.copy(s)
+        templater.print_template("templates/register.html", {'target_page':'register.py'})
 else:
-    exp_mng = db_manager.Experiment_Manager(user_dict)
-    if form.has_key("delete") and form.has_key("exp_id"):
-        exp_id = form["exp_id"].value
-        if exp_mng.my_exps.has_key(exp_id):
-            exp_mng.del_exp(exp_id)
-    
-    target_page = "/masran2/main.py"
-    f = open("start.html", 'r')
-    #f = open("htmltest.html", 'r')
-    s = f.readlines()
-    f.close()
-    rex=re.compile('\<\%([^\<\%]+)\%\>')
-    rbe=re.compile('\<\+')
-    ren=re.compile('\-\>')
-    rco=re.compile('\|= ')
-    cop = yaptu.copier(rex, globals(), rbe, ren, rco)
-    cop.copy(s)
+    templater.print_template("templates/login_template.html", {'target_page':'login.py'})
