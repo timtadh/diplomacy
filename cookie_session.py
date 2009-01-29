@@ -14,8 +14,6 @@ from crypt_framework import authenticator as auth
 from logger import Logger
 logger = Logger(__file__)
 
-logger.writeln('ip-addr: ', os.environ['REMOTE_ADDR'])
-
 HOST = "masran.case.edu"
 PORT = 3306
 USER = 'diplomacy'
@@ -168,7 +166,7 @@ def init_session(cookie, user=None):
             #print
             logger.writeln('session_id: ', cook_dict['sessionID'])
             session = get_session(cook_dict['sessionID'])
-            logger.writeln('session_dict: ', session)
+            logger.writeln('database_session_dict: ', session)
             if session: 
                 cookie_check = check_cookie(session['msg_sig'], session['sig_id'], 
                                                                           cook_dict['time'], cook)

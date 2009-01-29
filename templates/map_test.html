@@ -1,0 +1,14 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <h2 class="main">Image test page</h2>
+    
+    <p><img src="<%new_map_path%>"></p>
+</div>
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

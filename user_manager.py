@@ -15,8 +15,6 @@ import cookie_session
 from logger import Logger
 logger = Logger(__file__)
 
-logger.writeln('ip-addr: ', os.environ['REMOTE_ADDR'])
-
 HOST = "localhost"
 PORT = 3306
 USER = 'diplomacy'
@@ -108,11 +106,11 @@ def verify_passwd(email, password):
     
     user_dict = get_user_byemail(email) #get the user_dict from the database
     if user_dict: pass_hash = auth.saltedhash_hex(password, user_dict['salt'])
-    else: return False
+    else: return False, dict()
     if user_dict and user_dict.has_key('pass_hash') and pass_hash == user_dict['pass_hash']: #if the user_dict actually has information in it check to see if the passwords are the same
         return True, user_dict #if they are return true and the user dictionary
     else: 
-        return False, {} #else return false and an empty dictionary
+        return False, dict() #else return false and an empty dictionary
     
 def verify_login(form):
     '''This function takes a form (ie the return value of cgi.FieldStorage()) or an empty dictionary.
