@@ -1,0 +1,37 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <h2 class="main">Directory</h2>
+    
+    <table>
+            <tr class="grey">
+                <td>name</td>
+                <td>screen name</td>
+                <td>email</td>
+                <td></td>
+            </tr>
+        <+ for index, user_row in enumerate(users):
+            <+ if index % 2:
+            <tr class="blue">
+            |= else:
+            <tr>
+            ->
+                <td><%user_row['name']%></td>
+                <td><%user_row['screen_name']%></td>
+                <td><%user_row['email']%></td>
+                <td>
+                    <a class='inline' href='send_msg.py?sn=<%user_row['screen_name']%>'>message</a>
+                </td>
+            </tr>
+        ->
+    </table>
+</div>
+
+
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

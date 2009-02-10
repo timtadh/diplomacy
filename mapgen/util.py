@@ -1,7 +1,7 @@
 import math, primitives
 
 def median(countries):
-    values = sorted([len(country.territories) for country in countries])
+    values = sorted([len(country.land_terrs) for country in countries])
     if len(values) % 2 == 1:
         return values[(len(values)+1)/2-1]
     else:

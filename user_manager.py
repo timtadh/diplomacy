@@ -71,7 +71,7 @@ def update_last_login_time(usr_id):
     cur.close()
     db.connections.release_con(con)
 
-def add_user(usr_id, name, email, password):
+def add_user(usr_id, name, email, screen_name, password):
     '''Creates a new row in the user table with the passed in parameters and the current time.'''
     
     salt = qcrypt.normalize(os.urandom(32))
@@ -79,11 +79,11 @@ def add_user(usr_id, name, email, password):
     
     con = db.connections.get_con()
     cur = db.DictCursor(con)
-    cur.callproc('create_user', (usr_id, name, email, pass_hash, salt))
+    cur.callproc('create_user', (usr_id, name, email, screen_name, pass_hash, salt))
     cur.close()
     db.connections.release_con(con)
     
-    logger.writeln('added user: ', (usr_id, name, email, pass_hash, salt))
+    logger.writeln('added user: ', (usr_id, name, email, screen_name, pass_hash, salt))
     
 def logout_session():
     cookie = Cookie.SimpleCookie()
@@ -105,6 +105,7 @@ def verify_passwd(email, password):
     passwords are compared. If they match it returns True else it returns False.'''
     
     user_dict = get_user_byemail(email) #get the user_dict from the database
+    logger.writeln('    user_dict:', user_dict)
     if user_dict: pass_hash = auth.saltedhash_hex(password, user_dict['salt'])
     else: return False, dict()
     if user_dict and user_dict.has_key('pass_hash') and pass_hash == user_dict['pass_hash']: #if the user_dict actually has information in it check to see if the passwords are the same
@@ -120,9 +121,15 @@ def verify_login(form):
     usr_id = None #set a default value for the user_id
     if cookie_session.verify_session(): #check to see if there is a valid session. you cannot log in with out one.
         if form.has_key('email') and form.has_key('passwd'): #see if the correct form info got passed to the server
+            logger.writeln('about to try and log in')
             email = form['email'].value #get the user_name
             passwd = form['passwd'].value #get the password
-            valid, user_dict = verify_passwd(email, passwd) #verify the password and get the user_dict as well
+            logger.writeln('    email:', email)
+            logger.writeln('    passwd:', passwd)
+            valid, user_dict = verify_passwd(email, passwd) #verify the password and get the 
+                                                            #user_dict as well
+            logger.writeln('    valid:', valid)
+            
             if valid:
                 usr_id = user_dict['usr_id'] #if it is valid grab the user_id from the user_dict
     return usr_id 

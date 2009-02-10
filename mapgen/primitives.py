@@ -25,7 +25,7 @@ class Line(object):
         self.midpoint = Point((a.x+b.x)/2, (a.y+b.y)/2)
         self.outside = True #line is on outside of shape
         self.color = color
-        self.territories = []
+        self.land_terrs = []
         self.combinations = 0
         self.id = 0
         self.length = 0     #calculated when requested

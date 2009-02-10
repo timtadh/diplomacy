@@ -1,0 +1,62 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <h2 class="main">Messages</h2>
+    
+    <table>
+            <tr class="grey">
+                <td>from</td>
+                <td>subject</td>
+                <td>message</td>
+                <td>time sent</td>
+                <td></td>
+            </tr>
+        <+ for index,msg in enumerate(msgs):
+            <+ if index % 2:
+            <tr class="blue">
+            |= else:
+            <tr>
+            ->
+                <td><%msg['from']%></td>
+                <td>
+                    <+ if not int(msg['read']):
+                    <a class='inline' href='msg.py?view=<%msg['msg_id']%>'>
+                    |= else:
+                    <a class='inline' style='font-weight:100' href='msg.py?view=<%msg['msg_id']%>'>
+                    ->
+                    
+                        <%msg['subject'][:40]%>
+                        <+ if len(msg['subject']) > 40:
+                        ...
+                        ->
+                    </a>
+                </td>
+                <+ if not int(msg['read']):
+                <td style="font-weight:900;">
+                |= else:
+                <td>
+                ->
+                    <%msg['msg'][:30]%>
+                    <+ if len(msg['msg']) > 30:
+                    ...
+                    ->
+                </td>
+                <td><%str(msg['time_sent'])%></td>
+                <td>
+                    <a class='inline' href='msg.py?del=<%msg['msg_id']%>'>
+                    delete
+                    </a>
+                </td>
+            </tr>
+        ->
+    </table>
+</div>
+
+
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

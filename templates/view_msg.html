@@ -1,0 +1,33 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <h2 class="main">Read Message</h2>
+    
+    
+    <p><b>From:</b>&nbsp; <%msg['from_name']%>, 
+    
+    (
+    <a class='inline' href='send_msg.py?rep=<%msg['msg_id']%>'>
+        reply to&nbsp; <%msg['from']%>
+    </a>
+    )
+    
+    <br>
+    
+    <b>Subject</b>&nbsp; <%msg['subject']%></p>
+    
+    <p><b>Message</b><br>
+    <%msg['msg']%></p>
+    
+    <a class='inline' href='send_msg.py?rep=<%msg['msg_id']%>'>reply</a><br>
+    <a class='inline' href='msg.py'>back to messages</a>
+</div>
+
+
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

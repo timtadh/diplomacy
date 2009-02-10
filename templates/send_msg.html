@@ -1,0 +1,25 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <h2 class="main">Send Message</h2>
+    
+    <form action="send_msg.py" method="post">
+        <p>
+            to (screen name): 
+            <input type="text" name="screen_name" size=50 value='<%screen_name%>'/>
+            <a class='inline' href='user_list.py'>Directory</a>
+        </p>
+        <p>subject: <input type="text" name="subject" size=50 value='<%subject%>'/></p>
+        <p>message:</p> <textarea type="text" name="msg" rows=10 cols=70></textarea>
+        <p><input type="submit" name="Send Message" value="Send Message"/><p>
+    </form>
+</div>
+
+
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

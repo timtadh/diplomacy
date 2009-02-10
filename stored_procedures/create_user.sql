@@ -5,12 +5,12 @@ USE diplomacy
 DROP PROCEDURE IF EXISTS create_user $$
 
 CREATE PROCEDURE create_user(IN usr_id VARCHAR(64), IN name VARCHAR(256), IN email VARCHAR(256),
-                                IN pass_hash VARCHAR(64), IN salt VARCHAR(64))
+                             IN screen_name VARCHAR(128), IN pass_hash VARCHAR(64), IN salt VARCHAR(64))
 BEGIN
     SET @cur_time = NOW();
 
-    INSERT INTO users (usr_id, name, email, pass_hash, salt, last_login, creation)
-    VALUES (usr_id, name, email, pass_hash, salt, @cur_time, @cur_time);
+    INSERT INTO users (usr_id, name, email, screen_name, pass_hash, salt, last_login, creation)
+    VALUES (usr_id, name, email, screen_name, pass_hash, salt, @cur_time, @cur_time);
 END
 $$
 

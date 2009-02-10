@@ -48,13 +48,14 @@ class MapGenWindow(pyglet.window.Window):
             self.camera[0] += 40
     
     def on_mouse_press(self, x, y, button, modifiers):
-        for terr in self.landmass.territories:
+        for terr in self.landmass.land_terrs:
             if terr.point_inside(x-self.camera[0], y-self.camera[1]):
                 line_strings = []
                 for line in terr.lines:
-                    id_list = [str(t.id) for t in line.territories]
+                    id_list = [str(t.id) for t in line.land_terrs]
                     line_strings.append(', '.join(id_list))
-                print terr.id, terr.country, terr.adjacent_countries, terr.adjacencies
+                print terr.id, terr.country, \
+                    terr.adjacent_countries, terr.adjacencies
     
     def draw_line(self, x1, y1, x2, y2):    
         pyglet.graphics.draw(2, pyglet.gl.GL_LINES, ('v2f', (x1, y1, x2, y2)))
@@ -70,7 +71,7 @@ class MapGenWindow(pyglet.window.Window):
         self.clear()
         gl.glPushMatrix()
         gl.glTranslatef(self.camera[0], self.camera[1], 0)
-        for territory in self.landmass.territories:
+        for territory in self.landmass.land_terrs:
             for tri in territory.triangles:
                 pyglet.gl.glColor4f(*territory.color)
                 pyglet.graphics.draw(
@@ -79,22 +80,28 @@ class MapGenWindow(pyglet.window.Window):
             for line in territory.lines:
                 pyglet.gl.glColor4f(*line.color)
                 self.draw_line(line.a.x, line.a.y, line.b.x, line.b.y)
+        for terr in self.landmass.sea_terrs:
+            for line in terr.lines:
+                pyglet.gl.glColor4f(*line.color)
+                self.draw_line(line.a.x, line.a.y, line.b.x, line.b.y)
         if self.draw_capitals:
-            for terr in self.landmass.territories:
+            for terr in self.landmass.land_terrs + self.landmass.sea_terrs:
                 pyglet.gl.glColor4f(1,1,1,1)
-                self.draw_rect(terr.x-5, terr.y-5, terr.x+5, terr.y+3)
+                self.draw_rect(terr.x-10, terr.y-5, terr.x+10, terr.y+3)
         pyglet.gl.glColor4f(1,1,1,1)
         self.batch.draw()
         gl.glPopMatrix()
-        self.draw_line(0, self.height-20, self.my_gen.base_distance, self.height-20)
+        self.draw_line(
+            0, self.height-20, self.my_gen.base_distance, self.height-20
+        )
     
     def update_labels(self):
         for label in self.labels:
             label.delete()
         self.labels = []
-        for terr in self.landmass.territories:
+        for terr in self.landmass.land_terrs + self.landmass.sea_terrs:
             self.labels.append(pyglet.text.Label(
-                str(terr.id), x=terr.x, y=terr.y, color=(0,0,0,255),
+                terr.abbreviation, x=terr.x, y=terr.y, color=(0,0,0,255),
                 font_size=8, font_name="Inconsolata",
                 anchor_x='center', anchor_y='center', batch=self.batch
             ))
