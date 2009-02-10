@@ -4505,3 +4505,47 @@ user-agent:  Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.6) Gecko/2
 ses_dict:  {'usr_id': '3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07', 'last_update': '2009-02-09 21:46:30', 'msg_sig': 'dbcfb022041a85bbc25125762b7be847191fef46e7e13030e3fe9aecf2e7de32', 'session_id': '640bd2b267c86c1013d87228207b8ee9b8ba34bca40afc4b18e00ae50431ca93', 'sig_id': '40eb015acf9b377f02747e6848ef7c5b92af8a4a710cf4253b5f93c14738fb6e'}
 user_id:  3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07
 user_dict:  {'status': None, 'screen_name': 'lxp52', 'creation': datetime.datetime(2009, 1, 28, 19, 16, 13), 'last_login': datetime.datetime(2009, 2, 9, 21, 45, 35), 'usr_id': '3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07', 'pass_hash': '2c4f2f23a6f22bfc4143869578c87b43b01c761d5d4d23d2edf028dcf957f6d6', 'salt': 'f0bb81ad79ba6bf2d504b1f2eeb3abcb323fc62be537aef9102c4d02096546f9', 'email': 'lxp52@case.edu', 'name': 'Leigh'}
+
+
+ ------------ 2009-02-09 23:17:21 ------------
+ip-addr:  129.22.47.240    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+about to try and log in
+    email: lxp52@case.edu
+    passwd: test
+    user_dict: {'status': None, 'screen_name': 'lxp52', 'creation': datetime.datetime(2009, 1, 28, 19, 16, 13), 'last_login': datetime.datetime(2009, 2, 9, 21, 45, 35), 'usr_id': '3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07', 'pass_hash': '2c4f2f23a6f22bfc4143869578c87b43b01c761d5d4d23d2edf028dcf957f6d6', 'salt': 'f0bb81ad79ba6bf2d504b1f2eeb3abcb323fc62be537aef9102c4d02096546f9', 'email': 'lxp52@case.edu', 'name': 'Leigh'}
+    valid: True
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-02-09 23:17:21', 'msg_sig': '9f17edaa2abe742b43ed2c8be4a430ff92d9d65a874395e79d4b017666f33738', 'session_id': 'c193bcc1893e0e79c35ce9c62d404a6705713db2ac3d3efde3073193ebcff876', 'sig_id': '42cbceafeef46de4c2e933c9d4f18f5dfdca11ffbfa256a1867130319937c0b0'}
+user_id:  unknown
+user_dict:  {}
+
+
+ ------------ 2009-02-09 23:17:27 ------------
+ip-addr:  129.22.46.163    script-name:  /diplomacy/logout.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+logging out -> usr_id: unknown    session_id: 0364ee315e2575ce30ad28d075c573b1ae672df1d408e4766d2ac72472cd48dc
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-02-09 23:17:27', 'msg_sig': '1a79361e817240b97cbba8fbb3cb5947e79230a22e5e6d80eda9c478a86fe0df', 'session_id': 'd7524210e5f744a5459ced5afd2de24e83279e0855ef347fd9e4e9eab17825cf', 'sig_id': 'f0df7ef231c73e3c23a5719ff3f23e4036c0aea24aa4d7e5b95b21ed949d5cff'}
+user_id:  unknown
+user_dict:  {}
+
+
+ ------------ 2009-02-09 23:17:29 ------------
+ip-addr:  129.22.47.240    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+about to try and log in
+    email: lxp52@case.edu
+    passwd: test
+    user_dict: {'status': None, 'screen_name': 'lxp52', 'creation': datetime.datetime(2009, 1, 28, 19, 16, 13), 'last_login': datetime.datetime(2009, 2, 9, 21, 45, 35), 'usr_id': '3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07', 'pass_hash': '2c4f2f23a6f22bfc4143869578c87b43b01c761d5d4d23d2edf028dcf957f6d6', 'salt': 'f0bb81ad79ba6bf2d504b1f2eeb3abcb323fc62be537aef9102c4d02096546f9', 'email': 'lxp52@case.edu', 'name': 'Leigh'}
+    valid: True
+ses_dict:  {'usr_id': '3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07', 'last_update': '2009-02-09 23:17:29', 'msg_sig': '8818dc07afd3ce0f99ff38441aab6522b390ef059a04a64c47b80f015385e717', 'session_id': 'c193bcc1893e0e79c35ce9c62d404a6705713db2ac3d3efde3073193ebcff876', 'sig_id': '93cdc79e8b2f7a908ba59c7e49fce61f0d7099d6343f06bba16f46eeb0c0470f'}
+logging in
+user_id:  3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07
+user_dict:  {'status': None, 'screen_name': 'lxp52', 'creation': datetime.datetime(2009, 1, 28, 19, 16, 13), 'last_login': datetime.datetime(2009, 2, 9, 23, 17, 29), 'usr_id': '3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07', 'pass_hash': '2c4f2f23a6f22bfc4143869578c87b43b01c761d5d4d23d2edf028dcf957f6d6', 'salt': 'f0bb81ad79ba6bf2d504b1f2eeb3abcb323fc62be537aef9102c4d02096546f9', 'email': 'lxp52@case.edu', 'name': 'Leigh'}
+
+
+ ------------ 2009-02-09 23:17:32 ------------
+ip-addr:  129.22.47.240    script-name:  /diplomacy/map_test.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+ses_dict:  {'usr_id': '3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07', 'last_update': '2009-02-09 23:17:32', 'msg_sig': '46637330a1a26c390622c22028c40576f21d6a42170368365ac622d15c798b68', 'session_id': 'c193bcc1893e0e79c35ce9c62d404a6705713db2ac3d3efde3073193ebcff876', 'sig_id': '6067b7abe76f9f1cbf7e16e87c17d8e6694d9fb02367993c002bcf24131ee0e2'}
+user_id:  3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07
+user_dict:  {'status': None, 'screen_name': 'lxp52', 'creation': datetime.datetime(2009, 1, 28, 19, 16, 13), 'last_login': datetime.datetime(2009, 2, 9, 23, 17, 29), 'usr_id': '3d1b57e30553e6ea2564f247a9e28679688b7c0a88971243ffaab53954beeb07', 'pass_hash': '2c4f2f23a6f22bfc4143869578c87b43b01c761d5d4d23d2edf028dcf957f6d6', 'salt': 'f0bb81ad79ba6bf2d504b1f2eeb3abcb323fc62be537aef9102c4d02096546f9', 'email': 'lxp52@case.edu', 'name': 'Leigh'}
