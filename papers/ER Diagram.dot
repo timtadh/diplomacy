@@ -32,6 +32,7 @@ digraph structs{
     belongs_to[label="Belongs\nTo", shape=diamond, style=filled, color="#dddddd"];
     
     CountryHasGamePiece[shape=diamond, style=filled, color="#dddddd", label="Has"];
+    MapHasTerritory[shape=diamond, style=filled, color="#dddddd", label="Has"];
     MapHasCountry[label="Has", shape=diamond, style=filled, color="#dddddd"];
     Play[shape=diamond, style=filled, color="#dddddd"];
     
@@ -50,18 +51,27 @@ digraph structs{
     edge[label="1", arrowhead=none];
     In->Land;
     Territory->Occupies->GamePiece;
-    //GamePiece->Occupies->Territory;
     Country->CountryHasGamePiece;
     Map->MapHasCountry;
+    Map->MapHasTerritory;
     Game->GameHasMap->Map;
     belongs_to->Country;
+    Play->User;
+    Territory->Participates;
+    refers_to->Order;
+    Order->Commands;
+    Commands->GamePiece
     
     edge[label="m", arrowhead=none];
     Line->LineInTerritory->Territory
     Triangle->In;
     Land->belongs_to;
     MapHasCountry->Country;
+    MapHasTerritory->Territory;
     CountryHasGamePiece->GamePiece;
+    Country->Play;
+    Participates->Operands;
+    Operands->refers_to;
 
     edge[label="", arrowhead=normal];
     ISA->Sea;
@@ -73,15 +83,8 @@ digraph structs{
     ISA2->Fleet;
     ISA2->Army;
     
-    edge[label="", arrowhead=none];
-    Country->Play;
-    Play->User;
-    Territory->Participates;
-    Participates->Operands;
-    Operands->refers_to->Order->Commands->GamePiece;
-    
     //invisible lines to assist formatting
     edge[label="", color="white"];
-    Sea->refers_to;
-    Map->Country;
+    Operands->Order;
+    refers_to->Country;
 }
