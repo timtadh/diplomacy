@@ -1,105 +1,67 @@
 digraph structs{
-    {
-        ss[label="", shape=none];
-        ISA2[label="ISA", shape=triangle, style=filled, color="#aaaaff"];
-        Fleet[shape=rect, style=filled, color="#aaaaff"];
-        Army[shape=rect, style=filled, color="#aaaaff"];
-    }
-
-    {
-        rank=same;
-        tt[label="", shape=none];
-        node[shape=rect];
-        GamePiece[label="Game Piece", style=filled, color="#aaaaff"];
-    }
+    edge[len=2];
+    GamePiece[shape=rect, label="Game Piece", style=filled, color="#aaaaff"];
+    Game[shape=rect, style=filled, color="#ffaacc"];
+    
+    Country[shape=rect, style=filled, color="#ffaaff"];
+    
+    Occupies[shape=diamond, style=filled, color="#dddddd"];
+    Commands[shape=diamond, style=filled, color="#dddddd"];
+    
+    Operands[shape=rect, style=filled, color="#ffeeaa"];
+    Order[shape=rect, style=filled, color="#ffffaa"];
+    refers_to[label="Refers To", shape=diamond, style=filled, color="#dddddd"];
+    
+    Map[shape=rect, style=filled, color="#ccaaff"];
+    
+    GameHasMap[label="Has", shape=diamond, style=filled, color="#dddddd"];
+    
+    LineInTerritory[shape=diamond, style=filled, color="#dddddd", label="In"];
+    User[shape=rect, style=filled, color="#ffccaa"];
+    
+    Line[shape=rect, style=filled, color="#aaffaa"];
+    Triangle[shape=rect, style=filled, color="#aaffaa"];
+    
+    ISA2[label="IS A", shape=triangle, style=filled, color="#aaaaff"];
+    Fleet[shape=rect, style=filled, color="#aaaaff"];
+    Army[shape=rect, style=filled, color="#aaaaff"];
+    
+    In[shape=diamond, style=filled, color="#dddddd"];
+    Participates[label="Participates In", shape=diamond, style=filled, color="#dddddd"];
+    
+    belongs_to[label="Belongs\nTo", shape=diamond, style=filled, color="#dddddd"];
+    
+    CountryHasGamePiece[shape=diamond, style=filled, color="#dddddd", label="Has"];
+    MapHasCountry[label="Has", shape=diamond, style=filled, color="#dddddd"];
+    Play[shape=diamond, style=filled, color="#dddddd"];
     
     {
-        rank=same;
-        uu[label="", shape=none];
-        node[shape=diamond, style=filled, color="#eeeeee"];
-        Occupies;
-        has1[label="Has"];
-        Commands[shape=diamond, style=filled, color="#eeeeee"];
-    }
-
-    {
-        rank=same;
-        vv[label="", shape=none];
-        node[shape=rect];
-        Territory[style=filled, color="#ffaaaa"];
-        Order[shape=rect, style=filled, color="#ffffaa"];
-        Adjacent[shape=diamond, style=filled, color="#eeeeee"];
-    }
-    
-    {
-        rank=same;
-        vw[label="", shape=none];
-
-        Operands[shape=rect, style=filled, color="#ffeeaa"];
-        Participates[shape=diamond, style=filled, color="#eeeeee"];
-        refers_to[label="Refers To", shape=diamond, style=filled, color="#eeeeee"];
-    }
-    
-    {
-        rank=same;
-        ww[label="", shape=none];
-        ISA[shape=triangle, style=filled, color="#ffaaaa"];
-        belongs_to[label="Belongs\nTo", shape=diamond, style=filled, color="#eeeeee"];
-        Country[shape=rect, style=filled, color="#ffaaff"];
-        has2[label="Has", shape=diamond, style=filled, color="#eeeeee"];
-        Map[shape=rect, style=filled, color="#ccaaff"];
-    }
-
-    {
-        rank=same;
-        xx[label="", shape=none];
+        ISA[label="IS A", shape=triangle, style=filled, color="#ffaaaa"];
         Sea[shape=rect, style=filled, color="#ffaaaa"];
         Land[shape=rect, style=filled, color="#ffaaaa"];
-        Play[shape=diamond, style=filled, color="#eeeeee"];
-        Has[shape=diamond, style=filled, color="#eeeeee"];
     }
     
     {
         rank=same;
-        yy[label="", shape=none];
-        node[shape=diamond, style=filled, color="#eeeeee"];
-        have1[label="Has"];
-        have2[label="Has"];
-        in;
-        User[shape=rect, style=filled, color="#ffccaa"];
-        Game[shape=rect, style=filled, color="#ffaacc"];
+        Territory[shape=rect, style=filled, color="#ffaaaa"];
+        Adjacent[shape=diamond, style=filled, color="#dddddd"];
     }
-
-    {
-        rank=same;
-        zz[label="", shape=none];
-        rank=sink;
-        Line[shape=rect, style=filled, color="#aaffaa"];
-        Triangle[shape=rect, style=filled, color="#aaffaa"];
-    }
-    
-    edge[label="", arrowhead=none, color=white];
-    ss->tt->uu->vv->vw->ww->xx->yy->zz;
-    edge[color=black];
     
     edge[label="1", arrowhead=none];
-    in->Land;
-    have1->Sea;
-    Territory->Occupies;
-    Country->has1;
-    has2->Map;
-    Occupies->GamePiece;
-    Map->Has->Game;
+    In->Land;
+    Territory->Occupies->GamePiece;
+    //GamePiece->Occupies->Territory;
+    Country->CountryHasGamePiece;
+    Map->MapHasCountry;
+    Game->GameHasMap->Map;
+    belongs_to->Country;
     
     edge[label="m", arrowhead=none];
-    Line->have1[group=LH];
-    Line->have2[group=LH];
-    Triangle->in;
-    have1->Land;
+    Line->LineInTerritory->Territory
+    Triangle->In;
     Land->belongs_to;
-    belongs_to->Country;
-    Country->has2;
-    has1->GamePiece;
+    MapHasCountry->Country;
+    CountryHasGamePiece->GamePiece;
 
     edge[label="", arrowhead=normal];
     ISA->Sea;
@@ -117,4 +79,9 @@ digraph structs{
     Territory->Participates;
     Participates->Operands;
     Operands->refers_to->Order->Commands->GamePiece;
+    
+    //invisible lines to assist formatting
+    edge[label="", color="white"];
+    Sea->refers_to;
+    Map->Country;
 }
