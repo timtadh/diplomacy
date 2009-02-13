@@ -23,7 +23,7 @@
             ->
                 <td><%msg['from']%></td>
                 <td>
-                    <+ if not int(msg['read']):
+                    <+ if not int(msg['have_read']):
                     <a class='inline' href='msg.py?view=<%msg['msg_id']%>'>
                     |= else:
                     <a class='inline' style='font-weight:100' href='msg.py?view=<%msg['msg_id']%>'>
@@ -35,7 +35,7 @@
                         ->
                     </a>
                 </td>
-                <+ if not int(msg['read']):
+                <+ if not int(msg['have_read']):
                 <td style="font-weight:900;">
                 |= else:
                 <td>

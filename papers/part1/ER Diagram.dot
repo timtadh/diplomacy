@@ -1,0 +1,111 @@
+digraph structs{
+    edge[len=2];
+    GamePiece[shape=rect, label="Game Piece", style=filled, color="#aaaaff"];
+    Game[shape=rect, style=filled, color="#ffaacc"];
+    
+    Country[shape=rect, style=filled, color="#ffaaff"];
+    
+    Occupies[shape=diamond, style=filled, color="#dddddd"];
+    Takes[shape=diamond, style=filled, color="#dddddd"];
+    Gives[shape=diamond, style=filled, color="#dddddd"];
+    
+    Operands[shape=rect, style=filled, color="#ffeeaa"];
+    Order[shape=rect, style=filled, color="#ffffaa"];
+    refers_to[label="Refers To", shape=diamond, style=filled, color="#dddddd"];
+    
+    Map[shape=rect, style=filled, color="#ccaaff"];
+    
+    Uses[shape=diamond, style=filled, color="#dddddd"];
+    UserHasSession[label="Has", shape=diamond, style=filled, color="#dddddd"];
+    Session[shape=rect, style=filled, color="#ddbbff"];
+    
+    LineInTerritory[shape=diamond, style=filled, color="#dddddd", label="In"];
+    User[shape=rect, style=filled, color="#ffccaa"];
+    Message[shape=rect, style=filled, color="#ccffaa"];
+    Receives[shape=diamond, style=filled, color="#dddddd"];
+    
+    Line[shape=rect, style=filled, color="#aaffaa"];
+    Triangle[shape=rect, style=filled, color="#aaffaa"];
+    SupplierInstance[label="Supplier Instance", shape=rect, style=filled, color="#aaffff"];
+    
+    ISA2[label="IS A", shape=triangle, style=filled, color="#aaaaff"];
+    Fleet[shape=rect, style=filled, color="#aaaaff"];
+    Army[shape=rect, style=filled, color="#aaaaff"];
+    
+    In[shape=diamond, style=filled, color="#dddddd"];
+    Participates[label="Participates In", shape=diamond, style=filled, color="#dddddd"];
+    
+    belongs_to[label="Belongs\nTo", shape=diamond, style=filled, color="#dddddd"];
+    
+    Owns[shape=diamond, style=filled, color="#dddddd"];
+    Contains[shape=diamond, style=filled, color="#dddddd"];
+    SuppInstRepTerr[label="Represents", shape=diamond, style=filled, color="#dddddd"];
+    Controls[shape=diamond, style=filled, color="#dddddd"];
+    MemberOf[label="Member Of", shape=diamond, style=filled, color="#dddddd"];
+    
+    Participates;
+    Triangle;
+    
+    {
+        rank=same;
+        Territory[shape=rect, style=filled, color="#ffaaaa"];
+        Adjacent[shape=diamond, style=filled, color="#dddddd"];
+    }
+    
+    {
+        rank=same;
+        Country;
+        Gives;
+        Order;
+    }
+    
+    {
+        rank=same;
+        Map;
+        Contains;
+        Uses;
+    }
+    
+    edge[label="1", arrowhead=none];
+    In->Territory;
+    Territory->Occupies->GamePiece;
+    Country->Owns;
+    Map->Contains;
+    Uses->Map;
+    belongs_to->Country;
+    Controls->User;
+    Territory->Participates;
+    refers_to->Order;
+    Order->Takes;
+    Takes->GamePiece
+    Territory->SuppInstRepTerr->SupplierInstance
+    Country->Gives;
+    User->UserHasSession;
+    User->Receives;
+    
+    edge[label="m", arrowhead=none];
+    Line->LineInTerritory->Territory
+    Triangle->In;
+    SupplierInstance->belongs_to;
+    Contains->Territory;
+    Owns->GamePiece;
+    Country->Controls;
+    Participates->Operands;
+    Operands->refers_to;
+    Gives->Order;
+    UserHasSession->Session;
+    Receives->Message;
+    Game->Uses;
+    //Game->MemberOf->User;
+    User->MemberOf->Game;
+
+    edge[label="", arrowhead=normal];
+    Territory->Adjacent;
+    Adjacent->Territory;
+    GamePiece->ISA2;
+    ISA2->Fleet;
+    ISA2->Army;
+    
+    //invisible lines to assist formatting
+    edge[label="", color="white"];
+}

@@ -1,0 +1,135 @@
+digraph structs{
+    GamePiece[shape=rect, label="Game Piece", style=filled, color="#aaaaff"];
+    
+    Occupies[shape=diamond, style=filled, color="#dddddd"];
+    Commands[shape=diamond, style=filled, color="#dddddd"];
+    
+    Territory[shape=rect, style=filled, color="#ffaaaa"];
+    
+    refers_to[label="Refers To", shape=diamond, style=filled, color="#dddddd"];
+    
+    Map[shape=rect, style=filled, color="#ccaaff"];
+    
+    Sea[shape=rect, style=filled, color="#ffaaaa"];
+    Land[shape=rect, style=filled, color="#ffaaaa"];
+    Has[shape=diamond, style=filled, color="#dddddd"];
+    
+    linehave[shape=diamond, style=filled, color="#dddddd", label="Has"];
+    User[shape=rect, style=filled, color="#ffccaa"];
+    Game[shape=rect, style=filled, color="#ffaacc"];
+    
+    Line[shape=rect, style=filled, color="#aaffaa"];
+    Triangle[shape=rect, style=filled, color="#aaffaa"];
+    
+    {
+        rank=same;
+        belongs_to[label="Belongs\nTo", shape=diamond, style=filled, color="#dddddd"];
+        Country[shape=rect, style=filled, color="#ffaaff"];
+    }
+    
+    {
+        rank=same;
+        Operands[shape=rect, style=filled, color="#ffeeaa"];
+        Order[shape=rect, style=filled, color="#ffffaa"];
+    }
+    
+    {
+        rank=same;
+        in[shape=diamond, style=filled, color="#dddddd"];
+        Adjacent[shape=diamond, style=filled, color="#dddddd"];
+        ISA[label="IS-A", shape=triangle, style=filled, color="#ffaaaa"];
+        Participates[shape=diamond, style=filled, color="#dddddd"];
+    }
+    
+    {
+        rank=same;
+        has1[shape=diamond, style=filled, color="#dddddd", label="Has"];
+        has2[label="Has", shape=diamond, style=filled, color="#dddddd"];
+        Play[shape=diamond, style=filled, color="#dddddd"];
+    }
+    
+    {
+        ss[label="", shape=none];
+        ISA2[label="ISA", shape=triangle, style=filled, color="#aaaaff"];
+        Fleet[shape=rect, style=filled, color="#aaaaff"];
+        Army[shape=rect, style=filled, color="#aaaaff"];
+    }
+
+    {
+        rank=same;
+        tt[label="", shape=none];
+    }
+    
+    {
+        rank=same;
+        uu[label="", shape=none];
+    }
+
+    {
+        rank=same;
+        vv[label="", shape=none];
+    }
+    
+    {
+        rank=same;
+        vw[label="", shape=none];
+    }
+    
+    {
+        rank=same;
+        ww[label="", shape=none];
+    }
+
+    {
+        rank=same;
+        xx[label="", shape=none];
+    }
+    
+    {
+        rank=same;
+        yy[label="", shape=none];
+    }
+
+    {
+        rank=same;
+        zz[label="", shape=none];
+        rank=sink;
+    }
+    
+    edge[label="", arrowhead=none, color=white];
+    ss->tt->uu->vv->vw->ww->xx->yy->zz;
+    edge[color=black];
+    
+    edge[label="1", arrowhead=none];
+    in->Land;
+    Territory->Occupies;
+    Country->has1;
+    has2->Map;
+    Occupies->GamePiece;
+    Map->Has->Game;
+    belongs_to->Country;
+    
+    edge[label="m", arrowhead=none];
+    Line->linehave->Territory
+    Triangle->in;
+    Land->belongs_to;
+    Country->has2;
+    has1->GamePiece;
+
+    edge[label="", arrowhead=normal];
+    ISA->Sea;
+    ISA->Land;
+    Territory->ISA
+    Territory->Adjacent;
+    Adjacent->Territory;
+    GamePiece->ISA2;
+    ISA2->Fleet;
+    ISA2->Army;
+    
+    edge[label="", arrowhead=none];
+    Country->Play;
+    Play->User;
+    Territory->Participates;
+    Participates->Operands;
+    Operands->refers_to->Order->Commands->GamePiece;
+}

@@ -1,8 +1,9 @@
+
 -- Tim Henderson
 -- Table Creation for diplomacy
 
 START TRANSACTION;
---DROP DATABASE IF EXISTS diplomacy
+--DROP DATABASE IF EXISTS diplomacy;
 --CREATE DATABASE diplomacy DEFAULT CHARACTER SET ascii COLLATE ascii_general_ci;
 USE diplomacy;
 ----------------------------------------  Schema  -------------------------------------
@@ -19,12 +20,14 @@ USE diplomacy;
 --    
 --  map (map_id : int(11), world_name : varchar(128), pic : varchar(64), keep : tinyint(1))
 --  
---  game (gam_id : int(11), map_id : int(11), season : enum('spring', 'fall'), year : year(4)
---        turn_start : datetime, turn_length : time, turn_stage : int(11), ended : tinyint(1))
+--  game (gam_id : int(11), map_id : int(11), pic : varchar(64), 
+--        gam_season : enum('spring', 'fall'),  gam_year : year(4), turn_start : datetime, 
+--        turn_length : time, turn_stage : int(11),  ended : tinyint(1))
 --  
---  game_membership (usr_id : varchar(64), gam_id : int(11))
+--  game_membership (usr_id : varchar(64), gam_id : int(11), orders_given : tinyint(1))
 --  
---  turn_stages (trs_id : int(11), name : varchar(64), description : varchar(256))
+--  turn_stages (trs_id : int(11), name : varchar(64), description : varchar(256), 
+--               fall : tinyint(1))
 --  
 --  country (cty_id : int(11), usr_id : varchar(64), name : varchar(128), color : varchar(7))
 --  
@@ -43,12 +46,14 @@ USE diplomacy;
 --     
 --  ter_ln_relation (ter_id : int(11), ln_id : int(11))
 --     
---  piece (pce_id : int(11), cty_id : int(11), ter_id : int(11), pce_type : enum('fleet', 'army'))
+--  piece (pce_id : int(11), cty_id : int(11), ter_id : int(11), 
+--         pce_type : enum('fleet', 'army'))
 --  
 --  order_type (odt_id : int(11), order_text : varchar(128))
 --     
---  orders (ord_id : int(11), cty_id : int(11), pce_id : int(11), season : enum('spring', 'fall'),
---         year : year(4), order_type : int(11), destination : int(11), executed : tinyint(1))
+--  orders (ord_id : int(11), cty_id : int(11), pce_id : int(11), 
+--          season : enum('spring', 'fall'), year : year(4), order_type : int(11), 
+--          destination : int(11), executed : tinyint(1))
 --  
 --  operands (opr_id : int(11), ord_id : int(11), ter_id : int(11))
 ----------------------------------------  Schema  -------------------------------------
@@ -70,8 +75,8 @@ CREATE TABLE users
     CONSTRAINT uq_screen_name UNIQUE (screen_name)
 );
 
-DROP TABLE IF EXISTS 'session';
-CREATE TABLE 'session'
+DROP TABLE IF EXISTS sessions;
+CREATE TABLE sessions
 (
     session_id varchar(64) NOT NULL,
     sig_id varchar(64) NOT NULL,
@@ -86,13 +91,13 @@ CREATE TABLE 'session'
 DROP TABLE IF EXISTS message;
 CREATE TABLE message 
 (
-    msg_id int(11) NOT NULL,
+    msg_id int(11) AUTO_INCREMENT,
     from_usr varchar(64) NOT NULL,
     to_usr varchar(64) NOT NULL,
     time_sent datetime NOT NULL,
     subject varchar(256) NOT NULL,
     msg varchar(10000) NOT NULL,
-    'read' tinyint(1) DEFAULT 0,
+    have_read tinyint(1) DEFAULT 0,
     CONSTRAINT pk_message PRIMARY KEY (msg_id),
     CONSTRAINT fk_from_usr FOREIGN KEY (from_usr)
         REFERENCES users(usr_id) ON DELETE RESTRICT,
@@ -103,7 +108,7 @@ CREATE TABLE message
 DROP TABLE IF EXISTS map;
 CREATE TABLE map
 (
-    map_id int(11) NOT NULL,
+    map_id int(11) AUTO_INCREMENT,
     world_name varchar(128),
     pic varchar(64) NOT NULL,
     CONSTRAINT pk_map PRIMARY KEY (map_id)
@@ -112,17 +117,19 @@ CREATE TABLE map
 DROP TABLE IF EXISTS turn_stages;
 CREATE TABLE turn_stages
 (
-    trs_id int(11) NOT NULL,
+    trs_id int(11) AUTO_INCREMENT,
     name varchar(64),
     description varchar(256),
+    fall tinyint(1) DEFAULT 0,
     CONSTRAINT pk_turn_stages PRIMARY KEY (trs_id)
 );
 
 DROP TABLE IF EXISTS game;
 CREATE TABLE game
 (
-    gam_id int(11) NOT NULL,
-    map_id int(11) NOT NULL,
+    gam_id int(11) AUTO_INCREMENT,
+    map_id int(11),
+    pic varchar(64),
     gam_season enum('spring', 'fall') DEFAULT 'fall',
     gam_year year(4) DEFAULT 1999,
     turn_start datetime NULL,
@@ -141,6 +148,7 @@ CREATE TABLE game_membership
 (
     usr_id varchar(64) NOT NULL,
     gam_id int(11) NOT NULL,
+    orders_given tinyint(1) DEFAULT 0,
     CONSTRAINT pk_game_membership PRIMARY KEY (usr_id, gam_id),
     CONSTRAINT fk_usr_id FOREIGN KEY (usr_id)
         REFERENCES users(usr_id) ON DELETE RESTRICT,
@@ -151,7 +159,7 @@ CREATE TABLE game_membership
 DROP TABLE IF EXISTS country;
 CREATE TABLE country
 (
-    cty_id int(11) NOT NULL,
+    cty_id int(11) AUTO_INCREMENT,
     usr_id varchar(64),
     name varchar(128),
     color varchar(7) DEFAULT '#ffffff',
@@ -163,7 +171,7 @@ CREATE TABLE country
 DROP TABLE IF EXISTS territory;
 CREATE TABLE territory
 (
-    ter_id int(11) NOT NULL,
+    ter_id int(11) AUTO_INCREMENT,
     map_id int(11) NOT NULL,
     name varchar(128),
     abbrev varchar(4),
@@ -206,7 +214,7 @@ CREATE TABLE supplier
 DROP TABLE IF EXISTS triangle;
 CREATE TABLE triangle
 (
-    tri_id int(11) NOT NULL,
+    tri_id int(11) AUTO_INCREMENT,
     ter_id int(11) NOT NULL,
     x1 int(11) NOT NULL,
     y1 int(11) NOT NULL,
@@ -222,7 +230,7 @@ CREATE TABLE triangle
 DROP TABLE IF EXISTS line;
 CREATE TABLE line
 (
-    ln_id int(11) NOT NULL,
+    ln_id int(11) AUTO_INCREMENT,
     x1 int(11) NOT NULL,
     y1 int(11) NOT NULL,
     x2 int(11) NOT NULL,
@@ -245,7 +253,7 @@ CREATE TABLE ter_ln_relation
 DROP TABLE IF EXISTS piece;
 CREATE TABLE piece
 (
-    pce_id int(11) NOT NULL,
+    pce_id int(11) AUTO_INCREMENT,
     cty_id int(11) NOT NULL,
     ter_id int(11) NOT NULL,
     pce_type enum('fleet', 'army'),
@@ -259,7 +267,7 @@ CREATE TABLE piece
 DROP TABLE IF EXISTS order_type;
 CREATE TABLE order_type
 (
-    odt_id int(11) NOT NULL,
+    odt_id int(11) AUTO_INCREMENT,
     order_text varchar(128) NOT NULL,
     CONSTRAINT pk_order_type PRIMARY KEY (odt_id)
 );
@@ -267,7 +275,7 @@ CREATE TABLE order_type
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders
 (
-    ord_id int(11) NOT NULL, 
+    ord_id int(11) AUTO_INCREMENT, 
     cty_id int(11) NOT NULL, 
     pce_id int(11) NOT NULL, 
     gam_season enum('spring', 'fall') NOT NULL,
@@ -275,7 +283,7 @@ CREATE TABLE orders
     order_type int(11) NOT NULL,
     destination int(11),
     executed tinyint(1) DEFAULT 0,
-    CONSTRAINT pk_orders PRIMARY KEY (odt_id),
+    CONSTRAINT pk_orders PRIMARY KEY (ord_id),
     CONSTRAINT uq_orders UNIQUE (cty_id, pce_id, gam_season, gam_year),
     CONSTRAINT fk_cty_id FOREIGN KEY (cty_id)
         REFERENCES country(cty_id) ON DELETE RESTRICT,
@@ -290,9 +298,9 @@ CREATE TABLE orders
 DROP TABLE IF EXISTS operands;
 CREATE TABLE operands
 (
-    opr_id int(11),
-    ord_id int(11),
-    ter_id int(11),
+    opr_id int(11) AUTO_INCREMENT,
+    ord_id int(11) NOT NULL,
+    ter_id int(11) NOT NULL,
     CONSTRAINT pk_operands PRIMARY KEY (opr_id),
     CONSTRAINT fk_ord_id FOREIGN KEY (ord_id)
         REFERENCES orders(ord_id) ON DELETE RESTRICT,

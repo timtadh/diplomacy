@@ -9,7 +9,7 @@ CREATE PROCEDURE create_session(IN session_id VARCHAR(64), IN sig_id VARCHAR(64)
 BEGIN
     SET @cur_time = NOW();
 
-    INSERT INTO session (session_id, sig_id, msg_sig, usr_id, last_update)
+    INSERT INTO sessions (session_id, sig_id, msg_sig, usr_id, last_update)
     VALUES (session_id, sig_id, msg_sig, user_id, @cur_time);
 END
 $$
