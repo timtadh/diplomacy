@@ -1,0 +1,14 @@
+Clear out expired sessions from the database.
+Create a new session.
+Create a new user.
+Delete a message.
+Delete a session.
+Logout of a session.
+Mark a message as read.
+Get all the data for a particular messages.
+Send a new message.
+Get all of the data for a paricular session.
+Update the session.
+Update the last_login time for a user.
+Get a user data by: email, or usr_id, or screen_name.
+Get all the message for a particular user.
