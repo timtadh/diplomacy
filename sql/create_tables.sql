@@ -12,8 +12,8 @@ USE diplomacy;
 --         last_login : datetime, creation : datetime, status : varchar(500))
 --  
 --  session (session_id : varchar(64), sig_id : varchar(64), msg_sig : varchar(64),
---           usr_id : varchar(64), last_update : datetime)
---  
+--              usr_id : varchar(64), last_update : datetime)
+--     
 --  message (msg_id : int(11), from_usr : varchar(64), to_usr : varchar(64),
 --           time_sent : datetime, subject : varchar(256), msg : varchar(10000)
 --           read : tinyint(1))
@@ -36,7 +36,7 @@ USE diplomacy;
 --             ter_type : enum('land', 'sea'), supply : tinyint(1), coastal : tinyint(1))
 --  
 --  adjacent (ter_id : int(11), adj_ter_id : int(11))
---  
+--
 --  supplier (ter_id : int(11), cty_id : int(11))
 --  
 --  triangle (tri_id : int(11), ter_id : int(11), x1 : int(11), y1 : int(11), x2 : int(11),
@@ -45,12 +45,12 @@ USE diplomacy;
 --  line (ln_id : int(11), x1 : int(11), y1 : int(11), x2 : int(11), y2 : int(11))
 --     
 --  ter_ln_relation (ter_id : int(11), ln_id : int(11))
---     
+--  
 --  piece (pce_id : int(11), cty_id : int(11), ter_id : int(11), 
 --         pce_type : enum('fleet', 'army'))
 --  
 --  order_type (odt_id : int(11), order_text : varchar(128))
---     
+--  
 --  orders (ord_id : int(11), cty_id : int(11), pce_id : int(11), 
 --          season : enum('spring', 'fall'), year : year(4), order_type : int(11), 
 --          destination : int(11), executed : tinyint(1))
