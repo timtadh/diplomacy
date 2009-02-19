@@ -5098,3 +5098,64 @@ user-agent:  Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.17) Gecko/20080922
 ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-02-12 23:26:23', 'msg_sig': '19d97b6c07f002170c37bf30042b2f1e725692c3d1f86e4cfd19354a26916391', 'session_id': '9e6a92ed3444771c1a84a3961cac5d18eda140a481c4f1bcb2d7cba003eb0c68', 'sig_id': '9520519c4959265ed21f3cdcba8cdcfb562a66517a24516cd7ad144c8ffe250b'}
 user_id:  unknown
 user_dict:  {}
+
+
+ ------------ 2009-02-14 13:57:16 ------------
+ip-addr:  192.5.109.49    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-02-14 13:57:16', 'msg_sig': '3fdd331a0b5133774f846f54c2498b36d43c884b8060f93441f107480094c149', 'session_id': '0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a', 'sig_id': '8560e6f5ac0ab7a048a66f28a457ee6a117bf085eb85a5478f8cd126d78a7759'}
+user_id:  unknown
+user_dict:  {}
+
+
+ ------------ 2009-02-14 13:57:23 ------------
+ip-addr:  192.5.109.49    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+about to try and log in
+    email: tim.tadh@gmail.com
+    passwd: test
+    user_dict: {'status': None, 'screen_name': 'tah35', 'creation': datetime.datetime(2009, 2, 12, 22, 4, 8), 'last_login': datetime.datetime(2009, 2, 12, 22, 4, 24), 'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'pass_hash': '4f4e4b31c82e4fde93c8407182bf85480c735236c585d3994263fd85b6a02642', 'salt': '50adaf533c2842b14c57281b5d883197495ee8f17706be26b3590e9156eee88b', 'email': 'tim.tadh@gmail.com', 'name': 'Tim Henderson'}
+    valid: True
+ses_dict:  {'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'last_update': '2009-02-14 13:57:23', 'msg_sig': 'c152be1cacef63c98f352854c7d4a032a2476445246e6968b4829d95f3a89c28', 'session_id': '0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a', 'sig_id': '2473c4fbeddcefbf2f8efa255a1e8ee6b97e4f28551c673cca0ebbc162a0e74d'}
+logging in
+user_id:  7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b
+user_dict:  {'status': None, 'screen_name': 'tah35', 'creation': datetime.datetime(2009, 2, 12, 22, 4, 8), 'last_login': datetime.datetime(2009, 2, 14, 13, 57, 23), 'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'pass_hash': '4f4e4b31c82e4fde93c8407182bf85480c735236c585d3994263fd85b6a02642', 'salt': '50adaf533c2842b14c57281b5d883197495ee8f17706be26b3590e9156eee88b', 'email': 'tim.tadh@gmail.com', 'name': 'Tim Henderson'}
+
+
+ ------------ 2009-02-14 13:57:28 ------------
+ip-addr:  192.5.109.49    script-name:  /diplomacy/map_test.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+ses_dict:  {'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'last_update': '2009-02-14 13:57:29', 'msg_sig': '5eeeb0cebeb43ba7423ff9c4d8bd8c2cd79dc4818a9195fcfcdc150da30c0248', 'session_id': '0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a', 'sig_id': '80cbc47605c81eafeeeeb58b9a4d5eab2eb90610bf2de0a30818e98b87b313ec'}
+user_id:  7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b
+user_dict:  {'status': None, 'screen_name': 'tah35', 'creation': datetime.datetime(2009, 2, 12, 22, 4, 8), 'last_login': datetime.datetime(2009, 2, 14, 13, 57, 23), 'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'pass_hash': '4f4e4b31c82e4fde93c8407182bf85480c735236c585d3994263fd85b6a02642', 'salt': '50adaf533c2842b14c57281b5d883197495ee8f17706be26b3590e9156eee88b', 'email': 'tim.tadh@gmail.com', 'name': 'Tim Henderson'}
+
+
+ ------------ 2009-02-17 20:26:18 ------------
+ip-addr:  129.22.164.147    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.17) Gecko/20080922 Ubuntu/7.10 (gutsy) Firefox/2.0.0.17
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-02-17 20:26:19', 'msg_sig': '885e6687e99542abb4dd160806b0aff7278728cb8dc68458153f002918e70616', 'session_id': '997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967', 'sig_id': '2484960d2b77cfc2f66caa1b4332421d1f1a0342507fc035fbd655f8db1ca9f1'}
+user_id:  unknown
+user_dict:  {}
+
+
+ ------------ 2009-02-17 20:26:58 ------------
+ip-addr:  129.22.164.147    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.17) Gecko/20080922 Ubuntu/7.10 (gutsy) Firefox/2.0.0.17
+about to try and log in
+    email: tim.tadh@gmail.com
+    passwd: test
+    user_dict: {'status': None, 'screen_name': 'tah35', 'creation': datetime.datetime(2009, 2, 12, 22, 4, 8), 'last_login': datetime.datetime(2009, 2, 14, 13, 57, 23), 'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'pass_hash': '4f4e4b31c82e4fde93c8407182bf85480c735236c585d3994263fd85b6a02642', 'salt': '50adaf533c2842b14c57281b5d883197495ee8f17706be26b3590e9156eee88b', 'email': 'tim.tadh@gmail.com', 'name': 'Tim Henderson'}
+    valid: True
+ses_dict:  {'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'last_update': '2009-02-17 20:26:58', 'msg_sig': '04cee60967e8a614150c71762c86ad1a63d81b187d0eb88259ac7138aa7d4cf9', 'session_id': '997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967', 'sig_id': '18ddee7fc11cb6fc80ae886eae56f0a3875165d39d67fc49c3e8eb0f3ec1f203'}
+logging in
+user_id:  7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b
+user_dict:  {'status': None, 'screen_name': 'tah35', 'creation': datetime.datetime(2009, 2, 12, 22, 4, 8), 'last_login': datetime.datetime(2009, 2, 17, 20, 26, 58), 'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'pass_hash': '4f4e4b31c82e4fde93c8407182bf85480c735236c585d3994263fd85b6a02642', 'salt': '50adaf533c2842b14c57281b5d883197495ee8f17706be26b3590e9156eee88b', 'email': 'tim.tadh@gmail.com', 'name': 'Tim Henderson'}
+
+
+ ------------ 2009-02-17 20:27:01 ------------
+ip-addr:  129.22.164.147    script-name:  /diplomacy/logout.py
+user-agent:  Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.17) Gecko/20080922 Ubuntu/7.10 (gutsy) Firefox/2.0.0.17
+logging out -> usr_id: 7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b    session_id: 997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967
+ses_dict:  {'usr_id': 'unknown', 'last_update': '2009-02-17 20:27:01', 'msg_sig': 'ae6b00a52105810a985a10235dd308533ca619ec9d4eea45d48d7c28caf270f7', 'session_id': 'c2c41469ee42ef5f20674fac23db73e26ecf4387db272937aa100727cba258f6', 'sig_id': '1011ce8414133d0803be51b270016bbf3bd7e68360c7b29d2259669b67573232'}
+user_id:  unknown
+user_dict:  {}

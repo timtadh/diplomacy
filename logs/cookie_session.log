@@ -8924,3 +8924,79 @@ session_id:  e35408e2dcd87d0878e07845969466b0e086a95336c9cb104dca5b86e1348127
 database_session_dict:  {}
 cookie_check:  None
 made new session 9e6a92ed3444771c1a84a3961cac5d18eda140a481c4f1bcb2d7cba003eb0c68
+
+
+ ------------ 2009-02-14 13:57:16 ------------
+ip-addr:  192.5.109.49    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+made new session 0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a
+
+
+ ------------ 2009-02-14 13:57:23 ------------
+ip-addr:  192.5.109.49    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+session_id:  0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a
+database_session_dict:  {'rest': ({...},), 'msg_sig': '3fdd331a0b5133774f846f54c2498b36d43c884b8060f93441f107480094c149', 'sig_id': '8560e6f5ac0ab7a048a66f28a457ee6a117bf085eb85a5478f8cd126d78a7759', 'usr_id': 'unknown', 'session_id': '0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a', 'last_update': datetime.datetime(2009, 2, 14, 13, 57, 16)}
+cookie_check:  True
+sigID:  2473c4fbeddcefbf2f8efa255a1e8ee6b97e4f28551c673cca0ebbc162a0e74d
+epochtime:  1234637843.81
+user:  7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b
+c:  Set-Cookie: session=sessionID|0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a^time|1234637843.81^~^
+Set-Cookie: session_sig=c152be1cacef63c98f352854c7d4a032a2476445246e6968b4829d95f3a89c28
+msg_sig:  c152be1cacef63c98f352854c7d4a032a2476445246e6968b4829d95f3a89c28
+ses_dict:  {'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'last_update': '2009-02-14 13:57:23', 'msg_sig': 'c152be1cacef63c98f352854c7d4a032a2476445246e6968b4829d95f3a89c28', 'session_id': '0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a', 'sig_id': '2473c4fbeddcefbf2f8efa255a1e8ee6b97e4f28551c673cca0ebbc162a0e74d'}
+
+
+ ------------ 2009-02-14 13:57:28 ------------
+ip-addr:  192.5.109.49    script-name:  /diplomacy/map_test.py
+user-agent:  Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.0.6) Gecko/2009011913 Firefox/3.0.6
+session_id:  0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a
+database_session_dict:  {'rest': ({...},), 'msg_sig': 'c152be1cacef63c98f352854c7d4a032a2476445246e6968b4829d95f3a89c28', 'sig_id': '2473c4fbeddcefbf2f8efa255a1e8ee6b97e4f28551c673cca0ebbc162a0e74d', 'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'session_id': '0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a', 'last_update': datetime.datetime(2009, 2, 14, 13, 57, 23)}
+cookie_check:  True
+sigID:  80cbc47605c81eafeeeeb58b9a4d5eab2eb90610bf2de0a30818e98b87b313ec
+epochtime:  1234637849.23
+user:  7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b
+c:  Set-Cookie: session=sessionID|0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a^time|1234637849.23^~^
+Set-Cookie: session_sig=5eeeb0cebeb43ba7423ff9c4d8bd8c2cd79dc4818a9195fcfcdc150da30c0248
+msg_sig:  5eeeb0cebeb43ba7423ff9c4d8bd8c2cd79dc4818a9195fcfcdc150da30c0248
+ses_dict:  {'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'last_update': '2009-02-14 13:57:29', 'msg_sig': '5eeeb0cebeb43ba7423ff9c4d8bd8c2cd79dc4818a9195fcfcdc150da30c0248', 'session_id': '0eb6c0a6d8eb018719ea6b531b4e1eabefd4deeb537b4cacf1c55a3a2949b12a', 'sig_id': '80cbc47605c81eafeeeeb58b9a4d5eab2eb90610bf2de0a30818e98b87b313ec'}
+
+
+ ------------ 2009-02-17 20:26:18 ------------
+ip-addr:  129.22.164.147    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.17) Gecko/20080922 Ubuntu/7.10 (gutsy) Firefox/2.0.0.17
+made new session 997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967
+
+
+ ------------ 2009-02-17 20:26:58 ------------
+ip-addr:  129.22.164.147    script-name:  /diplomacy/main.py
+user-agent:  Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.17) Gecko/20080922 Ubuntu/7.10 (gutsy) Firefox/2.0.0.17
+session_id:  997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967
+database_session_dict:  {'rest': ({...},), 'msg_sig': '885e6687e99542abb4dd160806b0aff7278728cb8dc68458153f002918e70616', 'sig_id': '2484960d2b77cfc2f66caa1b4332421d1f1a0342507fc035fbd655f8db1ca9f1', 'usr_id': 'unknown', 'session_id': '997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967', 'last_update': datetime.datetime(2009, 2, 17, 20, 26, 19)}
+cookie_check:  True
+sigID:  18ddee7fc11cb6fc80ae886eae56f0a3875165d39d67fc49c3e8eb0f3ec1f203
+epochtime:  1234920418.91
+user:  7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b
+c:  Set-Cookie: session=sessionID|997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967^time|1234920418.91^~^
+Set-Cookie: session_sig=04cee60967e8a614150c71762c86ad1a63d81b187d0eb88259ac7138aa7d4cf9
+msg_sig:  04cee60967e8a614150c71762c86ad1a63d81b187d0eb88259ac7138aa7d4cf9
+ses_dict:  {'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'last_update': '2009-02-17 20:26:58', 'msg_sig': '04cee60967e8a614150c71762c86ad1a63d81b187d0eb88259ac7138aa7d4cf9', 'session_id': '997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967', 'sig_id': '18ddee7fc11cb6fc80ae886eae56f0a3875165d39d67fc49c3e8eb0f3ec1f203'}
+
+
+ ------------ 2009-02-17 20:27:01 ------------
+ip-addr:  129.22.164.147    script-name:  /diplomacy/logout.py
+user-agent:  Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.17) Gecko/20080922 Ubuntu/7.10 (gutsy) Firefox/2.0.0.17
+session_id:  997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967
+database_session_dict:  {'rest': ({...},), 'msg_sig': '04cee60967e8a614150c71762c86ad1a63d81b187d0eb88259ac7138aa7d4cf9', 'sig_id': '18ddee7fc11cb6fc80ae886eae56f0a3875165d39d67fc49c3e8eb0f3ec1f203', 'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'session_id': '997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967', 'last_update': datetime.datetime(2009, 2, 17, 20, 26, 58)}
+cookie_check:  True
+sigID:  c62053196f93fc5b959ba8d074c9976711621d646c58628f86759b270887cf52
+epochtime:  1234920421.74
+user:  7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b
+c:  Set-Cookie: session=sessionID|997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967^time|1234920421.74^~^
+Set-Cookie: session_sig=72cea86042d87d8232fdba11d69f6d0e22964bef9940f0a3a486320f5d1dca15
+msg_sig:  72cea86042d87d8232fdba11d69f6d0e22964bef9940f0a3a486320f5d1dca15
+ses_dict:  {'usr_id': '7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b', 'last_update': '2009-02-17 20:27:01', 'msg_sig': '72cea86042d87d8232fdba11d69f6d0e22964bef9940f0a3a486320f5d1dca15', 'session_id': '997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967', 'sig_id': 'c62053196f93fc5b959ba8d074c9976711621d646c58628f86759b270887cf52'}
+session_id:  997768b2640413604f7db94ea23d03bf5f0a10834c6d553a111501c4d3ddd967
+database_session_dict:  {}
+cookie_check:  None
+made new session c2c41469ee42ef5f20674fac23db73e26ecf4387db272937aa100727cba258f6
