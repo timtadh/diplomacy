@@ -1,0 +1,41 @@
+    <table>
+        <tr class="grey">
+            <+ for col in table_info:
+                <td><%col[1]%></td>
+            ->
+        </tr>
+        <+ for index,row in enumerate(table[rows_per_page*page:rows_per_page*(page+1)]):
+            <+ if index % 2:
+            <tr class="blue">
+            |= else:
+            <tr>
+            ->
+            <+ for col in table_info:
+                <td>
+                    <%row[col[0]]%>
+                </td>
+            ->
+        ->
+        <tr>
+        </tr>
+        <tr >
+            <td colspan=<%len(table_info)-2%> style="border-style: hidden;">
+                <+ if page-1 > 0:
+                    <a class='inline' href="<%target_page%>?<%table_name%>_page=0">first</a> &nbsp;&nbsp;
+                    <a class='inline' href="<%target_page%>?<%table_name%>_page=<%page-1%>">previous</a>
+                ->
+                <+ if page-1 == 0:
+                    <a class='inline' href="<%target_page%>?<%table_name%>_page=0">previous</a>
+                ->
+            </td>
+            <td style="border-style: hidden;" colspan=2 align="right">
+                <+ if page+1 < pages-1:
+                    <a class='inline' href="<%target_page%>?<%table_name%>_page=<%page+1%>">next</a> &nbsp;&nbsp;
+                    <a class='inline' href="<%target_page%>?<%table_name%>_page=<%pages%>">last</a>
+                ->
+                <+ if page+1 == pages-1:
+                    <a class='inline' href="<%target_page%>?<%table_name%>_page=<%page+1%>">next</a>
+                ->
+            </td>
+        </tr>
+    </table>
