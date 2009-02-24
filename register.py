@@ -17,27 +17,27 @@ if user_dict == {}:
         try:
             email = templater.validators.Email(resolve_domain=True,
                                                not_empty=True).to_python(form["reg_email"].value)
-        except formencode.Invalid, e:
+        except templater.formencode.Invalid, e:
             templater.print_error("email: "+str(e))
             sys.exit()
         
         try:
             name = templater.validators.PlainText(r"^[a-zA-Z_\-0-9 ]*$",
                                                   not_empty=True).to_python(form["name"].value)
-        except formencode.Invalid, e:
+        except templater.formencode.Invalid, e:
             templater.print_error("name: "+str(e))
             sys.exit()
         
         try:
             screen_name = templater.validators.PlainText(not_empty=True).to_python(form["screen_name"].value)
-        except formencode.Invalid, e:
+        except templater.formencode.Invalid, e:
             templater.print_error("screen_name: "+str(e))
             sys.exit()
         
         try:
             ps_validators = templater.validators.FieldsMatch('p1', 'p2')
             ps = ps_validators.to_python({'p1':form["passwd1"].value, 'p2':form["passwd2"].value})['p1']
-        except formencode.Invalid, e:
+        except templater.formencode.Invalid, e:
             templater.print_error("Passwords: "+str(e))
             sys.exit()
         

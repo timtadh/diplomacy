@@ -23,13 +23,13 @@ def print_messages(user_dict, page=0):
         else:
             subject = "<a class='inline' style='font-weight:100' href='msg.py?view="
             subject += str(msg['msg_id'])+"'>"
-        subject += msg['subject'][:40]
-        if len(msg['subject']) > 40: subject += ' ... '
+        subject += templater.Text().from_python(msg['subject'])[:40]
+        if len(msg['subject']) > 80: subject += ' ... '
         subject += '</a>'
         
         if not int(msg['have_read']): message = "<span style='font-weight:900;'>"
         else: message = "<span>"
-        message += msg['msg'][:30]
+        message += templater.Text().from_python(msg['msg'])[:30]
         if len(msg['msg']) > 30: message += ' ... '
         message += '</span>'
         
@@ -52,6 +52,8 @@ def print_message(user_dict, msg_id):
     cur.callproc('read_msg', (msg_id,))
     cur.close()
     db.connections.release_con(con)
+    msg['msg'] = templater.Text().from_python(msg['msg'])
+    msg['subject'] = templater.Text().from_python(msg['subject'])
     templater.print_template("templates/view_msg.html", locals())
 
 def delete_message(user_dict, msg_id):

@@ -1,13 +1,26 @@
 #!/usr/bin/python
 
 import config
-import os, re, cgi, templater, db
+import os, re, cgi, templater, db, sys
 import cookie_session, user_manager
 
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
 
 def sendmsg(user_dict, sn, subject, msg):
+    try: sn = templater.SN_Exists().to_python(sn)
+    except templater.formencode.Invalid, e:
+        templater.print_error("to: "+str(e))
+        sys.exit()
+    try: msg = templater.Text(10000).to_python(msg)
+    except templater.formencode.Invalid, e:
+        templater.print_error("Message: "+str(e))
+        sys.exit()
+    try:
+        subject = templater.Text(256).to_python(subject)
+    except templater.formencode.Invalid, e:
+        templater.print_error("Subject: "+str(e))
+        sys.exit()
     con = db.connections.get_con()
     cur = db.DictCursor(con)
     cur.callproc('send_msg', (sn, user_dict['usr_id'], subject, msg))
@@ -22,11 +35,13 @@ if user_dict == {}:
     templater.print_template("templates/login_template.html", locals())
 else:
     
-    if form.has_key('Send Message') and form.has_key('msg') and\
-       form.has_key('subject') and form.has_key('screen_name'):
-        sendmsg(user_dict, form['screen_name'].value, form['subject'].value, form['msg'].value)
-        import msg
-        msg.print_messages(user_dict)
+    if form.has_key('Send Message'):
+        if form.has_key('msg') and form.has_key('subject') and form.has_key('screen_name'):
+            sendmsg(user_dict, form['screen_name'].value, form['subject'].value, form['msg'].value)
+            import msg
+            msg.print_messages(user_dict)
+        else:
+            templater.print_error("You must fill out all fields to send a message.")
     else:
         screen_name = ''
         subject = ''

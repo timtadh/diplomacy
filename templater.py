@@ -4,6 +4,7 @@ warnings.simplefilter('ignore', UserWarning)
 import formencode
 from formencode import validators
 warnings.simplefilter('default', UserWarning)
+from crypt_framework import qcrypt
 
 __rex = re.compile('\s*\<\%([^\<\%]+)\%\>')
 __rbe = re.compile('\s*\<\+')
@@ -11,14 +12,33 @@ __ren = re.compile('\s*\-\>')
 __rco = re.compile('\s*\|= ')
 
 __templater_namespace = locals()
+#validators.MaxLength
 
-class UniqueUsername(formencode.FancyValidator):
+class Text(formencode.FancyValidator):
+    __unpackargs__ = ('length',)
     def _to_python(self, value, state):
-        if value in usernames:
-            raise formencode.Invalid(
-                'That username already exists',
-                value, state)
-        return value
+        # msg : varchar(10000)
+        msg = validators.MaxLength(self.length/2).to_python(value)
+        return qcrypt.normalize(msg)
+    def _from_python(self, value, state):
+        msg = qcrypt.denormalize(value)
+        msg = msg.replace('<', '&lt;')
+        msg = msg.replace('>', '&gt;')
+        return msg.replace('\n', '<br>')
+
+class SN_Exists(formencode.FancyValidator):
+    def _to_python(self, value, state):
+        import db
+        sn = validators.PlainText(not_empty=True).to_python(value)
+        con = db.connections.get_con()
+        cur = db.DictCursor(con)
+        cur.callproc('user_data_bysn', (sn,))
+        r = cur.fetchall()
+        cur.close()
+        db.connections.release_con(con)
+        if r: return sn
+        else: 
+            raise formencode.Invalid('The screen_name supplied is not in the database.', sn, state)
 
 def print_error(error):
     print_template("templates/error_template.html",  locals())
