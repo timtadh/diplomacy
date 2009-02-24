@@ -68,7 +68,7 @@ if __name__ == '__main__':
     ses_dict, user_dict = user_manager.init_user_session(form)
     
     if user_dict == {}:
-        target_page = 'user_list.py'
+        target_page = 'msg.py'
         templater.print_template("templates/login_template.html", locals())
     else:
         if form.has_key('view'):  print_message(user_dict, int(form['view'].value))
