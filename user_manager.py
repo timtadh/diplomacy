@@ -5,12 +5,13 @@
 #Case Western Reserve University
 #Purpose: Functions for dealing with users
 
-import os, time
+import os, time, sys
 from Crypto.Hash import SHA256
 import Cookie
 import nDDB
 import db
 from crypt_framework import authenticator as auth, qcrypt
+import templater
 import cookie_session
 from logger import Logger
 logger = Logger(__file__)
@@ -90,7 +91,8 @@ def logout_session():
     cookieHdr = os.environ.get("HTTP_COOKIE", "") #get the cookie from the enviroment
     cookie.load(cookieHdr) #load it into a Cookie class
     
-    c, ses_dict = cookie_session.init_session(cookie) #initializes the session returns the session dictionary and the cookie to push to browser
+    c, ses_dict = cookie_session.init_session(cookie) # initializes the session returns the session 
+                                                      # dictionary and the cookie to push to browser
     logger.writeln('logging out -> usr_id:', ses_dict['usr_id'], '   session_id:', ses_dict['session_id'])
     
     con = db.connections.get_con()
@@ -113,16 +115,26 @@ def verify_passwd(email, password):
     else: 
         return False, dict() #else return false and an empty dictionary
     
-def verify_login(form):
+def verify_login(form,  cookie):
     '''This function takes a form (ie the return value of cgi.FieldStorage()) or an empty dictionary.
     If the dictionary is empty it simply returns None. If there is no user by the name passed in it 
     returns None. If the passwords do not match it returns None. If the username is valid and the 
     password validates then it returns the user_id.'''
     usr_id = None #set a default value for the user_id
-    if cookie_session.verify_session(): #check to see if there is a valid session. you cannot log in with out one.
-        if form.has_key('email') and form.has_key('passwd'): #see if the correct form info got passed to the server
+    if cookie_session.verify_session(): # check to see if there is a valid session. you cannot 
+                                        # log in with out one.
+        if form.has_key('email') and form.has_key('passwd'): # see if the correct form info got 
+                                                             # passed to the server
             logger.writeln('about to try and log in')
-            email = form['email'].value #get the user_name
+            try:
+                email = templater.validators.Email(resolve_domain=True,
+                                                 not_empty=True).to_python(form["email"].value)
+            except templater.formencode.Invalid, e:
+                logger.writeln("email did not pass validation: ", "email: "+str(e))
+                c, ses_dict = cookie_session.init_session(cookie, None)
+                cookie_session.print_header(c)
+                templater.print_error("email: "+str(e))
+                sys.exit()
             passwd = form['passwd'].value #get the password
             logger.writeln('    email:', email)
             logger.writeln('    passwd:', passwd)
@@ -132,6 +144,19 @@ def verify_login(form):
             
             if valid:
                 usr_id = user_dict['usr_id'] #if it is valid grab the user_id from the user_dict
+            else:
+                logger.writeln("Password or email not correct")
+                c, ses_dict = cookie_session.init_session(cookie, None)
+                cookie_session.print_header(c)
+                templater.print_error("Password or email not correct")
+                sys.exit(0)
+        elif form.has_key('email') or form.has_key('passwd'):
+            logger.writeln("All of the fields were not filled out.")
+            c, ses_dict = cookie_session.init_session(cookie, None)
+            cookie_session.print_header(c)
+            templater.print_error("All fields must be filled out.")
+            print 'mer'
+            sys.exit(0)
     return usr_id 
 
 def init_user_session(form={}):
@@ -144,7 +169,7 @@ def init_user_session(form={}):
     cookieHdr = os.environ.get("HTTP_COOKIE", "") #get the cookie from the enviroment
     cookie.load(cookieHdr) #load it into a Cookie class
     
-    user_id = verify_login(form) #only actually gives you a user_id if you are logging in
+    user_id = verify_login(form, cookie) #only actually gives you a user_id if you are logging in
     c, ses_dict = cookie_session.init_session(cookie, user_id) #initializes the session returns the session dictionary and the cookie to push to browser
     logger.writeln('ses_dict: ', ses_dict)
     cookie_session.print_header(c) #print the header

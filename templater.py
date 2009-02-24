@@ -1,4 +1,9 @@
 import os, re, yaptu, cgi
+import warnings
+warnings.simplefilter('ignore', UserWarning)
+import formencode
+from formencode import validators
+warnings.simplefilter('default', UserWarning)
 
 __rex = re.compile('\s*\<\%([^\<\%]+)\%\>')
 __rbe = re.compile('\s*\<\+')
@@ -6,6 +11,14 @@ __ren = re.compile('\s*\-\>')
 __rco = re.compile('\s*\|= ')
 
 __templater_namespace = locals()
+
+class UniqueUsername(formencode.FancyValidator):
+    def _to_python(self, value, state):
+        if value in usernames:
+            raise formencode.Invalid(
+                'That username already exists',
+                value, state)
+        return value
 
 def print_error(error):
     print_template("templates/error_template.html",  locals())
@@ -23,7 +36,7 @@ def print_template(template_path, namespace):
     cop = yaptu.copier(__rex, namespace, __rbe, __ren, __rco)
     cop.copy(s)
 
-def print_table(table, table_info, target_page=None, table_name=None, paging=False):
+def print_table(table, table_info, target_page=None, table_name=None, paging=False, rows=15):
     '''
     Prints a paged html table to the standard out.
         table = a list of lists, tuples, or dicts
@@ -35,12 +48,13 @@ def print_table(table, table_info, target_page=None, table_name=None, paging=Fal
         table_name = The name of the table (it doesn't print out just used by the pager to
                      refer to this table, need if paging=True)
         paging = turns paging on or off
+        rows = number of rows per page
     '''
     form = cgi.FieldStorage()
     if form.has_key(table_name+'_page'): page = int(form[table_name+'_page'].value)
     else: page = 0
     
-    if paging: rows_per_page = 15
+    if paging: rows_per_page = rows
     else: rows_per_page = 0
     
     if (len(table)%rows_per_page) == 0: pages = len(table)/rows_per_page
