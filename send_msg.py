@@ -47,13 +47,16 @@ else:
         subject = ''
         if form.has_key('sn'): screen_name = form['sn'].value
         if form.has_key('rep'):
-            con = db.connections.get_con()
-            cur = db.DictCursor(con)
-            cur.callproc('message_data', (user_dict['usr_id'], int(form['rep'].value)))
-            msg = cur.fetchall()[0]
-            cur.close()
-            db.connections.release_con(con)
-            screen_name = msg['from']
-            subject = 're: ' + msg['subject']
+            try:
+                con = db.connections.get_con()
+                cur = db.DictCursor(con)
+                cur.callproc('message_data', (user_dict['usr_id'], int(form['rep'].value)))
+                msg = cur.fetchall()[0]
+                cur.close()
+                db.connections.release_con(con)
+                screen_name = msg['from']
+                subject = 're: ' + msg['subject']
+            except:
+                pass
         
         print_sendmsg(user_dict, screen_name, subject)

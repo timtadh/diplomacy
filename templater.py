@@ -16,15 +16,41 @@ __templater_namespace = locals()
 
 class Text(formencode.FancyValidator):
     __unpackargs__ = ('length',)
+    
+    htmlre = re.compile('''</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)/?>''')
+    
+    def allow_whitehtml(self, text):
+        whitehtml = ['p', 'i', 'strong', 'b', 'u']
+        lt = '&lt;'
+        gt = '&gt;'
+        for tag in whitehtml:
+            while text.find(lt+tag+gt) != -1 and text.find(lt+'/'+tag+gt) != -1:
+                text = text.replace(lt+tag+gt, '<'+tag+'>', 1)
+                text = text.replace(lt+'/'+tag+gt, '</'+tag+'>', 1)
+        return text
+    
     def _to_python(self, value, state):
-        # msg : varchar(10000)
-        msg = validators.MaxLength(self.length/2).to_python(value)
-        return qcrypt.normalize(msg)
+        msg = self.clean(value, True)
+        msg = validators.MaxLength(self.length).to_python(msg)
+        return msg
     def _from_python(self, value, state):
-        msg = qcrypt.denormalize(value)
-        msg = msg.replace('<', '&lt;')
-        msg = msg.replace('>', '&gt;')
-        return msg.replace('\n', '<br>')
+        return value
+    
+    def clean(self, text, whitehtml=False):
+        text = text.replace('<', '&lt;')
+        text = text.replace('>', '&gt;')
+        if whitehtml: text = self.allow_whitehtml(text)
+        text = text.replace('\n', '<br>')
+        text = text.replace('\r', '')
+        return text
+    
+    def hide_all_tags(self, text):
+        g = self.htmlre.search(text)
+        while g:
+            text = text.replace(g.group(), '')
+            g = self.htmlre.search(text)
+        return text
+
 
 class SN_Exists(formencode.FancyValidator):
     def _to_python(self, value, state):
@@ -41,6 +67,8 @@ class SN_Exists(formencode.FancyValidator):
             raise formencode.Invalid('The screen_name supplied is not in the database.', sn, state)
 
 def print_error(error):
+    
+    error = Text().clean(error)
     print_template("templates/error_template.html",  locals())
 
 def print_template(template_path, namespace):

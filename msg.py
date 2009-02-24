@@ -23,14 +23,16 @@ def print_messages(user_dict, page=0):
         else:
             subject = "<a class='inline' style='font-weight:100' href='msg.py?view="
             subject += str(msg['msg_id'])+"'>"
-        subject += templater.Text().from_python(msg['subject'])[:40]
-        if len(msg['subject']) > 80: subject += ' ... '
+        sub_text = templater.Text().hide_all_tags(msg['subject'])
+        subject += sub_text[:40]
+        if len(sub_text) > 40: subject += ' ... '
         subject += '</a>'
         
         if not int(msg['have_read']): message = "<span style='font-weight:900;'>"
         else: message = "<span>"
-        message += templater.Text().from_python(msg['msg'])[:30]
-        if len(msg['msg']) > 30: message += ' ... '
+        msg_text = templater.Text().hide_all_tags(msg['msg'])
+        message += msg_text[:30]
+        if len(msg_text) > 30: message += ' ... '
         message += '</span>'
         
         time = str(msg['time_sent'])
@@ -52,8 +54,6 @@ def print_message(user_dict, msg_id):
     cur.callproc('read_msg', (msg_id,))
     cur.close()
     db.connections.release_con(con)
-    msg['msg'] = templater.Text().from_python(msg['msg'])
-    msg['subject'] = templater.Text().from_python(msg['subject'])
     templater.print_template("templates/view_msg.html", locals())
 
 def delete_message(user_dict, msg_id):
@@ -73,7 +73,10 @@ if __name__ == '__main__':
         target_page = 'msg.py'
         templater.print_template("templates/login_template.html", locals())
     else:
-        if form.has_key('view'):  print_message(user_dict, int(form['view'].value))
-        elif form.has_key('del'): delete_message(user_dict, int(form['del'].value))
-        elif form.has_key('page'): print_messages(user_dict, int(form['page'].value))
-        else: print_messages(user_dict)
+        try:
+            if form.has_key('view'):  print_message(user_dict, int(form['view'].value))
+            elif form.has_key('del'): delete_message(user_dict, int(form['del'].value))
+            elif form.has_key('page'): print_messages(user_dict, int(form['page'].value))
+            else: print_messages(user_dict)
+        except:
+            print_messages(user_dict)

@@ -20,11 +20,15 @@
     
     <b>Subject</b>&nbsp; <%msg['subject']%></p>
     
-    <p><b>Message</b><br>
-    <%msg['msg']%></p>
-    
+    <b>Message:</b><br>
+    <p>
+    <%msg['msg']%>
+    </p>
+    <br>
+    <p>
     <a class='inline' href='send_msg.py?rep=<%msg['msg_id']%>'>reply</a><br>
     <a class='inline' href='msg.py'>back to messages</a>
+    </p>
 </div>
 
 
