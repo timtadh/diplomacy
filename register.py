@@ -9,7 +9,8 @@ from formencode import validators
     
 
 form = cgi.FieldStorage()
-ses_dict, user_dict = user_manager.init_user_session(form)
+ses_dict, user_dict = user_manager.init_user_session()
+
 
 if user_dict == {}:
     
