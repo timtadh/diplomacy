@@ -5,12 +5,12 @@ import os, re, cgi, templater, db
 import cookie_session, user_manager
 import sys
 from formencode import validators
+    
 
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
 
 if user_dict == {}:
-    
     
     
     
@@ -33,7 +33,7 @@ if user_dict == {}:
         print 'heyhey<br><br>'
         user_manager.add_user(user_manager.gen_userID(), name, email,
                               screen_name, ps)
-        templater.print_template("templates/login_template.html", {'target_page':'login.py'})
+        templater.print_template("templates/login_template.html", {'target_page':'main.py'})
     else:
         templater.print_template("templates/register.html", {'target_page':'register.py'})
 else:

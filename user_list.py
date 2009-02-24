@@ -5,7 +5,7 @@ import os, re, cgi, templater, db
 import cookie_session, user_manager
 
 
-def print_user_list():
+def print_user_list(user_dict):
     con = db.connections.get_con()
     cur = db.DictCursor(con)
     cur.callproc('users_table')
@@ -29,4 +29,4 @@ if __name__ == '__main__':
         target_page = 'user_list.py'
         templater.print_template("templates/login_template.html", locals())
     else:
-        print_user_list()
+        print_user_list(user_dict)
