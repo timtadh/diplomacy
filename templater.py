@@ -5,6 +5,7 @@ import formencode
 from formencode import validators
 warnings.simplefilter('default', UserWarning)
 from crypt_framework import qcrypt
+import string
 
 __rex = re.compile('\s*\<\%([^\<\%]+)\%\>')
 __rbe = re.compile('\s*\<\+')
@@ -18,6 +19,8 @@ class Text(formencode.FancyValidator):
     __unpackargs__ = ('length',)
     
     htmlre = re.compile('''</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)/?>''')
+    all_chars = "".join([chr(i) for i in range(256)])
+    non_printable = all_chars.translate(all_chars, string.printable)
     
     def allow_whitehtml(self, text):
         whitehtml = ['p', 'i', 'strong', 'b', 'u']
@@ -37,11 +40,13 @@ class Text(formencode.FancyValidator):
         return value
     
     def clean(self, text, whitehtml=False):
+        import db
         text = text.replace('<', '&lt;')
         text = text.replace('>', '&gt;')
         if whitehtml: text = self.allow_whitehtml(text)
         text = text.replace('\n', '<br>')
         text = text.replace('\r', '')
+        text = text.translate(self.all_chars, self.non_printable)
         return text
     
     def hide_all_tags(self, text):
@@ -55,7 +60,8 @@ class Text(formencode.FancyValidator):
 class SN_Exists(formencode.FancyValidator):
     def _to_python(self, value, state):
         import db
-        sn = validators.PlainText(not_empty=True).to_python(value)
+        sn = validators.MaxLength(128).to_python(value)
+        sn = validators.PlainText(not_empty=True).to_python(sn)
         con = db.connections.get_con()
         cur = db.DictCursor(con)
         cur.callproc('user_data_bysn', (sn,))

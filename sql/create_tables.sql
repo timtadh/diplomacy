@@ -33,7 +33,8 @@ USE diplomacy;
 --  
 --  territory (ter_id : int(11), map_id : int(11), name : varchar(128), abbrev : varchar(4),
 --             piece_x : int(11), piece_y : int(11), label_x : int(11), label_y : int(11),
---             ter_type : enum('land', 'sea'), supply : tinyint(1), coastal : tinyint(1))
+--             ter_type : enum('land', 'sea'), supply : tinyint(1), home_supply : int(11), 
+--             coastal : tinyint(1))
 --  
 --  adjacent (ter_id : int(11), adj_ter_id : int(11))
 --
@@ -181,6 +182,7 @@ CREATE TABLE territory
     label_y int(11) NOT NULL,
     ter_type enum('land', 'sea') NOT NULL,
     supply tinyint(1) NOT NULL,
+    home_supply int(11) NULL DEFAULT NULL,
     coastal tinyint(1) NOT NULL,
     CONSTRAINT pk_territory PRIMARY KEY (ter_id),
     CONSTRAINT fk_map_id FOREIGN KEY (map_id)

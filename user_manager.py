@@ -108,7 +108,9 @@ def verify_passwd(email, password):
     
     user_dict = get_user_byemail(email) #get the user_dict from the database
     logger.writeln('    user_dict:', user_dict)
-    if user_dict: pass_hash = auth.saltedhash_hex(password, user_dict['salt'])
+    if user_dict: 
+        pass_hash = auth.saltedhash_hex(password, user_dict['salt'])
+        logger.writeln('    pass_hash:', pass_hash)
     else: return False, dict()
     if user_dict and user_dict.has_key('pass_hash') and pass_hash == user_dict['pass_hash']: #if the user_dict actually has information in it check to see if the passwords are the same
         return True, user_dict #if they are return true and the user dictionary
@@ -130,14 +132,13 @@ def verify_login(form,  cookie):
                 email = templater.validators.Email(resolve_domain=True,
                                                  not_empty=True).to_python(form["email"].value)
             except templater.formencode.Invalid, e:
-                logger.writeln("email did not pass validation: ", "email: "+str(e))
+                logger.writeln("email did not pass validation: ")
                 c, ses_dict = cookie_session.init_session(cookie, None)
                 cookie_session.print_header(c)
                 templater.print_error("email: "+str(e))
                 sys.exit()
             passwd = form['passwd'].value #get the password
             logger.writeln('    email:', email)
-            logger.writeln('    passwd:', passwd)
             valid, user_dict = verify_passwd(email, passwd) #verify the password and get the 
                                                             #user_dict as well
             logger.writeln('    valid:', valid)
@@ -155,7 +156,6 @@ def verify_login(form,  cookie):
             c, ses_dict = cookie_session.init_session(cookie, None)
             cookie_session.print_header(c)
             templater.print_error("All fields must be filled out.")
-            print 'mer'
             sys.exit(0)
     return usr_id 
 

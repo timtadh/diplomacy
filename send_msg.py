@@ -14,7 +14,7 @@ def sendmsg(user_dict, sn, subject, msg):
         sys.exit()
     try: msg = templater.Text(10000).to_python(msg)
     except templater.formencode.Invalid, e:
-        templater.print_error("Message: "+str(e))
+        templater.print_error("Message: "+str(e)+" your message was "+str(len(msg))+" characters long")
         sys.exit()
     try:
         subject = templater.Text(256).to_python(subject)
@@ -58,5 +58,4 @@ else:
                 subject = 're: ' + msg['subject']
             except:
                 pass
-        
         print_sendmsg(user_dict, screen_name, subject)
