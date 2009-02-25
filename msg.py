@@ -23,14 +23,16 @@ def print_messages(user_dict, page=0):
         else:
             subject = "<a class='inline' style='font-weight:100' href='msg.py?view="
             subject += str(msg['msg_id'])+"'>"
-        sub_text = templater.Text().hide_all_tags(msg['subject'])
+        try: sub_text = templater.Text().hide_all_tags(templater.Text().from_python(msg['subject']))
+        except: sub_text = templater.Text().hide_all_tags(msg['subject'])
         subject += sub_text[:40]
         if len(sub_text) > 40: subject += ' ... '
         subject += '</a>'
         
         if not int(msg['have_read']): message = "<span style='font-weight:900;'>"
         else: message = "<span>"
-        msg_text = templater.Text().hide_all_tags(msg['msg'])
+        try: msg_text = templater.Text().hide_all_tags(templater.Text().from_python(msg['msg']))
+        except: msg_text = templater.Text().hide_all_tags(msg['msg'])
         message += msg_text[:30]
         if len(msg_text) > 30: message += ' ... '
         message += '</span>'
@@ -54,6 +56,11 @@ def print_message(user_dict, msg_id):
     cur.callproc('read_msg', (msg_id,))
     cur.close()
     db.connections.release_con(con)
+    try:
+        msg['msg'] = templater.Text().from_python(msg['msg'])
+        msg['subject'] = templater.Text().from_python(msg['subject'])
+    except:
+        pass
     templater.print_template("templates/view_msg.html", locals())
 
 def delete_message(user_dict, msg_id):

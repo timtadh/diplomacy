@@ -6,6 +6,7 @@ from formencode import validators
 warnings.simplefilter('default', UserWarning)
 from crypt_framework import qcrypt
 import string
+import base64
 
 __rex = re.compile('\s*\<\%([^\<\%]+)\%\>')
 __rbe = re.compile('\s*\<\+')
@@ -16,6 +17,19 @@ __templater_namespace = locals()
 #validators.MaxLength
 
 class Text(formencode.FancyValidator):
+    '''
+    The swiss army knife of dealing with textual input from the user. Using as a validator goes like
+    this:
+        clean_base64_text = Text(256).to_python(text)
+        clean_text = Text().from_python(clean_base64_text)
+    If you want to display the text back to the user you must decode it using the from python method.
+    This is because the package automatically encodes into base64 to protect against arbitrary SQL
+    inject that may not otherwise be caught.
+    
+    the clean() function cleans out unwanted html tags and replaces newlines with <br> it also gets
+        rid of any non-printable ascii characters
+    hide_all_tags() completely removes anything that looks like html from the text
+    '''
     __unpackargs__ = ('length',)
     
     htmlre = re.compile('''</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)/?>''')
@@ -35,9 +49,9 @@ class Text(formencode.FancyValidator):
     def _to_python(self, value, state):
         msg = self.clean(value, True)
         msg = validators.MaxLength(self.length).to_python(msg)
-        return msg
+        return base64.urlsafe_b64encode(msg)
     def _from_python(self, value, state):
-        return value
+        return base64.urlsafe_b64decode(value)
     
     def clean(self, text, whitehtml=False):
         import db
