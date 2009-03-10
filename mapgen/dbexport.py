@@ -8,9 +8,14 @@ queries = {
     'sea_terr': 'INSERT INTO territory '\
         '(map_id, name, abbrev, piece_x, piece_y, label_x, label_y, ter_type, supply, coastal)'\
         ' VALUES (%(map_id)s, "%(name)s", "%(abbrev)s", %(piece_x)s, %(piece_y)s, '\
-        '%(label_x)s, %(label_y)s, "sea", %(supply)s, %(coastal)s)',
-    'last_insert': 'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = "%s";'
+        '%(label_x)s, %(label_y)s, "sea", %(supply)s, %(coastal)s)'
 }
+
+def next_id(tab, cur):
+    q = 'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = "%s";' % tab
+    cur.execute(q)
+    r = cur.fetchall()
+    return r[0]['AUTO_INCREMENT']
 
 def rgb_to_hex(rgb_tuple):
     rgb_tuple = tuple([int(255*i) for i in rgb_tuple[:3]])
@@ -57,10 +62,11 @@ def line_to_dict(line):
     line_dict['y2'] = line.b.y
     return line_dict
 
-def export(game_map, name, pic):
-    print queries['map'] % (name, pic)
-    map_id = 10
-    
+def export(cur, game_map, name, pic):
+    game_map.map_id = next_id("map", cur)
+    cur.execute(queries['map'] % (name, pic))
+    print game_map.map_id
+    return
     test_usr = "7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b"
     cty_str = queries['country']
     cty_fmt = '("%s", "%s", "%s")'
