@@ -104,6 +104,7 @@ class Map(object):
         self.land_terrs = land_terrs
         self.sea_terrs = sea_terrs
         self.countries = countries
+        self.name = "Untitled"
     
 
 class ContinentGenerator(object):

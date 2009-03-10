@@ -21,10 +21,10 @@ else:
         dest_saved = os.path.split(dest_real)[1]
         dest_saved = os.path.splitext(dest_saved)[0]
         
-        #  This accesses the db from string query in the py file
         con = db.connections.get_con()
         cur = db.DictCursor(con)
-        mapgen.dbexport.export(cur, landmass, "Test World "+dest_saved[:5], dest_saved)
+        landmass.name = "Test World "+dest_saved[:5]
+        mapgen.dbexport.export(cur, user_dict['usr_id'], landmass, dest_saved)
         
         s = '<img src="map_images/%s.png">' % dest_saved
         
@@ -32,5 +32,4 @@ else:
         
     except Exception, e:
         print e
-    
     templater.print_template("templates/new_game.html", locals())

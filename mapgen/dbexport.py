@@ -1,6 +1,4 @@
 queries = {
-    'map': 'INSERT INTO map (world_name, pic) VALUES ("%s", "%s");',
-    'country': 'INSERT INTO country (usr_id, name, color) VALUES ("%s", "%s", "%s")',
     'land_terr': 'INSERT INTO territory '\
         '(map_id, name, abbrev, piece_x, piece_y, label_x, label_y, ter_type, supply, coastal)'\
         ' VALUES (%(map_id)s, "%(name)s", "%(abbrev)s", %(piece_x)s, %(piece_y)s, '\
@@ -11,26 +9,23 @@ queries = {
         '%(label_x)s, %(label_y)s, "sea", %(supply)s, %(coastal)s)'
 }
 
+def rgb_to_hex(rgb_tuple):
+    rgb_tuple = tuple([int(255*i) for i in rgb_tuple[:3]])
+    hexcolor = '#%02x%02x%02x' % rgb_tuple
+    return hexcolor
+
+def incrementor(i=0):
+    while 1:
+        yield i
+        i += 1
+
 def next_id(tab, cur):
     q = 'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = "%s";' % tab
     cur.execute(q)
     r = cur.fetchall()
     return r[0]['AUTO_INCREMENT']
 
-def rgb_to_hex(rgb_tuple):
-    rgb_tuple = tuple([int(255*i) for i in rgb_tuple[:3]])
-    hexcolor = '#%02x%02x%02x' % rgb_tuple
-    return hexcolor
-
-def incrementor():
-    #SELECT LAST_INSERT_ID();
-    i = 0
-    while 1:
-        i += 1
-        yield i
-get_id = incrementor()
-
-def terr_to_dict(terr, map_id):
+def terr_to_dict(terr, map_id, get_id):
     terr_dict = {}
     terr.ter_id = get_id.next()
     terr_dict['ter_id'] = terr.ter_id
@@ -51,7 +46,7 @@ def terr_to_dict(terr, map_id):
         terr_dict['coastal'] = 'FALSE'
     return terr_dict
 
-def line_to_dict(line):
+def line_to_dict(line, get_id):
     line_dict = {}
     if hasattr(line, 'ln_id'): return None
     line.ln_id = get_id.next()
@@ -62,27 +57,48 @@ def line_to_dict(line):
     line_dict['y2'] = line.b.y
     return line_dict
 
-def export(cur, game_map, name, pic):
-    game_map.map_id = next_id("map", cur)
-    cur.execute(queries['map'] % (name, pic))
-    print game_map.map_id
-    return
-    test_usr = "7dd468870481a588453c0dbd031376932d6adea90e088ab3b3d21afe9fd17a5b"
-    cty_str = queries['country']
+def insert_countries(countries, usr_id, cur):
+    q = 'INSERT INTO country (usr_id, name, color) VALUES '
     cty_fmt = '("%s", "%s", "%s")'
-    cty_fmt_strs = []
-    for country in game_map.countries:
-        #print queries['country'] % (test_usr, country.name, rgb_to_hex(country.color))
+    cty_strs = []
+    get_id = incrementor(next_id('country', cur))
+    for country in countries:
         country.cty_id = get_id.next()
-        print country.cty_id, country.name, rgb_to_hex(country.color)
+        cty_strs.append(cty_fmt % (usr_id, country.name, rgb_to_hex(country.color)))
+        print "<br>"+str(country.cty_id)
+    q += ",".join(cty_strs)
+    #print q
+    cur.execute(q)
+
+def insert_territories(terrs, map_id, ter_id, cur):
+    q = 'INSERT INTO territory (map_id, name, abbrev, piece_x, piece_y, '\
+        'label_x, label_y, ter_type, supply, coastal) VALUES '
+    terr_fmt =  '(%(map_id)s, "%(name)s", "%(abbrev)s", %(piece_x)s, %(piece_y)s, '\
+                '%(label_x)s, %(label_y)s, "land", %(supply)s, %(coastal)s)'
+    terr_strs = []
+    for terr in terrs:
+        terr_strs.append(terr_fmt % terr_to_dict(terr, map_id, ter_id))
+    q += ",".join(terr_strs)
+    print q
+    cur.execute(q)
+
+def export(cur, usr_id, game_map, pic):
+    game_map.map_id = next_id("map", cur)
+    q_map = 'INSERT INTO map (world_name, pic) VALUES ("%s", "%s");'
+    print "Map ID: "+str(game_map.map_id)+"<br>"
+    cur.execute(q_map % (game_map.name, pic))
+    insert_countries(game_map.countries, usr_id, cur)
     
     all_terrs = game_map.land_terrs|game_map.sea_terrs
+    ter_id = incrementor(next_id('territory', cur))
+    insert_territories(all_terrs, game_map.map_id, ter_id, cur)
+    return
     
     for terr in game_map.land_terrs:
-        print queries['land_terr'] % terr_to_dict(terr, map_id)
+        print queries['land_terr'] % terr_to_dict(terr, game_map.map_id, ter_id)
     
     for terr in game_map.sea_terrs:
-        print queries['land_terr'] % terr_to_dict(terr, map_id)
+        print queries['land_terr'] % terr_to_dict(terr, game_map.map_id, ter_id)
     
     for terr in game_map.land_terrs|game_map.sea_terrs:
         for terr2 in terr.adjacencies:
