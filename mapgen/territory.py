@@ -9,26 +9,32 @@ class Territory(object):
         super(Territory, self).__init__()
         self.country = None
         self.adjacencies = []
+        self.lines = []
+        self.is_coastal = False
+        self.has_supply_center = False
         self.id = 0
         self.x, self.y = 0.0, 0.0
         self.name = ""
         self.abbreviation = ""
+        self.ter_id = 0
     
 
 class SeaTerr(Territory):
     def __init__(self, line=None):
         super(SeaTerr, self).__init__()
         self.line = line
-        self.lines = []
+        if line != None:
+            self.lines.append(line)
         self.size = 0
         self.x = (line.a.x + line.b.x) / 2
         self.y = (line.a.y + line.b.y) / 2
+        self.pc_x = self.x
+        self.pc_y = self.y - 10
     
 
 class LandTerr(Territory):
     def __init__(self, lines, color=(0.5,0.5,0.5,1)):
         super(LandTerr, self).__init__()
-        self.lines = []
         for line in lines:
             self.add_line(line)
         self.color = color
@@ -37,7 +43,6 @@ class LandTerr(Territory):
         self.dist = 0
         self.combinations = 0
         self.offset = (0,0)
-        self.has_supply_center = False
     
     def add_line(self, line):
         if line not in self.lines:
@@ -63,7 +68,17 @@ class LandTerr(Territory):
                 if terr.country != None:
                     self.adjacent_countries.append(terr.country)
     
-    def place_capital(self):
+    def place_piece(self):
+        self.pc_x = self.x
+        self.pc_y = self.y-10
+        if not self.point_inside(self.pc_x, self.pc_y):
+            self.pc_x, self.pc_y = self.x+20, self.y
+        if not self.point_inside(self.pc_x, self.pc_y):
+            self.pc_x, self.pc_y = self.x, self.y+10
+        if not self.point_inside(self.pc_x, self.pc_y):
+            self.pc_x, self.pc_y = self.x-20, self.y
+    
+    def place_capitol(self):
         self.points = []
         for line in self.lines:
             if line.a not in self.points:
@@ -84,7 +99,9 @@ class LandTerr(Territory):
         if not self.point_inside(self.x-15, self.y): ok = False
         if not self.point_inside(self.x, self.y+15): ok = False
         if not self.point_inside(self.x, self.y-15): ok = False
-        if ok: return
+        if ok:
+            self.place_piece()
+            return
         
         cx, cy = self.x, self.y
         i = 0
@@ -114,7 +131,9 @@ class LandTerr(Territory):
             if not self.point_inside(self.x, self.y+7): ok = False
             if not self.point_inside(self.x, self.y-7): ok = False
             i += 1
-        if ok: return
+        if ok:
+            self.place_piece()
+            return
         
         chosen_tri = 0
         max_area = 0
@@ -128,13 +147,18 @@ class LandTerr(Territory):
         self.y = tri[1] + tri[3] + tri[5]
         self.x /= 3.0
         self.y /= 3.0
+        self.place_piece()
     
     def color_self(self):
         darken_amt = (1.0-random.random()*0.15)
+        if self.country != None:
+            col = self.country.color
+        else:
+            color = (1.0, 1.0, 1.0, 1.0)
         self.color = (
-            self.country.color[0]*darken_amt,
-            self.country.color[1]*darken_amt,
-            self.country.color[2]*darken_amt,
+            col[0]*darken_amt,
+            col[1]*darken_amt,
+            col[2]*darken_amt,
             1.0
         )
         if self.color == (0.0, 0.0, 0.0, 1.0):

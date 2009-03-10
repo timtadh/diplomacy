@@ -101,7 +101,7 @@ class MapGenWindow(pyglet.window.Window):
         self.labels = []
         for terr in self.landmass.land_terrs + self.landmass.sea_terrs:
             self.labels.append(pyglet.text.Label(
-                terr.abbreviation, x=terr.x, y=terr.y, color=(0,0,0,255),
+                terr.place_capitol, x=terr.x, y=terr.y, color=(0,0,0,255),
                 font_size=8, font_name="Inconsolata",
                 anchor_x='center', anchor_y='center', batch=self.batch
             ))

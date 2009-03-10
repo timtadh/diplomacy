@@ -39,10 +39,6 @@ class Line(object):
             )
         return self.length
     
-    def next(self, origin_line):
-        if origin_line != self.left: return self.left
-        return self.right
-    
     def __repr__(self):
         return "Line((%r, %r), (%r, %r))" % (
             self.a.x, self.a.y, self.b.x, self.b.y

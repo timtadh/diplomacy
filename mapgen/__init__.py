@@ -34,15 +34,17 @@ def copy_to_unique_name(path, dest_dir=''):
     return dest
 
 def save_to_image(landmass):
-    render.basic(landmass, "map_temp.png")
+    render.basic(landmass, "map_temp.png", True)
     return copy_to_unique_name("map_temp.png", 'map_images')
 
 class Country(object):
-    def __init__(self, color):
+    def __init__(self, color, name="America"):
+        self.name = name
         self.color = color
         self.land_terrs = []
         self.sea_terrs = []
         self.adjacencies = []
+        self.cty_id = 0
     
     def size(self):
         return len(self.land_terrs)
@@ -95,12 +97,13 @@ class Country(object):
     
 
 class Map(object):
-    def __init__(self, lines, outside_lines, land_terrs, sea_terrs):
+    def __init__(self, lines, outside_lines, land_terrs, sea_terrs, countries):
         super(Map, self).__init__()
         self.lines = lines
         self.outside_lines = outside_lines
         self.land_terrs = land_terrs
         self.sea_terrs = sea_terrs
+        self.countries = countries
     
 
 class ContinentGenerator(object):
@@ -112,21 +115,22 @@ class ContinentGenerator(object):
         self.wiggle = math.pi/6
         self.base_distance = 30.0
         self.primitive_ratio = 0.7
-        self.lines = []
-        self.outside_lines = []
-        self.land_terrs = []
+        self.lines = set()
+        self.outside_lines = set()
+        self.land_terrs = set()
         self.num_lines = 128*num_countries
         self.check_collisions = True
         self.offset = (0,0)
         self.width, self.height = 0, 0
+        self.map_id = 0
     
     def generate(self):
         if self.num_lines <= 0:
             self.num_lines = 900
-        self.lines = []
-        self.outside_lines = []
-        self.land_terrs = []
-        self.sea_terrs = []
+        self.lines = set()
+        self.outside_lines = set()
+        self.land_terrs = set()
+        self.sea_terrs = set()
         self.which_color = 0
         
         if self.verbose: print "generating..."
@@ -135,9 +139,7 @@ class ContinentGenerator(object):
         
         if self.verbose: print "combining primitives..."
         len_outside = len(self.outside_lines)
-        self.inside_lines = [
-            line for line in self.lines if line not in self.outside_lines
-        ]
+        self.inside_lines = list(self.lines.difference(self.outside_lines))
         i = 0
         while len(self.land_terrs) > len_outside * self.primitive_ratio:
             self.combine_random()
@@ -147,6 +149,8 @@ class ContinentGenerator(object):
         self.process_objects()
         self.make_countries()
         self.make_seas()
+        self.make_oceans()
+        self.verify_data()
         self.assign_names()
         
         if self.verbose: print "done"
@@ -154,16 +158,17 @@ class ContinentGenerator(object):
     
     def get_landmass(self):
         lm = Map(
-            self.lines, self.outside_lines, self.land_terrs, self.sea_terrs)
+            self.lines, self.outside_lines, self.land_terrs, self.sea_terrs, self.countries)
         lm.width, lm.height = int(self.width), int(self.height)
         lm.offset = self.offset
         return lm
     
     def generate_iteratively(self):
         while self.num_lines > 0:
-            base_line = random.choice(self.outside_lines)
+            outside_list = list(self.outside_lines)
+            base_line = random.choice(outside_list)
             if not base_line.favored:
-                base_line = random.choice(self.outside_lines)
+                base_line = random.choice(outside_list)
             if self.check_concave(base_line):
                 if self.check_concave(base_line.left):
                     self.expand_line(base_line)
@@ -175,6 +180,8 @@ class ContinentGenerator(object):
         last_point = first_point
         line_num = 0
         triangles = []
+        last_line = None
+        first_line = None
         while a < math.pi*2-math.pi/5:
             a += random.random()*math.pi*(0.666-0.2)+math.pi/5
             if a < math.pi*2-math.pi/5:
@@ -185,19 +192,25 @@ class ContinentGenerator(object):
                 new_point = first_point
             new_line = Line(last_point, new_point)
             if line_num > 0:
-                new_line.left = self.lines[line_num-1]
-                self.lines[line_num-1].right = new_line
-            self.lines.append(new_line)
-            self.outside_lines.append(new_line)
+                last_line.right = new_line
+                new_line.left = last_line
+                last_line = new_line
+            else:
+                first_line = new_line
+                last_line = new_line
+            self.lines.add(new_line)
+            self.outside_lines.add(new_line)
             triangles.append(
                 (0, 0, last_point.x, last_point.y, new_point.x, new_point.y)
             )
             last_point = new_point
             line_num += 1
-        self.lines[line_num-1].right = self.lines[0]    
-        self.lines[0].left = self.lines[line_num-1]
-        self.land_terrs = [LandTerr(self.lines, self.get_color(0))]
-        self.land_terrs[0].triangles = triangles
+        last_line.right = first_line
+        first_line.left = last_line
+        self.land_terrs = set()
+        new_terr = LandTerr(self.lines, self.get_color(0))
+        new_terr.triangles = triangles
+        self.land_terrs.add(new_terr)
     
     def get_radius(self):
         return random.random()*self.base_distance*0.3 + self.base_distance*0.7
@@ -215,8 +228,9 @@ class ContinentGenerator(object):
         return (a1 - a2) % (math.pi*2)
     
     def get_largest_territory(self):
-        largest = self.land_terrs[0]
-        largest_count = len(self.land_terrs[0].triangles)
+        largest = self.land_terrs.pop()
+        largest_count = len(largest.triangles)
+        self.land_terrs.add(largest)
         for terr in self.land_terrs:
             if len(terr.triangles) > largest_count:
                 largest = terr
@@ -251,8 +265,8 @@ class ContinentGenerator(object):
         #if not self.check_point(new_line.midpoint): return False
         line.left.right = new_line
         line.right.right.left = new_line
-        self.lines.append(new_line)
-        self.outside_lines.append(new_line)
+        self.lines.add(new_line)
+        self.outside_lines.add(new_line)
         self.outside_lines.remove(line)
         self.outside_lines.remove(line.right)
         self.num_lines -= 1
@@ -295,7 +309,7 @@ class ContinentGenerator(object):
                 new_territory.dist += line.right.land_terrs[0].dist
                 new_territory.dist = int(new_territory.dist/2) + 1
                 new_territory.color = self.get_color(new_territory.dist)
-                self.land_terrs.append(new_territory)
+                self.land_terrs.add(new_territory)
                 new_territory.add_triangle(
                     line.a.x, line.a.y, line.b.x, line.b.y, 
                     line.right.b.x, line.right.b.y
@@ -309,10 +323,10 @@ class ContinentGenerator(object):
         base_line.left.right = nl1
         base_line.right.left = nl2
         self.outside_lines.remove(base_line)
-        self.outside_lines.append(nl1)
-        self.outside_lines.append(nl2)
-        self.lines.append(nl1)
-        self.lines.append(nl2)
+        self.outside_lines.add(nl1)
+        self.outside_lines.add(nl2)
+        self.lines.add(nl1)
+        self.lines.add(nl2)
         self.num_lines -= 2
         
         if erase_old:
@@ -327,7 +341,7 @@ class ContinentGenerator(object):
                 )
         else:
             new_territory = LandTerr([nl1, nl2, base_line], self.get_color())
-            self.land_terrs.append(new_territory)
+            self.land_terrs.add(new_territory)
             new_territory.add_triangle(
                 base_line.a.x, base_line.a.y, base_line.b.x, base_line.b.y, 
                 new_point.x, new_point.y
@@ -403,7 +417,7 @@ class ContinentGenerator(object):
         if self.verbose: print "checking..."
         #Removes territories that are entirely surrounded by a single territory
         #or are made of only one triangle
-        absorbed = []
+        absorbed = set()
         for terr in self.land_terrs:
             check = True
             for line in terr.lines:
@@ -416,9 +430,9 @@ class ContinentGenerator(object):
                     if line.land_terrs[1] != surr_terr:
                         absorb = False
                 if absorb:
-                    if terr.lines[0] not in absorbed:
-                        self.combine(surr_terr, terr)
-                        absorbed.append(terr)
+                    absorbed.add((surr_terr, terr))
+        for surr_terr, terr in absorbed:
+            self.combine(surr_terr, terr)
         to_kill = [
             terr for terr in self.land_terrs if len(terr.triangles) == 1
         ]
@@ -431,7 +445,7 @@ class ContinentGenerator(object):
         #Place ids and set bounding box
         ids = range(0, len(self.land_terrs))
         for territory, t_id in zip(self.land_terrs, ids):
-            territory.place_capital()
+            territory.place_capitol()
             territory.id = t_id
         l_id = 0
         min_x = 0
@@ -452,6 +466,10 @@ class ContinentGenerator(object):
         self.offset = (-min_x, -min_y)
         self.width = max_x - min_x
         self.height = max_y - min_y
+        
+        for line in self.outside_lines:
+            for adj in line.land_terrs:
+                adj.is_coastal = True
         
         if self.verbose: print "generating adjacencies..."
         for terr in self.land_terrs:
@@ -485,7 +503,7 @@ class ContinentGenerator(object):
                 small.append(self.countries[0])
             if self.countries[-1] not in large:
                 large.append(self.countries[-1])
-        return small, large
+        return sorted(small), sorted(large)
     
     def remove_lone_territories(self):
         worked = False
@@ -501,12 +519,13 @@ class ContinentGenerator(object):
     
     def make_countries(self):
         if self.verbose: print 'forming countries...'
-        remaining_terrs = list(sets.Set(self.land_terrs))
+        remaining_terrs = self.land_terrs.copy()
         
         self.countries = [
             Country(country_colors[i]) for i in range(self.num_countries)
         ]
-        start_line = self.outside_lines[0]
+        start_line = self.outside_lines.pop()
+        self.outside_lines.add(start_line)
         this_terr = start_line.land_terrs[0]
         outside_terrs = [this_terr]
         this_line = start_line.right
@@ -614,25 +633,26 @@ class ContinentGenerator(object):
                 else:
                     self.remove_lone_territories()
     
-    def place_supply_centers(self):
-        total_supply_centers = int(5.14*self.num_countries)+1
-        centers_per_country = total_supply_centers/self.num_countries
-        this_country = 0
-        random.shuffle(self.countries)
-        this_terr = random.choice(self.countries[0].land_terrs)
-        while total_supply_centers > 0:
-            while this_terr.has_supply_center:
-                this_terr = random.choice(
-                    self.countries[this_country].land_terrs
-                )
-            this_terr.has_supply_center = True
-            total_supply_centers -= 1
-            this_country = (this_country + 1) % len(self.countries)
+    # def place_supply_centers(self):
+    #     total_supply_centers = int(5.14*self.num_countries)+1
+    #     centers_per_country = total_supply_centers/self.num_countries
+    #     this_country = 0
+    #     random.shuffle(self.countries)
+    #     this_terr = random.choice(self.countries[0].land_terrs)
+    #     while total_supply_centers > 0:
+    #         while this_terr.has_supply_center:
+    #             this_terr = random.choice(
+    #                 self.countries[this_country].land_terrs
+    #             )
+    #         this_terr.has_supply_center = True
+    #         total_supply_centers -= 1
+    #         this_country = (this_country + 1) % len(self.countries)
     
     def make_seas(self):
         if self.verbose: print 'finding bays...'
         max_seeks = len(self.outside_lines)/3
-        start_line = self.outside_lines[0]
+        start_line = self.outside_lines.pop()
+        self.outside_lines.add(start_line)
         line = start_line.right
         bay_starts = []
         #Find seed lines
@@ -696,9 +716,9 @@ class ContinentGenerator(object):
                     best_line_left.left, best_line_right
                 )
                 new_bay = SeaTerr(new_line)
-                self.sea_terrs.append(new_bay)
-        removal_queue = []
-        persistent_lines = []
+                self.sea_terrs.add(new_bay)
+        removal_queue = set()
+        persistent_lines = set()
         for terr in self.sea_terrs:
             moving_line = terr.line.left.right
             while moving_line != terr.line.right.left:
@@ -709,7 +729,7 @@ class ContinentGenerator(object):
                         terr2.adjacencies.append(terr)
                 moving_line = moving_line.right
             terr.size = len(terr.adjacencies)
-                    
+        new_bays = set()
         for terr in self.sea_terrs:
             if terr not in removal_queue:
                 moving_line = terr.line.left.right
@@ -720,8 +740,7 @@ class ContinentGenerator(object):
                             if moving_line == terr2.line.left or \
                                     moving_line == terr2.line.right:
                                 if terr2.size < terr.size:
-                                    if terr2 not in removal_queue:
-                                        removal_queue.append(terr2)
+                                    removal_queue.add(terr2)
                 for terr2 in self.sea_terrs:
                     if terr2 not in removal_queue and terr2 != terr:
                         if terr.size == terr2.size:
@@ -744,22 +763,25 @@ class ContinentGenerator(object):
                                     new_bay.adjacencies
                                 ))
                                 new_bay.size = len(new_bay.adjacencies)
-                                self.sea_terrs.append(new_bay)
-                                removal_queue.append(terr)
-                                removal_queue.append(terr2)
+                                new_bays.add(new_bay)
+                                removal_queue.add(terr)
+                                removal_queue.add(terr2)
                             elif terr.size < terr2.size:
-                                removal_queue.append(terr)
+                                removal_queue.add(terr)
                             elif terr.size > terr2.size:
-                                removal_queue.append(terr2)
+                                removal_queue.add(terr2)
                             else:
-                                removal_queue.append(terr)
+                                removal_queue.add(terr)
                         else:
                             if terr.line.left == terr2.line.left or \
                                     terr.line.right == terr2.line.right:
                                 if terr.size < terr2.size:
-                                    removal_queue.append(terr)
+                                    removal_queue.add(terr)
                                 else:
-                                    removal_queue.append(terr2)
+                                    removal_queue.add(terr2)
+        self.sea_terrs.update(new_bays)
+        self.sea_terrs = self.sea_terrs.difference(removal_queue)
+        removal_queue = set()
         for terr in self.sea_terrs:
             for terr2 in self.sea_terrs:
                 intersect = False
@@ -772,11 +794,9 @@ class ContinentGenerator(object):
                         if terr.size == terr2.size:
                             terr2.size += 1
                         if terr.size > terr2.size:
-                            removal_queue.append(terr2)
-            if terr.size < 3: removal_queue.append(terr)
-        removal_queue = list(sets.Set(removal_queue))
-        for terr in removal_queue:
-            self.sea_terrs.remove(terr)
+                            removal_queue.add(terr2)
+            if terr.size < 3: removal_queue.add(terr)
+        self.sea_terrs = self.sea_terrs.difference(removal_queue)
         for terr in self.sea_terrs:
             new_x, new_y = terr.x, terr.y
             new_x += math.cos(terr.line.normal)*20.0
@@ -790,6 +810,46 @@ class ContinentGenerator(object):
             while line2 != terr.line.right:
                 line2.color = (1,1,1,1)
                 line2 = line2.right
+    
+    def make_oceans(self):
+        return
+        #ACTUALLY, DO NOT MAKE OCEANS, IT IS SO BROKEN
+        verboten = [s.lines for s in self.sea_terrs]
+        start_line = self.outside_lines.pop()
+        self.outside_lines.add(start_line)
+        
+        ocean_spacing = 10
+        i = ocean_spacing
+        temp_line = start_line.right
+        oceans = []
+        ocean_seeds = []
+        while temp_line != start_line:
+            i -= 1
+            if i <= 0 and temp_line not in verboten:
+                i = ocean_spacing
+                ocean_seeds.append(temp_line)
+                temp_line.color = (1, 0, 1, 1)
+            temp_line = temp_line.right
+        
+        ocean_lines = [Line(l.a, Point(l.a.x*2, l.a.y*2)) for l in ocean_seeds]
+        temp_terr = self.sea_terrs.pop()
+        self.sea_terrs.add(temp_terr)
+        temp_terr.lines.extend(ocean_lines)
+        print ocean_lines
+    
+    def verify_data(self):
+        for terr in self.land_terrs|self.sea_terrs:
+            for ln in terr.lines:
+                self.lines.add(ln)
+    
+    def place_supply_centers(self):
+        for country in self.countries:
+            terr_list = list(country.land_terrs)
+            random.shuffle(terr_list)
+            for t in terr_list[:5]:
+                t.has_supply_center = True
+            for t in terr_list[3:]:
+                t.country = None
     
     def color_territories(self):
         self.sort_countries()
@@ -821,7 +881,7 @@ class ContinentGenerator(object):
                 self.lines.remove(l)
         for l in to_remove.lines[:]:
             to_remove.remove_line(l)
-        absorber.place_capital()
+        absorber.place_capitol()
         absorber.combinations += 1
     
     def combine_random(self):
@@ -900,7 +960,7 @@ class ContinentGenerator(object):
                     if self.verbose: print 'line remove fail'
     
     def assign_names(self):
-        for terr in self.land_terrs + self.sea_terrs:
+        for terr in self.land_terrs.union(self.sea_terrs):
             terr.abbreviation = random_abbrev()
     
 

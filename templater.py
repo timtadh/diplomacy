@@ -22,7 +22,7 @@ class Text(formencode.FancyValidator):
     this:
         clean_base64_text = Text(256).to_python(text)
         clean_text = Text().from_python(clean_base64_text)
-    If you want to display the text back to the user you must decode it using the from python method.
+    If you want to display the text back to the user you must decode it using the from_python method.
     This is because the package automatically encodes into base64 to protect against arbitrary SQL
     inject that may not otherwise be caught.
     
@@ -96,7 +96,6 @@ def print_template(template_path, namespace):
     s = f.readlines()
     f.close()
     
-    #if 'yaptu' not in namespace: namespace.update({'yaptu':yaptu})
     if 'templater' not in namespace: 
         import templater as __templater
         namespace.update({'templater':__templater})

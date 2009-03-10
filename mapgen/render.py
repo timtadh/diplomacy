@@ -66,7 +66,7 @@ def basic(landmass, path="map_temp.png", draw_cities=False):
         del draw
     draw = ImageDraw.Draw(im)
     font = ImageFont.truetype("Arial Bold.ttf", 10)
-    for terr in landmass.land_terrs + landmass.sea_terrs:
+    for terr in landmass.land_terrs.union(landmass.sea_terrs):
         tx = terr.x + ox - draw.textsize(terr.abbreviation)[0]/2
         ty = terr.y + oy - draw.textsize(terr.abbreviation)[1]/2
         col = "rgb(255,255,255)"
@@ -82,8 +82,8 @@ def basic(landmass, path="map_temp.png", draw_cities=False):
         h = star.size[1]/2
         for terr in landmass.land_terrs:
             if terr.has_supply_center:
-                x = int(terr.x + ox)
-                y = int(terr.y + oy)
+                x = int(terr.pc_x + ox)
+                y = int(terr.pc_y + oy)
                 box = (x-w, y-h, x+w, y+h)
                 im.paste(star, box, star)
     im.save(path)
