@@ -1,14 +1,3 @@
-queries = {
-    'land_terr': 'INSERT INTO territory '\
-        '(map_id, name, abbrev, piece_x, piece_y, label_x, label_y, ter_type, supply, coastal)'\
-        ' VALUES (%(map_id)s, "%(name)s", "%(abbrev)s", %(piece_x)s, %(piece_y)s, '\
-        '%(label_x)s, %(label_y)s, "land", %(supply)s, %(coastal)s)',
-    'sea_terr': 'INSERT INTO territory '\
-        '(map_id, name, abbrev, piece_x, piece_y, label_x, label_y, ter_type, supply, coastal)'\
-        ' VALUES (%(map_id)s, "%(name)s", "%(abbrev)s", %(piece_x)s, %(piece_y)s, '\
-        '%(label_x)s, %(label_y)s, "sea", %(supply)s, %(coastal)s)'
-}
-
 def rgb_to_hex(rgb_tuple):
     rgb_tuple = tuple([int(255*i) for i in rgb_tuple[:3]])
     hexcolor = '#%02x%02x%02x' % rgb_tuple
@@ -66,8 +55,7 @@ def insert_countries(countries, usr_id, cur):
         country.cty_id = get_id.next()
         cty_strs.append(cty_fmt % (usr_id, country.name, rgb_to_hex(country.color)))
         print "<br>"+str(country.cty_id)
-    q += ",".join(cty_strs)
-    #print q
+    q += ",".join(cty_strs)+";"
     cur.execute(q)
 
 def insert_territories(terrs, map_id, ter_id, cur):
@@ -78,9 +66,56 @@ def insert_territories(terrs, map_id, ter_id, cur):
     terr_strs = []
     for terr in terrs:
         terr_strs.append(terr_fmt % terr_to_dict(terr, map_id, ter_id))
-    q += ",".join(terr_strs)
-    print q
+    q += ",".join(terr_strs)+";"
     cur.execute(q)
+
+def insert_adjacencies(terrs, cur):
+    q = 'INSERT INTO adjacent (ter_id, adj_ter_id) VALUES '
+    adj_fmt = '(%s, %s)'
+    adj_strs = []
+    
+    for terr in terrs:
+        for terr2 in terr.adjacencies:
+            try:
+                adj_strs.append(adj_fmt % (terr.ter_id, terr2.ter_id))
+            except:
+                pass
+    q += ",".join(adj_strs)+";"
+    cur.execute(q)
+
+def insert_triangles(terrs, cur):
+    q = 'INSERT INTO triangle (ter_id, x1, y1, x2, y2, x3, y3) VALUES '
+    tri_fmt = '(%s, %s, %s, %s, %s, %s, %s)'
+    tri_strs = []
+    
+    for terr in terrs:
+        for tri in terr.triangles:
+            tri_strs.append(tri_fmt % tuple([terr.ter_id]+list(tri)))
+    q += ",".join(tri_strs)+";"
+    cur.execute(q)
+
+def insert_lines(lines, terrs, cur):
+    q = 'INSERT INTO line (x1, y1, x2, y2) VALUES '
+    ln_fmt = '(%(x1)s, %(y1)s, %(x2)s, %(y2)s)'
+    ln_strs = []
+    get_id = incrementor(next_id('line', cur))
+    
+    for ln in lines:
+        ln_strs.append(ln_fmt % line_to_dict(ln, get_id))
+    q += ",".join(ln_strs)+";"
+    cur.execute(q)
+    
+    q = 'INSERT INTO ter_ln_relation (ter_id, ln_id) VALUES '
+    ln_fmt = '(%s, %s)'
+    ln_strs = []
+    for terr in terrs:
+        for ln in terr.lines:
+            if ln not in lines:
+                print 'weirdness with', ln
+            ln_strs.append(ln_fmt % (terr.ter_id, ln.ln_id))
+    q += ",".join(ln_strs)+";"
+    cur.execute(q)
+     
 
 def export(cur, usr_id, game_map, pic):
     game_map.map_id = next_id("map", cur)
@@ -92,28 +127,6 @@ def export(cur, usr_id, game_map, pic):
     all_terrs = game_map.land_terrs|game_map.sea_terrs
     ter_id = incrementor(next_id('territory', cur))
     insert_territories(all_terrs, game_map.map_id, ter_id, cur)
-    return
-    
-    for terr in game_map.land_terrs:
-        print queries['land_terr'] % terr_to_dict(terr, game_map.map_id, ter_id)
-    
-    for terr in game_map.sea_terrs:
-        print queries['land_terr'] % terr_to_dict(terr, game_map.map_id, ter_id)
-    
-    for terr in game_map.land_terrs|game_map.sea_terrs:
-        for terr2 in terr.adjacencies:
-            print terr.ter_id, terr2.ter_id
-    
-    for terr in game_map.land_terrs:
-        for tri in terr.triangles:
-            print tri
-    
-    game_map.lines = set(game_map.lines)
-    for ln in game_map.lines:
-        print line_to_dict(ln)
-    
-    for terr in game_map.land_terrs|game_map.sea_terrs:
-        for ln in terr.lines:
-            if ln not in game_map.lines:
-                print 'weirdness with', ln
-            print terr.ter_id, ln.ln_id
+    insert_adjacencies(all_terrs, cur)
+    insert_triangles(game_map.land_terrs, cur)
+    insert_lines(set(game_map.lines), all_terrs, cur)

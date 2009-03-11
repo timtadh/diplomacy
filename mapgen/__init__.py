@@ -842,6 +842,7 @@ class ContinentGenerator(object):
         for terr in self.land_terrs|self.sea_terrs:
             for ln in terr.lines:
                 self.lines.add(ln)
+            terr.adjacencies = [t for t in terr.adjacencies if t in self.land_terrs|self.sea_terrs]
     
     def place_supply_centers(self):
         for country in self.countries:
