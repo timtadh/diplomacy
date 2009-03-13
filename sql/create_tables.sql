@@ -11,9 +11,6 @@ USE diplomacy;
 --  users (usr_id : varchar(64), name : varchar(256), email : varchar(256), 
 --         screen_name : varchar(128), pass_hash : varchar(64), salt : varchar(64),
 --         last_login : datetime, creation : datetime, status : varchar(500))
---  
---  session (session_id : varchar(64), sig_id : varchar(64), msg_sig : varchar(64),
---              usr_id : varchar(64), last_update : datetime)
 --     
 --  message (msg_id : int(11), from_usr : varchar(64), to_usr : varchar(64),
 --           time_sent : datetime, subject : varchar(256), msg : varchar(10000)
@@ -21,9 +18,12 @@ USE diplomacy;
 --    
 --  map (map_id : int(11), world_name : varchar(128), pic : varchar(64), keep : tinyint(1))
 --  
---  game (gam_id : int(11), map_id : int(11), pic : varchar(64), 
+--  game (gam_id : int(11), map_id : int(11), host : varchar(64), pic : varchar(64),
 --        gam_season : enum('spring', 'fall'),  gam_year : year(4), turn_start : datetime, 
 --        turn_length : time, turn_stage : int(11),  ended : tinyint(1))
+--  
+--  session (session_id : varchar(64), sig_id : varchar(64), msg_sig : varchar(64),
+--           usr_id : varchar(64), gam_id : int(11), last_update : datetime)
 --  
 --  turn_stages (trs_id : int(11), name : varchar(64), description : varchar(256), 
 --               fall : tinyint(1))
@@ -78,19 +78,6 @@ CREATE TABLE users
     CONSTRAINT uq_screen_name UNIQUE (screen_name)
 );
 
-DROP TABLE IF EXISTS sessions;
-CREATE TABLE sessions
-(
-    session_id varchar(64) NOT NULL,
-    sig_id varchar(64) NOT NULL,
-    msg_sig varchar(64) NOT NULL,
-    usr_id varchar(64) NOT NULL,
-    last_update datetime NOT NULL,
-    CONSTRAINT pk_session PRIMARY KEY (session_id),
-    CONSTRAINT fk_usr_id FOREIGN KEY (usr_id)
-        REFERENCES users(usr_id) ON DELETE RESTRICT 
-);
-
 DROP TABLE IF EXISTS message;
 CREATE TABLE message 
 (
@@ -132,6 +119,7 @@ CREATE TABLE game
 (
     gam_id int(11) AUTO_INCREMENT,
     map_id int(11),
+    host varchar(64),
     pic varchar(64),
     gam_season enum('spring', 'fall') DEFAULT 'fall',
     gam_year year(4) DEFAULT 1999,
@@ -143,7 +131,23 @@ CREATE TABLE game
     CONSTRAINT fk_map_id FOREIGN KEY (map_id)
         REFERENCES map(map_id) ON DELETE RESTRICT,
     CONSTRAINT fk_turn_stage FOREIGN KEY (turn_stage)
-        REFERENCES turn_stages(trs_id) ON DELETE RESTRICT
+        REFERENCES turn_stages(trs_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_host FOREIGN KEY (host)
+        REFERENCES users(usr_id) ON DELETE RESTRICT
+);
+
+DROP TABLE IF EXISTS sessions;
+CREATE TABLE sessions
+(
+    session_id varchar(64) NOT NULL,
+    sig_id varchar(64) NOT NULL,
+    msg_sig varchar(64) NOT NULL,
+    usr_id varchar(64) NOT NULL,
+    gam_id int(11),
+    last_update datetime NOT NULL,
+    CONSTRAINT pk_session PRIMARY KEY (session_id),
+    CONSTRAINT fk_usr_id FOREIGN KEY (usr_id)
+        REFERENCES users(usr_id) ON DELETE RESTRICT 
 );
 
 DROP TABLE IF EXISTS country;

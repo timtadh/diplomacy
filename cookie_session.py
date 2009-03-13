@@ -83,7 +83,7 @@ def create_session(session_id, sig_id, msg_sig, usr_id):
     cur.callproc('create_session', (session_id, sig_id, msg_sig, usr_id))
     cur.close()
     db.connections.release_con(con)
-    return make_session_dict(session_id, sig_id, msg_sig, usr_id, timestr)
+    return get_session(session_id)
 
 def update_session(session_id, sig_id, msg_sig, usr_id):
     '''Updates the session identified by the session ID, with passed in parameters and the current
@@ -94,7 +94,7 @@ def update_session(session_id, sig_id, msg_sig, usr_id):
     cur.callproc('update_session', (session_id, sig_id, msg_sig, usr_id))
     cur.close()
     db.connections.release_con(con)
-    return make_session_dict(session_id, sig_id, msg_sig, usr_id, timestr)
+    return get_session(session_id)
 
 def get_session(session_id):
     '''Get the session from the session table in the database identified by the sessionID. It returns
@@ -108,14 +108,7 @@ def get_session(session_id):
     db.connections.release_con(con)
     if len(r) > 0: d = r[0]
     else: return dict()
-    d.update({'rest':r})
     return d
-
-def make_session_dict(session_id, sig_id, msg_sig, usr_id, last_update=None):
-    '''Makes a dictionary from the passed in parameters. Used to make sure the sess_dicts returned by
-    several functions are standard across the entire module.'''
-    return {'session_id':session_id, 'sig_id':sig_id, 'msg_sig':msg_sig, 'usr_id':usr_id, 
-            'last_update':last_update}
 
 def clear_old_sessions():
     '''This method goes through all the rows in in the table session and checks to see if they have
