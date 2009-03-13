@@ -125,4 +125,3 @@ def export(cur, usr_id, game_map, pic):
     insert_adjacencies(all_terrs, cur)
     insert_triangles(game_map.land_terrs, cur)
     insert_lines(set(game_map.lines), all_terrs, cur)
-    return game_map.map_id

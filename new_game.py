@@ -46,7 +46,9 @@ def print_new_game(user_dict, form, user_to_add="", user_to_remove=""):
     this_game = {}
     
     r = games_for_current_user(con)
-    if not r: make_new_game(con)
+    if not r:
+        make_new_game(con)
+        r = games_for_current_user(con)
     this_game = r[0]
     #'Existing image:<br><img src="map_images/%s.png">' % r[0]['pic']
     
@@ -75,16 +77,33 @@ def print_new_game(user_dict, form, user_to_add="", user_to_remove=""):
 
 def start_game(user_dict):    
     con = db.connections.get_con()
+    
+    r = games_for_current_user(con)
+    
     cur = db.DictCursor(con)
-    gen = mapgen.ContinentGenerator(num_countries=2, verbose=False)
+    cur.callproc('users_in_game', (r[0]['gam_id'],))
+    user_table = cur.fetchall()
+    cur.close()
+    
+    gen = mapgen.ContinentGenerator(num_countries=len(user_table), verbose=False)
     landmass = gen.generate()
     dest_real = mapgen.save_to_image(landmass)
     dest_saved = os.path.split(dest_real)[1]
     dest_saved = os.path.splitext(dest_saved)[0]
     
     landmass.name = "Test World "+dest_saved[:5]
-    map_id = mapgen.dbexport.export(cur, user_dict['usr_id'], landmass, dest_saved)
+    cur = db.DictCursor(con)
+    mapgen.dbexport.export(cur, user_dict['usr_id'], landmass, dest_saved)
     cur.close()
+    cur = db.DictCursor(con)
+    cur.execute(q.give_map_to_game % (landmass.map_id, dest_saved, r[0]['gam_id']))
+    cur.close()
+    
+    cur = db.DictCursor(con)
+    for usr, cty in zip(user_table, landmass.countries):
+        cur.execute(q.give_cty_to_usr % (cty.cty_id, usr['usr_id'], r[0]['gam_id']))
+    cur.close()
+    
     db.connections.release_con(con)
     templater.print_template("templates/main.html", locals())
 

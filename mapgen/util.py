@@ -78,7 +78,10 @@ def intersect(p1, p2, p3, p4, allow_points=True):
     if len2 == 0:
         print p3, p4
     dot = (xD1*xD2+yD1*yD2)
-    deg = dot/(len1*len2)
+    if len1*len2 == 0:
+        deg = 0
+    else:
+        deg = dot/(len1*len2)
     
     if abs(deg) == 1:
         return False

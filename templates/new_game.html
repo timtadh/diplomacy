@@ -19,6 +19,11 @@
             <+ templater.print_table(user_table, user_table_info, "new_game.py", "users_in_game", paging=True) #
             ->
         </p>
+        <+ if len(user_table) > 1:
+        <p>
+            <input type="submit" name="Start Game" value="Start Game"/>
+        </p>
+        ->
     </form>
 </div>
 
