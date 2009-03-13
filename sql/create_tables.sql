@@ -3,8 +3,9 @@
 -- Table Creation for diplomacy
 
 START TRANSACTION;
---DROP DATABASE IF EXISTS diplomacy;
---CREATE DATABASE diplomacy DEFAULT CHARACTER SET ascii COLLATE ascii_general_ci;
+
+-- DROP DATABASE IF EXISTS diplomacy;
+-- CREATE DATABASE diplomacy DEFAULT CHARACTER SET ascii COLLATE ascii_general_ci;
 USE diplomacy;
 ----------------------------------------  Schema  -------------------------------------
 --  users (usr_id : varchar(64), name : varchar(256), email : varchar(256), 
@@ -24,12 +25,13 @@ USE diplomacy;
 --        gam_season : enum('spring', 'fall'),  gam_year : year(4), turn_start : datetime, 
 --        turn_length : time, turn_stage : int(11),  ended : tinyint(1))
 --  
---  game_membership (usr_id : varchar(64), gam_id : int(11), orders_given : tinyint(1))
---  
 --  turn_stages (trs_id : int(11), name : varchar(64), description : varchar(256), 
 --               fall : tinyint(1))
 --  
 --  country (cty_id : int(11), usr_id : varchar(64), name : varchar(128), color : varchar(7))
+--  
+--  game_membership (usr_id : varchar(64), gam_id : int(11), cty_id : int(11), 
+--                   orders_given : tinyint(1))
 --  
 --  territory (ter_id : int(11), map_id : int(11), name : varchar(128), abbrev : varchar(4),
 --             piece_x : int(11), piece_y : int(11), label_x : int(11), label_y : int(11),
@@ -144,19 +146,6 @@ CREATE TABLE game
         REFERENCES turn_stages(trs_id) ON DELETE RESTRICT
 );
 
-DROP TABLE IF EXISTS game_membership;
-CREATE TABLE game_membership
-(
-    usr_id varchar(64) NOT NULL,
-    gam_id int(11) NOT NULL,
-    orders_given tinyint(1) DEFAULT 0,
-    CONSTRAINT pk_game_membership PRIMARY KEY (usr_id, gam_id),
-    CONSTRAINT fk_usr_id FOREIGN KEY (usr_id)
-        REFERENCES users(usr_id) ON DELETE RESTRICT,
-    CONSTRAINT fk_gam_id FOREIGN KEY (gam_id)
-        REFERENCES game(gam_id) ON DELETE RESTRICT
-);
-
 DROP TABLE IF EXISTS country;
 CREATE TABLE country
 (
@@ -167,6 +156,23 @@ CREATE TABLE country
     CONSTRAINT pk_country PRIMARY KEY (cty_id),
     CONSTRAINT fk_usr_id FOREIGN KEY (usr_id)
         REFERENCES users(usr_id) ON DELETE RESTRICT
+);
+
+DROP TABLE IF EXISTS game_membership;
+CREATE TABLE game_membership
+(
+    usr_id varchar(64) NOT NULL,
+    gam_id int(11) NOT NULL,
+    cty_id int(11) NOT NULL,
+    orders_given tinyint(1) DEFAULT 0,
+    CONSTRAINT pk_game_membership PRIMARY KEY (usr_id, gam_id),
+    CONSTRAINT fk_usr_id FOREIGN KEY (usr_id)
+        REFERENCES users(usr_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_gam_id FOREIGN KEY (gam_id)
+        REFERENCES game(gam_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_cty_id FOREIGN KEY (cty_id)
+        REFERENCES country(cty_id) ON DELETE RESTRICT,
+    CONSTRAINT uq_cty_id UNIQUE (cty_id)
 );
 
 DROP TABLE IF EXISTS territory;
