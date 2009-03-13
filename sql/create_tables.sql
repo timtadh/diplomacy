@@ -163,7 +163,7 @@ CREATE TABLE game_membership
 (
     usr_id varchar(64) NOT NULL,
     gam_id int(11) NOT NULL,
-    cty_id int(11) NOT NULL,
+    cty_id int(11),
     orders_given tinyint(1) DEFAULT 0,
     CONSTRAINT pk_game_membership PRIMARY KEY (usr_id, gam_id),
     CONSTRAINT fk_usr_id FOREIGN KEY (usr_id)

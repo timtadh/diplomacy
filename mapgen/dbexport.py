@@ -1,20 +1,33 @@
+"""
+PyWorldGen dbexport
+by Steve Johnson
+
+This module provides methods to put a Map object into the diplomacy database.
+"""
+
+import queries as q
+
 def rgb_to_hex(rgb_tuple):
+    """Convert a tuple of 0-255 valued colors into #ffffff valued colors"""
     rgb_tuple = tuple([int(255*i) for i in rgb_tuple[:3]])
     hexcolor = '#%02x%02x%02x' % rgb_tuple
     return hexcolor
 
 def incrementor(i=0):
+    """Generator that yields increasing integers starting with i"""
     while 1:
         yield i
         i += 1
 
 def next_id(tab, cur):
+    """Get the next auto-incremented id from table 'tab'"""
     q = 'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = "%s";' % tab
     cur.execute(q)
     r = cur.fetchall()
     return r[0]['AUTO_INCREMENT']
 
 def terr_to_dict(terr, map_id, get_id):
+    """Put relevant Territory attributes in a dictionary"""
     terr_dict = {}
     terr.ter_id = get_id.next()
     terr_dict['ter_id'] = terr.ter_id
@@ -36,6 +49,7 @@ def terr_to_dict(terr, map_id, get_id):
     return terr_dict
 
 def line_to_dict(line, get_id):
+    """Put relevant Line attributes in a dictionary"""
     line_dict = {}
     if hasattr(line, 'ln_id'): return None
     line.ln_id = get_id.next()
@@ -46,66 +60,51 @@ def line_to_dict(line, get_id):
     line_dict['y2'] = line.b.y
     return line_dict
 
+#The insert functions all work the same way. They build a string of comma-delimited data tuples
+#from the relevant data and pass it to cur.execute() as part of a query string.
 def insert_countries(countries, usr_id, cur):
-    q = 'INSERT INTO country (usr_id, name, color) VALUES '
     cty_fmt = '("%s", "%s", "%s")'
     cty_strs = []
     get_id = incrementor(next_id('country', cur))
     for country in countries:
         country.cty_id = get_id.next()
         cty_strs.append(cty_fmt % (usr_id, country.name, rgb_to_hex(country.color)))
-        print "<br>"+str(country.cty_id)
-    q += ",".join(cty_strs)+";"
-    cur.execute(q)
+    cur.execute(q.country + ",".join(cty_strs) + ";")
 
 def insert_territories(terrs, map_id, ter_id, cur):
-    q = 'INSERT INTO territory (map_id, name, abbrev, piece_x, piece_y, '\
-        'label_x, label_y, ter_type, supply, coastal) VALUES '
-    terr_fmt =  '(%(map_id)s, "%(name)s", "%(abbrev)s", %(piece_x)s, %(piece_y)s, '\
-                '%(label_x)s, %(label_y)s, "land", %(supply)s, %(coastal)s)'
     terr_strs = []
     for terr in terrs:
-        terr_strs.append(terr_fmt % terr_to_dict(terr, map_id, ter_id))
-    q += ",".join(terr_strs)+";"
-    cur.execute(q)
+        terr_strs.append(q.terr_fmt % terr_to_dict(terr, map_id, ter_id))
+    cur.execute(q.territory + ",".join(terr_strs) + ";")
 
 def insert_adjacencies(terrs, cur):
-    q = 'INSERT INTO adjacent (ter_id, adj_ter_id) VALUES '
     adj_fmt = '(%s, %s)'
     adj_strs = []
     
     for terr in terrs:
         for terr2 in terr.adjacencies:
-            try:
-                adj_strs.append(adj_fmt % (terr.ter_id, terr2.ter_id))
-            except:
-                pass
-    q += ",".join(adj_strs)+";"
-    cur.execute(q)
+            adj_strs.append(adj_fmt % (terr.ter_id, terr2.ter_id))
+    cur.execute(q.adjacent + ",".join(adj_strs) + ";")
 
 def insert_triangles(terrs, cur):
-    q = 'INSERT INTO triangle (ter_id, x1, y1, x2, y2, x3, y3) VALUES '
     tri_fmt = '(%s, %s, %s, %s, %s, %s, %s)'
     tri_strs = []
     
     for terr in terrs:
         for tri in terr.triangles:
             tri_strs.append(tri_fmt % tuple([terr.ter_id]+list(tri)))
-    q += ",".join(tri_strs)+";"
-    cur.execute(q)
+    cur.execute(q.triangle + ",".join(tri_strs) +";")
 
 def insert_lines(lines, terrs, cur):
-    q = 'INSERT INTO line (x1, y1, x2, y2) VALUES '
+    """Handles both lines and the line-in-terr relation"""
     ln_fmt = '(%(x1)s, %(y1)s, %(x2)s, %(y2)s)'
     ln_strs = []
     get_id = incrementor(next_id('line', cur))
     
     for ln in lines:
         ln_strs.append(ln_fmt % line_to_dict(ln, get_id))
-    q += ",".join(ln_strs)+";"
-    cur.execute(q)
+    cur.execute(q.line + ",".join(ln_strs) + ";")
     
-    q = 'INSERT INTO ter_ln_relation (ter_id, ln_id) VALUES '
     ln_fmt = '(%s, %s)'
     ln_strs = []
     for terr in terrs:
@@ -113,15 +112,11 @@ def insert_lines(lines, terrs, cur):
             if ln not in lines:
                 print 'weirdness with', ln
             ln_strs.append(ln_fmt % (terr.ter_id, ln.ln_id))
-    q += ",".join(ln_strs)+";"
-    cur.execute(q)
-     
+    cur.execute(q.ln_terr + ",".join(ln_strs) + ";")
 
 def export(cur, usr_id, game_map, pic):
     game_map.map_id = next_id("map", cur)
-    q_map = 'INSERT INTO map (world_name, pic) VALUES ("%s", "%s");'
-    print "Map ID: "+str(game_map.map_id)+"<br>"
-    cur.execute(q_map % (game_map.name, pic))
+    cur.execute(q.gmap % (game_map.name, pic))
     insert_countries(game_map.countries, usr_id, cur)
     
     all_terrs = game_map.land_terrs|game_map.sea_terrs
@@ -130,3 +125,4 @@ def export(cur, usr_id, game_map, pic):
     insert_adjacencies(all_terrs, cur)
     insert_triangles(game_map.land_terrs, cur)
     insert_lines(set(game_map.lines), all_terrs, cur)
+    return game_map.map_id

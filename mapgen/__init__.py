@@ -595,7 +595,7 @@ class ContinentGenerator(object):
                 except:
                     pass #fail silently, mrawrg
             small, large = self.unbalanced_countries()
-        if i == 1000: print 'balance fail'
+        if i == 1000 and self.verbose: print 'balance fail'
         
         worked = True
         while worked:

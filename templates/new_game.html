@@ -3,8 +3,21 @@
 |= templater.print_template("templates/sidebar.html", globals()) #
 ->
 
+<div class="main">
+    <h2 class="main">New Game</h2>
+    
+    <form action="new_game.py" method="post">
+        <p>
+            User to add:
+            <input type="text" name="screen_name" size=50 value='<%screen_name%>'/>
+            (screen name)
+            <a class='inline' href='user_list.py'>Directory</a>
+        </p>
+        <p><input type="submit" name="Add User" value="Add User"/></p>
+        <p><%s%></p>
+    </form>
+</div>
 
-<%s%>
 
 <+ templater.print_template("templates/footer.html", globals()) #
 ->
