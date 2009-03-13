@@ -55,7 +55,7 @@ else:
                 cur.close()
                 db.connections.release_con(con)
                 screen_name = msg['from']
-                subject = 're: ' + msg['subject']
+                subject = 're: ' + templater.Text().from_python(msg['subject'])
             except:
                 pass
         print_sendmsg(user_dict, screen_name, subject)

@@ -122,10 +122,12 @@ def print_table(table, table_info, target_page=None, table_name=None, paging=Fal
     else: page = 0
     
     if paging: rows_per_page = rows
-    else: rows_per_page = 0
+    else: rows_per_page = len(table)
     
-    if (len(table)%rows_per_page) == 0: pages = len(table)/rows_per_page
-    else: pages = len(table)/rows_per_page + 1
+    
+    if rows_per_page and (len(table)%rows_per_page) == 0: pages = len(table)/rows_per_page
+    elif rows_per_page: pages = len(table)/rows_per_page + 1
+    else: pages = 1
     
     print_template("templates/create_table.html", locals())
 
