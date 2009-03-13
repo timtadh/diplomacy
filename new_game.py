@@ -31,7 +31,16 @@ def add_user_to_game(sn, game_data, con):
     cur.execute(q.add_user % (usr_data[0]['usr_id'], game_data['gam_id']))
     cur.close()
 
-def print_new_game(user_dict, form, user_to_add=""):    
+def del_user_from_game(sn, game_data, con):
+    cur = db.DictCursor(con)
+    cur.callproc('user_data_bysn', (sn,))
+    usr_data = cur.fetchall()
+    cur.close()
+    cur = db.DictCursor(con)
+    cur.execute(q.del_user % (usr_data[0]['usr_id'], game_data['gam_id']))
+    cur.close()
+
+def print_new_game(user_dict, form, user_to_add="", user_to_remove=""):    
     error = ""
     con = db.connections.get_con()
     this_game = {}
@@ -46,16 +55,26 @@ def print_new_game(user_dict, form, user_to_add=""):
             add_user_to_game(user_to_add, this_game, con)
         except:
             error = "Could not add user "+user_to_add
+    
+    if user_to_remove != "":
+        try:
+            del_user_from_game(user_to_remove, this_game, con)
+        except:
+            error = "Could not remove user "+user_to_add
+
     screen_name = ""
     cur = db.DictCursor(con)
     cur.callproc('users_in_game', (this_game['gam_id'],))
     user_table = cur.fetchall()
-    user_table_info = (('screen_name', "Screen Name"),)
+    for usr in user_table:
+        usr['remove_link'] = "<a class='inline' href='new_game.py?rm_sn="+usr['screen_name']+"'>remove</a>"
+    user_table_info = (('screen_name', "Screen Name"),('remove_link', ""))
     cur.close()
     db.connections.release_con(con)
     templater.print_template("templates/new_game.html", locals())
 
-def start_game(con):
+def start_game(user_dict):    
+    con = db.connections.get_con()
     cur = db.DictCursor(con)
     gen = mapgen.ContinentGenerator(num_countries=2, verbose=False)
     landmass = gen.generate()
@@ -66,7 +85,7 @@ def start_game(con):
     landmass.name = "Test World "+dest_saved[:5]
     map_id = mapgen.dbexport.export(cur, user_dict['usr_id'], landmass, dest_saved)
     cur.close()
-    print 'start'
+    db.connections.release_con(con)
     templater.print_template("templates/main.html", locals())
 
 if user_dict == {}:
@@ -77,12 +96,14 @@ else:
     import psyco
     psyco.full()
     if form.has_key('Start Game'):
-        #THIS IS BROKEN
-        this_game = start_game(con)
+        start_game(user_dict)
     else:
+        add_sn = ""
+        rm_sn = ""
         if form.has_key('Add User') and form.has_key('screen_name'):
-            print_new_game(user_dict, form, form['screen_name'].value)
+            add_sn = form['screen_name'].value
         if form.has_key('sn'):
-            print_new_game(user_dict, form, form['sn'].value)
-        else:
-            print_new_game(user_dict, form)
+            add_sn = form['sn'].value
+        if form.has_key('rm_sn'):
+            rm_sn = form['rm_sn'].value
+        print_new_game(user_dict, form, add_sn, rm_sn)
