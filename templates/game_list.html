@@ -1,0 +1,17 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <h2 class="main">My Games</h2>
+    <p>
+    <+ templater.print_table(game_table, game_table_info, "game_list.py", "games") #
+    ->
+    </p>
+</div>
+
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

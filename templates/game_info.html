@@ -1,0 +1,17 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+<div class="main">
+    <h2 class="main">Game Info</h2>
+    <p><h3><%map_name%></h3><img src="map_images/<%map_path%>.png" alt="Map Image"><br>
+    <p><h3>Users:</h3>
+    <+ templater.print_table(user_table, user_table_info, "new_game.py", "users_in_game") #
+    ->
+    </p>
+</div>
+
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

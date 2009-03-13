@@ -18,7 +18,7 @@ def games_for_current_user(con):
 def make_new_game(con):
     cur = db.DictCursor(con)
     gam_id = mapgen.dbexport.next_id('game', cur)
-    cur.execute(q.new_game)
+    cur.execute(q.new_game % user_dict['usr_id'])
     cur.execute(q.add_user % (user_dict['usr_id'], gam_id))
     cur.close()
 
@@ -69,7 +69,10 @@ def print_new_game(user_dict, form, user_to_add="", user_to_remove=""):
     cur.callproc('users_in_game', (this_game['gam_id'],))
     user_table = cur.fetchall()
     for usr in user_table:
-        usr['remove_link'] = "<a class='inline' href='new_game.py?rm_sn="+usr['screen_name']+"'>remove</a>"
+        if usr['screen_name'] == user_dict['screen_name']:
+            usr['remove_link'] = "--"
+        else:
+            usr['remove_link'] = "<a class='inline' href='new_game.py?rm_sn="+usr['screen_name']+"'>remove</a>"
     user_table_info = (('screen_name', "Screen Name"),('remove_link', ""))
     cur.close()
     db.connections.release_con(con)
@@ -102,6 +105,11 @@ def start_game(user_dict):
     cur = db.DictCursor(con)
     for usr, cty in zip(user_table, landmass.countries):
         cur.execute(q.give_cty_to_usr % (cty.cty_id, usr['usr_id'], r[0]['gam_id']))
+    cur.close()
+    
+    cur = db.DictCursor(con)
+    cur.callproc('set_session_gam_id', (ses_dict['session_id'], user_dict['usr_id'], r[0]['gam_id']))
+    user_table = cur.fetchall()
     cur.close()
     
     db.connections.release_con(con)
