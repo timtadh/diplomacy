@@ -86,11 +86,11 @@ a.inline:hover
 
 a.sidebarlink
 {
-    padding:0em 0ex 0em 2ex;
+    margin-left:-.3ex;
     text-decoration:none;
     color:#000088;
     background-color:#ffffff;
-    top:15px;
+/*     top:15px; */
 }
 
 a.sidebarlink:hover
@@ -123,11 +123,38 @@ li.news
     margin-right:2em;
 }
 
+ul.sidebar_box
+{
+    position:relative;
+    margin-top:0ex;
+    margin-right:2ex;
+    margin-bottom:1ex;
+    text-decoration:none;
+    list-style: none;
+    border:1px solid #dddddd;
+}
+
+li.sidebar
+{
+    margin-left:-4ex;
+}
+
+ul.sidebar
+{
+    position:relative;
+    margin-top:0ex;
+    margin-right:2ex;
+    margin-bottom:1ex;
+    text-decoration:none;
+    list-style: none;
+}
+
 div.sidebar
 {
     position:relative;
     top:15px;
     margin-bottom:20px;
+    margin-left:2ex;
     float:left;
     clear:left;
     width:15em;
@@ -214,7 +241,7 @@ div.main
 {
     position:relative;
     top:5px;
-    margin-left:16em;
+    margin-left:17em;
     margin-top:-10px;
     color:#000000;
     background-color:#ffffff;
