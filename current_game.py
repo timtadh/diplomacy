@@ -63,8 +63,12 @@ def print_game_info(user_dict, ses_dict, switch, ng):
         map_data = cur.fetchall()
         cur.close()
         db.connections.release_con(con)
-        map_name = map_data[0]['world_name']
-        map_path = map_data[0]['pic']
+        if len(map_data) > 0:
+            map_name = map_data[0]['world_name']
+            map_path = map_data[0]['pic']
+        else:
+            map_name = "No games in progress"
+            map_path = "blank"
     templater.print_template("templates/current_game.html", locals())
 
 if user_dict == {}:

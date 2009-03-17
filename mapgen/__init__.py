@@ -602,8 +602,8 @@ class ContinentGenerator(object):
             worked = self.remove_lone_territories()
         
         self.merge_in_countries()
-        self.color_territories()
         self.place_supply_centers()
+        self.color_territories()
     
     def merge_in_countries(self):
         self.sort_countries()
@@ -633,21 +633,6 @@ class ContinentGenerator(object):
                     country.land_terrs.remove(to_remove)
                 else:
                     self.remove_lone_territories()
-    
-    # def place_supply_centers(self):
-    #     total_supply_centers = int(5.14*self.num_countries)+1
-    #     centers_per_country = total_supply_centers/self.num_countries
-    #     this_country = 0
-    #     random.shuffle(self.countries)
-    #     this_terr = random.choice(self.countries[0].land_terrs)
-    #     while total_supply_centers > 0:
-    #         while this_terr.has_supply_center:
-    #             this_terr = random.choice(
-    #                 self.countries[this_country].land_terrs
-    #             )
-    #         this_terr.has_supply_center = True
-    #         total_supply_centers -= 1
-    #         this_country = (this_country + 1) % len(self.countries)
     
     def make_seas(self):
         if self.verbose: print 'finding bays...'

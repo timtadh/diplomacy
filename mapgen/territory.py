@@ -154,7 +154,7 @@ class LandTerr(Territory):
         if self.country != None:
             col = self.country.color
         else:
-            color = (1.0, 1.0, 1.0, 1.0)
+            col = (1.0, 1.0, 1.0, 1.0)
         self.color = (
             col[0]*darken_amt,
             col[1]*darken_amt,

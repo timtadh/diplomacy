@@ -14,3 +14,5 @@ triangle =  'INSERT INTO triangle (ter_id, x1, y1, x2, y2, x3, y3) VALUES '
 line =      'INSERT INTO line (x1, y1, x2, y2) VALUES '
 
 ln_terr =   'INSERT INTO ter_ln_relation (ter_id, ln_id) VALUES '
+
+supplier =  'INSERT INTO supplier (ter_id, cty_id) VALUES '

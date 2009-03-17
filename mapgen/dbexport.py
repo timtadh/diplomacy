@@ -114,6 +114,15 @@ def insert_lines(lines, terrs, cur):
             ln_strs.append(ln_fmt % (terr.ter_id, ln.ln_id))
     cur.execute(q.ln_terr + ",".join(ln_strs) + ";")
 
+def insert_suppliers(terrs, cur):
+    sup_fmt = "(%s, %s)"
+    sup_strs = []
+    
+    for terr in terrs:
+        if terr.has_supply_center and terr.country != None:
+            sup_strs.append(sup_fmt % (terr.ter_id, terr.country.cty_id))
+    cur.execute(q.supplier + ",".join(sup_strs) + ";")
+
 def export(cur, usr_id, game_map, pic):
     game_map.map_id = next_id("map", cur)
     cur.execute(q.gmap % (game_map.name, pic))
@@ -125,3 +134,4 @@ def export(cur, usr_id, game_map, pic):
     insert_adjacencies(all_terrs, cur)
     insert_triangles(game_map.land_terrs, cur)
     insert_lines(set(game_map.lines), all_terrs, cur)
+    insert_suppliers(all_terrs, cur)
