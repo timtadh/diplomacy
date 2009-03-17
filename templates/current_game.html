@@ -1,0 +1,32 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <+ if choose_game:
+        <h2 class="main">Select a Game</h2>
+        <p>
+        <+ templater.print_table(game_table, game_table_info, "game_list.py", "games") #
+        ->
+        </p>
+    |= else:
+        <h2 class="main">Game Info</h2>
+        <p style="text-align: center; margin_left:auto; margin_right:auto;">
+            <h3><%map_name%></h3><img src="map_images/<%map_path%>.png" alt="Map Image"><br>
+        </p>
+        <p style="text-align: center">
+            <h3>Users:</h3>
+        <+ templater.print_table(user_table, user_table_info, "new_game.py", "users_in_game") #
+        ->
+        </p>
+        <p>
+            <a href="current_game.py?new_game=True">Change active game</a>
+        </p>
+    ->
+</div>
+
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

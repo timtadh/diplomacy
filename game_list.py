@@ -23,8 +23,7 @@ def get_game_table(switch=False, ng=-1):
     update_ses_dict()
     return game_table
 
-def print_game_list(user_dict, switch, ng):
-    
+def print_game_list(user_dict, switch, ng): 
     game_table = get_game_table(switch, ng)
     
     for game in game_table:
