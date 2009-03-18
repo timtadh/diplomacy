@@ -40,6 +40,13 @@ def del_user_from_game(sn, game_data, con):
     cur.execute(q.del_user % (usr_data[0]['usr_id'], game_data['gam_id']))
     cur.close()
 
+def get_user_table(con, gam_id):    
+    cur = db.DictCursor(con)
+    cur.callproc('users_in_game', (gam_id,))
+    user_table = cur.fetchall()
+    cur.close()
+    return user_table, (('screen_name', "Screen Name"),('remove_link', ""))
+
 def print_new_game(user_dict, form, user_to_add="", user_to_remove=""):    
     error = ""
     con = db.connections.get_con()
@@ -65,16 +72,12 @@ def print_new_game(user_dict, form, user_to_add="", user_to_remove=""):
             error = "Could not remove user "+user_to_add
 
     screen_name = ""
-    cur = db.DictCursor(con)
-    cur.callproc('users_in_game', (this_game['gam_id'],))
-    user_table = cur.fetchall()
+    user_table, user_table_info = get_user_table(con, this_game['gam_id'])
     for usr in user_table:
         if usr['screen_name'] == user_dict['screen_name']:
             usr['remove_link'] = "--"
         else:
             usr['remove_link'] = "<a class='inline' href='new_game.py?rm_sn="+usr['screen_name']+"'>remove</a>"
-    user_table_info = (('screen_name', "Screen Name"),('remove_link', ""))
-    cur.close()
     db.connections.release_con(con)
     templater.print_template("templates/new_game.html", locals())
 
@@ -95,9 +98,14 @@ def start_game(user_dict):
     dest_saved = os.path.splitext(dest_saved)[0]
     
     landmass.name = "Test World "+dest_saved[:5]
+    
+    user_table, user_table_info = get_user_table(con, r[0]['gam_id'])
+    user_list = [i['usr_id'] for i in user_table]
+    
     cur = db.DictCursor(con)
-    mapgen.dbexport.export(cur, user_dict['usr_id'], landmass, dest_saved)
+    mapgen.dbexport.export(cur, user_list, landmass, dest_saved)
     cur.close()
+    
     cur = db.DictCursor(con)
     cur.execute(q.give_map_to_game % (landmass.map_id, dest_saved, r[0]['gam_id']))
     cur.close()
@@ -113,7 +121,7 @@ def start_game(user_dict):
     cur.close()
     
     db.connections.release_con(con)
-    templater.print_template("templates/main.html", locals())
+    templater.print_template("templates/game_created.html", locals())
 
 if user_dict == {}:
     target_page = 'new_game.py'

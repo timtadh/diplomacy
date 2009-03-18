@@ -62,11 +62,12 @@ def line_to_dict(line, get_id):
 
 #The insert functions all work the same way. They build a string of comma-delimited data tuples
 #from the relevant data and pass it to cur.execute() as part of a query string.
-def insert_countries(countries, usr_id, cur):
+def insert_countries(countries, users, cur):
     cty_fmt = '("%s", "%s", "%s")'
     cty_strs = []
     get_id = incrementor(next_id('country', cur))
-    for country in countries:
+    print users
+    for country, usr_id in zip(countries, users):
         country.cty_id = get_id.next()
         cty_strs.append(cty_fmt % (usr_id, country.name, rgb_to_hex(country.color)))
     cur.execute(q.country + ",".join(cty_strs) + ";")
@@ -123,10 +124,10 @@ def insert_suppliers(terrs, cur):
             sup_strs.append(sup_fmt % (terr.ter_id, terr.country.cty_id))
     cur.execute(q.supplier + ",".join(sup_strs) + ";")
 
-def export(cur, usr_id, game_map, pic):
+def export(cur, users, game_map, pic):
     game_map.map_id = next_id("map", cur)
     cur.execute(q.gmap % (game_map.name, pic))
-    insert_countries(game_map.countries, usr_id, cur)
+    insert_countries(game_map.countries, users, cur)
     
     all_terrs = game_map.land_terrs|game_map.sea_terrs
     ter_id = incrementor(next_id('territory', cur))

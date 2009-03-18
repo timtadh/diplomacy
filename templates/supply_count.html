@@ -1,0 +1,16 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <h2 class="main">Supply Center Count</h2>
+    
+    <+ templater.print_table(table, table_info, "supply_count.py", "suppliers", paging=False) #
+    ->
+</div>
+
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->
