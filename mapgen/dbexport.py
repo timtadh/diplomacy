@@ -66,7 +66,6 @@ def insert_countries(countries, users, gam_id, cur):
     cty_fmt = '("%s", %s, "%s", "%s")'
     cty_strs = []
     get_id = incrementor(next_id('country', cur))
-    print users
     for country, usr_id in zip(countries, users):
         country.cty_id = get_id.next()
         cty_strs.append(cty_fmt % (usr_id, gam_id, country.name, rgb_to_hex(country.color)))

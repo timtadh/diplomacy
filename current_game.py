@@ -46,9 +46,9 @@ def print_game_list(user_dict, ses_dict, switch, ng):
 
 def get_user_table(con):
     cur = db.DictCursor(con)
-    cur.callproc('users_in_game', (ses_dict['gam_id'],))
+    cur.callproc('users_in_running_game', (ses_dict['gam_id'],))
     user_table = cur.fetchall()
-    user_table_info = (('screen_name', "Screen Name"),)
+    user_table_info = (('screen_name', "Screen Name"), ('name', "Country"))
     cur.close()
     return user_table, user_table_info
 
