@@ -1,6 +1,6 @@
 gmap =      'INSERT INTO map (world_name, pic) VALUES ("%s", "%s");'
 
-country =   'INSERT INTO country (usr_id, name, color) VALUES '
+country =   'INSERT INTO country (usr_id, gam_id, name, color) VALUES '
 
 territory = 'INSERT INTO territory (map_id, name, abbrev, piece_x, piece_y, '\
             'label_x, label_y, ter_type, supply, coastal) VALUES '

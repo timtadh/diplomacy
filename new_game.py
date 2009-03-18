@@ -103,7 +103,7 @@ def start_game(user_dict):
     user_list = [i['usr_id'] for i in user_table]
     
     cur = db.DictCursor(con)
-    mapgen.dbexport.export(cur, user_list, landmass, dest_saved)
+    mapgen.dbexport.export(cur, user_list, landmass, dest_saved, r[0]['gam_id'])
     cur.close()
     
     cur = db.DictCursor(con)
@@ -112,7 +112,7 @@ def start_game(user_dict):
     
     cur = db.DictCursor(con)
     for usr, cty in zip(user_table, landmass.countries):
-        cur.execute(q.give_cty_to_usr % (cty.cty_id, usr['usr_id'], r[0]['gam_id']))
+        cur.execute(q.give_cty_to_usr % (usr['usr_id'], cty.cty_id, r[0]['gam_id']))
     cur.close()
     
     cur = db.DictCursor(con)

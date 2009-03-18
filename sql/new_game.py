@@ -9,7 +9,7 @@ WHERE game.gam_id = %s;
 """
 
 give_cty_to_usr = """
-UPDATE game_membership
-SET game_membership.cty_id = %s
-WHERE game_membership.usr_id = "%s" AND game_membership.gam_id = %s;
+UPDATE country
+SET country.usr_id = "%s"
+WHERE country.cty_id = %s AND country.gam_id = %s;
 """

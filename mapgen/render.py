@@ -65,7 +65,7 @@ def basic(landmass, path="map_temp.png", draw_cities=False):
                 ), fill="rgb(0, 0, 0)")
         del draw
     draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype("Arial Bold.ttf", 10)
+    font = ImageFont.truetype("Inconsolata.otf", 9)
     for terr in landmass.land_terrs.union(landmass.sea_terrs):
         tx = terr.x + ox - draw.textsize(terr.abbreviation)[0]/2
         ty = terr.y + oy - draw.textsize(terr.abbreviation)[1]/2
