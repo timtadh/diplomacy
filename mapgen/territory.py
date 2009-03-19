@@ -17,6 +17,7 @@ class Territory(object):
         self.name = ""
         self.abbreviation = ""
         self.ter_id = 0
+        self.is_sea = False
     
 
 class SeaTerr(Territory):
@@ -30,6 +31,7 @@ class SeaTerr(Territory):
         self.y = (line.a.y + line.b.y) / 2
         self.pc_x = self.x
         self.pc_y = self.y - 10
+        self.is_sea = True
     
 
 class LandTerr(Territory):

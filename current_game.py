@@ -64,8 +64,13 @@ def print_game_info(user_dict, ses_dict, switch, ng):
         cur.close()
         db.connections.release_con(con)
         if len(map_data) > 0:
-            map_name = map_data[0]['world_name']
-            map_path = map_data[0]['pic']
+            map_data = map_data[0]
+            map_name = map_data['world_name']
+            map_path = map_data['pic']
+            cur = db.DictCursor(con)
+            cur.callproc('usr_suppliers_in_game', (ses_dict['gam_id'], user_dict['usr_id']))
+            print cur.fetchall()
+            cur.close()
         else:
             map_name = "No games in progress"
             map_path = "blank"

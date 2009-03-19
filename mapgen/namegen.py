@@ -11,9 +11,11 @@ class Namer(object):
 
     def __init__(self):
         self.title = ["New", "The"]
-        self.prefix = ["Co", "Oh", "Cal", "Ok", "Vir", "Flor", "Kan", "Min", "Ar", "Ne", "Wa", "Id"]
-        self.mid = ["la", "if", "gin", "i", "e", "v", "sh"]
-        self.mid2 = ["ra", "or", "hom", "d", "sot", "zon", "ad", "ing"]
+        self.prefix = [
+            "Co", "Oh", "Cal", "Ok", "Vir", "Flor", "Kan", "Min", "Ar", "Ne", "Wa", "Id", "Ma"
+        ]
+        self.mid = ["la", "if", "gin", "i", "e", "v", "sh", "gic"]
+        self.mid2 = ["ra", "or", "hom", "d", "sot", "zon", "ad", "ing", "al"]
         self.suffix = ["do", "io", "nia", "a", "sas", "ton", "ho"]
         self.end_l = ["Land", "Kingdom"]
         self.end_s = ["Sea", "Ocean"]
@@ -26,18 +28,14 @@ class Namer(object):
         self.used_names = set()
         self.used_abbrevs = set()
     
-    def create(self, tpe):
+    def create(self, tpe, i=0):
 
         name = []
         abbrev = ""
-
-        # choose a random number between 0 and the end of a list
-        def pickno(x):
-            return random.randint(0, (x-1))
         
         # decide if there will be a title or ending appended to the name
         def extendname(x, prefix = "", suffix = ""):
-            strval = x[pickno(len(x))]
+            strval = random.choice(x)
             name.append(prefix + strval + suffix)
             return strval
         
@@ -71,8 +69,10 @@ class Namer(object):
         name_str = "".join(name)
         abbrev = string.upper(abbrev)
         
-        if abbrev in self.used_abbrevs or name_str in self.used_names:
-            return self.create(tpe)
+        if abbrev in self.used_abbrevs or name_str in self.used_names and i < 1000:
+            return self.create(tpe, i+1)
+        elif i >= 100:
+            print "Namer recursion depth exceeded (non-fatal, just annoying)"
         
         self.used_names.add(name_str)
         self.used_abbrevs.add(abbrev)

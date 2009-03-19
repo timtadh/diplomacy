@@ -6,6 +6,7 @@ This module provides methods to put a Map object into the diplomacy database.
 """
 
 import queries as q
+import namegen
 
 def rgb_to_hex(rgb_tuple):
     """Convert a tuple of 0-255 valued colors into #ffffff valued colors"""
@@ -26,13 +27,16 @@ def next_id(tab, cur):
     r = cur.fetchall()
     return r[0]['AUTO_INCREMENT']
 
-def terr_to_dict(terr, map_id, get_id):
+def terr_to_dict(terr, map_id, get_id, namer):
     """Put relevant Territory attributes in a dictionary"""
+    landsea = 'land'
+    if terr.is_sea: landsea = 'sea'
+    terr.name, terr.abbreviation = namer.create(landsea)
     terr_dict = {}
     terr.ter_id = get_id.next()
     terr_dict['ter_id'] = terr.ter_id
     terr_dict['map_id'] = map_id
-    terr_dict['name'] = terr.abbreviation*3
+    terr_dict['name'] = terr.name
     terr_dict['abbrev'] = terr.abbreviation
     terr_dict['piece_x'] = terr.pc_x
     terr_dict['piece_y'] = terr.pc_y
@@ -62,19 +66,20 @@ def line_to_dict(line, get_id):
 
 #The insert functions all work the same way. They build a string of comma-delimited data tuples
 #from the relevant data and pass it to cur.execute() as part of a query string.
-def insert_countries(countries, users, gam_id, cur):
+def insert_countries(countries, users, gam_id, cur, namer):
     cty_fmt = '("%s", %s, "%s", "%s")'
     cty_strs = []
     get_id = incrementor(next_id('country', cur))
     for country, usr_id in zip(countries, users):
         country.cty_id = get_id.next()
+        country.name, country.abbreviation = namer.create('land')
         cty_strs.append(cty_fmt % (usr_id, gam_id, country.name, rgb_to_hex(country.color)))
     cur.execute(q.country + ",".join(cty_strs) + ";")
 
-def insert_territories(terrs, map_id, ter_id, cur):
+def insert_territories(terrs, map_id, ter_id, cur, namer):
     terr_strs = []
     for terr in terrs:
-        terr_strs.append(q.terr_fmt % terr_to_dict(terr, map_id, ter_id))
+        terr_strs.append(q.terr_fmt % terr_to_dict(terr, map_id, ter_id, namer))
     cur.execute(q.territory + ",".join(terr_strs) + ";")
 
 def insert_adjacencies(terrs, cur):
@@ -124,13 +129,15 @@ def insert_suppliers(terrs, cur):
     cur.execute(q.supplier + ",".join(sup_strs) + ";")
 
 def export(cur, users, game_map, pic, gam_id):
+    namer = namegen.Namer()
     game_map.map_id = next_id("map", cur)
+    game_map.name, junk = namer.create('land')
     cur.execute(q.gmap % (game_map.name, pic))
-    insert_countries(game_map.countries, users, gam_id, cur)
+    insert_countries(game_map.countries, users, gam_id, cur, namer)
     
     all_terrs = game_map.land_terrs|game_map.sea_terrs
     ter_id = incrementor(next_id('territory', cur))
-    insert_territories(all_terrs, game_map.map_id, ter_id, cur)
+    insert_territories(all_terrs, game_map.map_id, ter_id, cur, namer)
     insert_adjacencies(all_terrs, cur)
     insert_triangles(game_map.land_terrs, cur)
     insert_lines(set(game_map.lines), all_terrs, cur)

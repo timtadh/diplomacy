@@ -71,7 +71,7 @@ def basic(landmass, path="map_temp.png", draw_cities=False):
         ty = terr.y + oy - draw.textsize(terr.abbreviation)[1]/2
         col = "rgb(255,255,255)"
         if hasattr(terr, 'color'):
-            if terr.color[0] + terr.color[1] + terr.color[2] > 1.7:
+            if terr.color[0] + terr.color[1] + terr.color[2] > 1.5:
                 col = "rgb(40, 40, 40)"
         draw.text(
             (tx, ty), terr.abbreviation, fill=col, font=font
