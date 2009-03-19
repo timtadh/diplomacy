@@ -76,6 +76,5 @@ class Namer(object):
         
         self.used_names.add(name_str)
         self.used_abbrevs.add(abbrev)
-        
         return name_str, abbrev
     

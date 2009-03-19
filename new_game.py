@@ -97,7 +97,7 @@ def start_game(user_dict):
     dest_saved = os.path.split(dest_real)[1]
     dest_saved = os.path.splitext(dest_saved)[0]
     
-    landmass.name = "Test World "+dest_saved[:5]
+    #landmass.name = "Test World "+dest_saved[:5]
     
     user_table, user_table_info = get_user_table(con, r[0]['gam_id'])
     user_list = [i['usr_id'] for i in user_table]

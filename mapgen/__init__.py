@@ -1,4 +1,5 @@
-import sys, os, math, random, sets, util, render, hashlib, shutil, string
+import sys, os, math, random, sets, util, hashlib, shutil, string
+import render, namegen
 from primitives import *
 from territory import *
 
@@ -126,6 +127,7 @@ class ContinentGenerator(object):
         self.map_id = 0
     
     def generate(self):
+        self.namer = namegen.Namer()
         if self.num_lines <= 0:
             self.num_lines = 900
         self.lines = set()
@@ -158,8 +160,8 @@ class ContinentGenerator(object):
         return self.get_landmass()
     
     def get_landmass(self):
-        lm = Map(
-            self.lines, self.outside_lines, self.land_terrs, self.sea_terrs, self.countries)
+        lm = Map(self.lines, self.outside_lines, self.land_terrs, self.sea_terrs, self.countries)
+        lm.name, lm.abbreviation = self.namer.create('land')
         lm.width, lm.height = int(self.width), int(self.height)
         lm.offset = self.offset
         return lm
@@ -947,8 +949,12 @@ class ContinentGenerator(object):
                     if self.verbose: print 'line remove fail'
     
     def assign_names(self):
-        for terr in self.land_terrs.union(self.sea_terrs):
-            terr.abbreviation = random_abbrev()
+        for terr in self.land_terrs:
+            terr.name, terr.abbreviation = self.namer.create('land')
+        for terr in self.sea_terrs:
+            terr.name, terr.abbreviation = self.namer.create('sea')
+        for country in self.countries:
+            country.name, country.abbreviation = self.namer.create('land')
     
 
 if __name__ == "__main__":

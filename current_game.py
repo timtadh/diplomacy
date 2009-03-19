@@ -52,6 +52,14 @@ def get_user_table(con):
     cur.close()
     return user_table, user_table_info
 
+def get_supplier_table(con):    
+    cur = db.DictCursor(con)
+    cur.callproc('usr_suppliers_in_game', (ses_dict['gam_id'], user_dict['usr_id']))
+    suppliers = cur.fetchall()
+    supplier_table_info = (('abbrev', "Abbrev"), ('name', "Name"))
+    cur.close()
+    return suppliers, supplier_table_info
+
 def print_game_info(user_dict, ses_dict, switch, ng):
     choose_game = False
     if ses_dict['gam_id'] != None:
@@ -67,10 +75,7 @@ def print_game_info(user_dict, ses_dict, switch, ng):
             map_data = map_data[0]
             map_name = map_data['world_name']
             map_path = map_data['pic']
-            cur = db.DictCursor(con)
-            cur.callproc('usr_suppliers_in_game', (ses_dict['gam_id'], user_dict['usr_id']))
-            print cur.fetchall()
-            cur.close()
+            supplier_table, supplier_table_info = get_supplier_table(con)
         else:
             map_name = "No games in progress"
             map_path = "blank"
