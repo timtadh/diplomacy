@@ -7,12 +7,12 @@ import cookie_session, user_manager
 def print_supplycenters(user_dict):
     con = db.connections.get_con()
     cur = db.DictCursor(con)
-    cur.callproc('supply_count')
+    cur.callproc('supply_count', ses_dict['gam_id'])
     suppliers = cur.fetchall()
     cur.close()
     db.connections.release_con(con)
 
-    table_info = (("screen_name", "Territory"), ("email", "Occupier"))
+    table_info = (("tname", "Territory"), ("cname", "Occupier"))
     table = suppliers
 	
     templater.print_template("templates/supply_count.html", locals())
