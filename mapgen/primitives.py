@@ -14,6 +14,23 @@ class Point(object):
     def get_tuple(self):
         return (self.x, self.y)
     
+    def __hash__(self): return self.get_tuple().__hash__()
+    
+    def __eq__(self, b):
+        return self.get_tuple() == b.get_tuple()
+    
+    def __ne__(self, b):
+        return not self.__eq__(b)
+    
+    def __sub__(self, b):
+        return Point(self.x - b.x, self.y - b.y)
+    
+    def __repr__(self):
+        return str(self.get_tuple())
+    
+    def __str__(self):
+        return str(self.get_tuple())
+    
 
 class Line(object):
     def __init__(self, a, b, left=None, right=None, color=(0,0,0,1)):
@@ -25,8 +42,7 @@ class Line(object):
         self.midpoint = Point((a.x+b.x)/2, (a.y+b.y)/2)
         self.outside = True #line is on outside of shape
         self.color = color
-        self.land_terrs = []
-        self.combinations = 0
+        self.territories = []
         self.id = 0
         self.length = 0     #calculated when requested
         self.favored = False
@@ -34,8 +50,7 @@ class Line(object):
     def get_length(self):
         if self.length == 0:
             self.length = math.sqrt(
-                (self.a.x-self.b.x)*(self.a.x-self.b.x) \
-                + (self.a.y-self.b.y)*(self.a.y-self.b.y)
+                (self.a.x-self.b.x)*(self.a.x-self.b.x) + (self.a.y-self.b.y)*(self.a.y-self.b.y)
             )
         return self.length
     
@@ -43,3 +58,30 @@ class Line(object):
         return "Line((%r, %r), (%r, %r))" % (
             self.a.x, self.a.y, self.b.x, self.b.y
         )
+
+class Triangle(object):
+    
+    def __init__(self, p1, p2, p3):
+        self.p1 = p1
+        self.p2 = p2
+        self.p3 = p3
+
+    def area(self):
+        def length(a, b):
+            return ((a.x - b.x)**2 + (a.y - b.y)**2)**.5
+        m = Point((self.p2.x + self.p3.x)/2.0, (self.p2.y + self.p3.y)/2.0)
+        b = length(self.p2, self.p3)
+        h = length(m, self.p1)
+        return .5*(b)*(h)
+
+    def __eq__(self, b):
+        return self.p1 == b.p1 and self.p2 == b.p2 and self.p3 == b.p3
+    
+    def __ne__(self, b):
+        return not self.__eq__(b)
+    
+    def __repr__(self):
+        return self.__str__()
+    
+    def __str__(self):
+        return '(' + str(self.p1) + ', ' + str(self.p2) + ', ' + str(self.p3) + ')'
