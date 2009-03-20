@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import primitives
-
+import sys
 
 def print_surface(surface):
     for row in surface:
@@ -59,7 +59,7 @@ def make_tri_row(surface, x_offset, y_offset, tri_size, points, flip=False, n=1)
         
     return triangles, points
 
-def build_graph(root, triangles, points):
+def build_graph(triangles, points):
     for tri in triangles:
         p1 = points[tri.p1]
         p2 = points[tri.p2]
@@ -70,8 +70,6 @@ def build_graph(root, triangles, points):
         c = (p3 & p1)
         
         tri.adj.extend((a | b | c) - set([tri]))
-    
-    return root
 
 def make_triangles(rows, cols, size):
     height = size * rows - (rows-1)
@@ -91,14 +89,14 @@ def make_triangles(rows, cols, size):
         
     print_surface(surface)
     
-    build_graph(start_tri, triangles, points)
+    build_graph(triangles, points)
     print
     for tri in triangles:
         print tri, ' '*6, tri.adj
     print
     dfs(start_tri, triangles)
 
-def dfs(start_tri, triangles):
+def dfs(root, triangles):
     color = dict(); path = dict();
     print
     for tri in triangles:
@@ -114,7 +112,7 @@ def dfs(start_tri, triangles):
                 dfs_visit(u)
         color[v] = 2
     
-    dfs_visit(start_tri)
+    dfs_visit(root)
     
     print
     for tri in path.keys():
@@ -122,8 +120,81 @@ def dfs(start_tri, triangles):
     print
     for tri in color.keys():
         print tri, color[tri]
+    print
+    print
+    matrix = make_adj_matrix(triangles)
+    print_matrix(matrix)
+    print_matrix(floyd_warshall(matrix))
 
-make_triangles(5, 15, 9)
+def print_matrix(matrix):
+    s = '  '
+    for x in xrange(len(matrix)):
+        s += str(x) + ' '*(3-len(str(x)))
+    print s
+    keys = matrix.keys()
+    keys.sort()
+    for i, row in enumerate(keys):
+        s = str(i) + ' '*(3-len(str(i)))
+        for col in keys:
+            s += str(matrix[row][col]) + ' '*(3-len(str(matrix[row][col])))
+        print s
+
+def _print_matrix(m):
+    s = '  '
+    for x in xrange(len(m)):
+        s += str(x) + ' '
+    print s
+    for i, row in enumerate(m):
+        s = str(i) + ' '
+        for col in row:
+            s += str(col) + ' '
+        print s
+
+def make_adj_matrix(triangles):
+    matrix = dict()
+    for a in triangles:
+        for b in triangles:
+            if not matrix.has_key(a): matrix.update({a:dict()})
+            matrix[a].update({b:0})
+    
+    for row in matrix.keys():
+        for col in matrix.keys():
+            if row in col.adj: matrix[row][col] = 1
+            elif row == col: matrix[row][col] = 1
+    
+    return matrix
+
+def floyd_warshall(matrix):
+    d = list()
+    keys = matrix.keys()
+    keys.sort()
+    for k in xrange(len(matrix)+1):
+        d.append(list())
+        for i,a in enumerate(keys):
+            d[-1].append(list())
+            for j,b in enumerate(keys):
+                d[-1][i].append(0)
+    
+    for i,row in enumerate(keys):
+        for j,col in enumerate(keys):
+            d[0][i][j] = matrix[row][col]
+            if i == j: d[0][i][j] = 0
+            elif d[0][i][j] == 0: d[0][i][j] = sys.maxint
+    
+    for k in xrange(1, len(matrix)+1):
+        for i in xrange(len(matrix)):
+            for j in xrange(len(matrix)):
+                d[k][i][j] = min(d[k-1][i][j], d[k-1][i][k-1] + d[k-1][k-1][j])
+     
+    m = dict()
+    for i,a in enumerate(keys):
+        for j,b in enumerate(keys):
+            if not m.has_key(a): m.update({a:dict()})
+            m[a].update({b:d[-1][i][j]})
+    
+    return m
+
+make_triangles(4, 12, 9)
 
 
 
