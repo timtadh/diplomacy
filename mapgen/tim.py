@@ -16,18 +16,18 @@ def clamp(x, base, top):
     if x >= top: x = top - 1
     return x
 
-def make_tri_row(surface, x_offset, y_offset, tri_size, flip=False, n=1):
+def make_tri_row(surface, x_offset, y_offset, tri_size, points, flip=False, n=1):
     top_y = y_offset
     bottom_y = y_offset + tri_size - 1
     
     mid_x_start = tri_size/2
     
     def add_point(pts, p, t):
-        if pts.has_key(p): pts[p].add(t)
-        else: pts.update({p:set([t])})
+        if not pts.has_key(p): 
+            pts.update({p:set([])})
+        pts[p].add(t)
     
     triangles = list()
-    points = dict()
     for c in xrange(len(surface[0])/tri_size):
         mid_x = mid_x_start + tri_size*c
         
@@ -65,13 +65,11 @@ def build_graph(root, triangles, points):
         p2 = points[tri.p2]
         p3 = points[tri.p3]
         
-        a = (p1 & p2) - (p1 & p2 & p3)
-        b = (p2 & p3) - (p1 & p2 & p3)
-        c = (p3 & p1) - (p1 & p2 & p3)
+        a = (p1 & p2)
+        b = (p2 & p3)
+        c = (p3 & p1)
         
-        tri.adj.extend(a)
-        tri.adj.extend(b)
-        tri.adj.extend(c)
+        tri.adj.extend((a | b | c) - set([tri]))
     
     return root
 
@@ -86,19 +84,46 @@ def make_triangles(rows, cols, size):
     points = dict()
     for i in xrange(rows):
         flip = (i + 1)%2
-        tris, pts = make_tri_row(surface, 0, (size*i) - i, size, flip, i+1)
+        tris, pts = make_tri_row(surface, 0, (size*i) - i, size, points, flip, i+1)
         if not start_tri: start_tri = tris[0]
         triangles = triangles | set(tris)
         points.update(pts)
-    
+        
     print_surface(surface)
-    print triangles
-    print pts
+    
+    build_graph(start_tri, triangles, points)
     print
-    print start_tri, points[start_tri.p1], points[start_tri.p2], points[start_tri.p3]
+    for tri in triangles:
+        print tri, ' '*6, tri.adj
+    print
+    dfs(start_tri, triangles)
 
+def dfs(start_tri, triangles):
+    color = dict(); path = dict();
+    print
+    for tri in triangles:
+        color.update({tri:0})
+        path.update({tri:None})
+    
+    def dfs_visit(v):
+        color[v] = 1
+        print v
+        for u in v.adj:
+            if color[u] == 0:
+                path[u] = v 
+                dfs_visit(u)
+        color[v] = 2
+    
+    dfs_visit(start_tri)
+    
+    print
+    for tri in path.keys():
+        print tri, path[tri]
+    print
+    for tri in color.keys():
+        print tri, color[tri]
 
-make_triangles(2, 12, 9)
+make_triangles(5, 15, 9)
 
 
 
