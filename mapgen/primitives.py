@@ -53,6 +53,16 @@ class Line(object):
                 (self.a.x-self.b.x)*(self.a.x-self.b.x) + (self.a.y-self.b.y)*(self.a.y-self.b.y)
             )
         return self.length
+
+    def __hash__(self): 
+        t = (self.a.get_tuple(), self.b.get_tuple()).__hash_()
+        return t.__hash__()
+
+    def __eq__(self, x):
+        return self.a == x.a and self.b == x.b
+    
+    def __ne__(self, b):
+        return not self.__eq__(b)
     
     def __repr__(self):
         return "Line((%r, %r), (%r, %r))" % (
@@ -65,6 +75,7 @@ class Triangle(object):
         self.p1 = p1
         self.p2 = p2
         self.p3 = p3
+        self.adj = list()
 
     def area(self):
         def length(a, b):
@@ -73,6 +84,10 @@ class Triangle(object):
         b = length(self.p2, self.p3)
         h = length(m, self.p1)
         return .5*(b)*(h)
+
+    def __hash__(self): 
+        t = (self.p1.get_tuple(), self.p2.get_tuple(), self.p3.get_tuple())
+        return t.__hash__()
 
     def __eq__(self, b):
         return self.p1 == b.p1 and self.p2 == b.p2 and self.p3 == b.p3

@@ -2,14 +2,6 @@
 
 import primitives
 
-h = 2
-w = 12
-tri_size = 9
-
-height = tri_size * h - (h-1)
-width = tri_size * w
-
-surface = [[0 for x in xrange(width)] for y in xrange(height)]
 
 def print_surface(surface):
     for row in surface:
@@ -31,10 +23,10 @@ def make_tri_row(surface, x_offset, y_offset, tri_size, flip=False, n=1):
     mid_x_start = tri_size/2
     
     def add_point(pts, p, t):
-        if pts.has_key(p): pts.append(t)
-        else: pts.update({p:[t]})
+        if pts.has_key(p): pts[p].add(t)
+        else: pts.update({p:set([t])})
     
-    triangles = set()
+    triangles = list()
     points = dict()
     for c in xrange(len(surface[0])/tri_size):
         mid_x = mid_x_start + tri_size*c
@@ -63,12 +55,53 @@ def make_tri_row(surface, x_offset, y_offset, tri_size, flip=False, n=1):
         add_point(points, p2, tri)
         add_point(points, p3, tri)
         
-        triangles.add(tri)
+        triangles.append(tri)
         
-    return triangles
+    return triangles, points
+
+def build_graph(root, triangles, points):
+    for tri in triangles:
+        p1 = points[tri.p1]
+        p2 = points[tri.p2]
+        p3 = points[tri.p3]
+        
+        a = (p1 & p2) - (p1 & p2 & p3)
+        b = (p2 & p3) - (p1 & p2 & p3)
+        c = (p3 & p1) - (p1 & p2 & p3)
+        
+        tri.adj.extend(a)
+        tri.adj.extend(b)
+        tri.adj.extend(c)
+    
+    return root
+
+def make_triangles(rows, cols, size):
+    height = size * rows - (rows-1)
+    width = size * cols
+    surface = [[0 for x in xrange(width)] for y in xrange(height)]
+    
+    start_tri = None
+    
+    triangles = set()
+    points = dict()
+    for i in xrange(rows):
+        flip = (i + 1)%2
+        tris, pts = make_tri_row(surface, 0, (size*i) - i, size, flip, i+1)
+        if not start_tri: start_tri = tris[0]
+        triangles = triangles | set(tris)
+        points.update(pts)
+    
+    print_surface(surface)
+    print triangles
+    print pts
+    print
+    print start_tri, points[start_tri.p1], points[start_tri.p2], points[start_tri.p3]
 
 
-print make_tri_row(surface, 0, 0, tri_size, False)
-print make_tri_row(surface, 0, tri_size-1, tri_size, True, 2)
+make_triangles(2, 12, 9)
+
+
+
+#print make_tri_row(surface, 0, 0, tri_size, False)
+#print make_tri_row(surface, 0, tri_size-1, tri_size, True, 2)
 #print len(make_tri_row(surface, 0, (tri_size*2)-2, tri_size, False, 3))
-print_surface(surface)
