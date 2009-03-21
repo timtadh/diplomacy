@@ -9,7 +9,8 @@ BEGIN
     SELECT territory.name, territory.abbrev
     FROM territory
     WHERE territory.map_id IN
-        (SELECT game.map_id FROM game WHERE game.gam_id = gid);
+        (SELECT game.map_id FROM game WHERE game.gam_id = gid)
+    ORDER BY territory.abbrev;
 END
 $$
 

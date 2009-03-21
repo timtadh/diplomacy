@@ -12,7 +12,8 @@ BEGIN
         ON (supplier.ter_id = territory.ter_id)
     INNER JOIN country
         ON (country.cty_id = supplier.cty_id)
-    WHERE country.usr_id = uid AND country.gam_id = gid;
+    WHERE country.usr_id = uid AND country.gam_id = gid
+    ORDER BY territory.abbrev;
 END
 $$
 
