@@ -732,7 +732,7 @@ class ContinentGenerator(Generator):
     
     def place_supply_centers(self):
         for country in self.countries:
-            terr_list = list(country.territories)
+            terr_list = [t for t in country.territories if len(t.triangles) > 2]
             random.shuffle(terr_list)
             for t in terr_list[:5]:
                 t.has_supply_center = True

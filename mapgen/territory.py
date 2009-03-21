@@ -18,6 +18,7 @@ class Territory(object):
         self.ter_id = 0
         self.is_sea = False
         self.pc_x, self.pc_y = 0, 0
+        self.triangles = []
     
 
 class SeaTerr(Territory):
@@ -41,7 +42,6 @@ class LandTerr(Territory):
             self.add_line(line)
         self.color = color
         self.adjacent_countries = []
-        self.triangles = []
         self.dist = 0
         self.combinations = 0
         self.offset = (0,0)
