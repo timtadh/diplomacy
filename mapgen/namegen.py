@@ -10,14 +10,14 @@ import random, string
 class Namer(object):
 
     def __init__(self):
-        self.title = ["New", "The"]
+        self.title = ["New", "The", "Republic of"]
         self.prefix = [
             "Co", "Oh", "Cal", "Ok", "Vir", "Flor", "Kan", "Min", "Ar", "Ne", "Wa", "Id", "Ma"
         ]
         self.mid = ["la", "if", "gin", "i", "e", "v", "sh", "gic"]
         self.mid2 = ["ra", "or", "hom", "d", "sot", "zon", "ad", "ing", "al"]
         self.suffix = ["do", "io", "nia", "a", "sas", "ton", "ho"]
-        self.end_l = ["Land", "Kingdom"]
+        self.end_l = ["Land", "Kingdom", "Collective", "Republic", "Empire"]
         self.end_s = ["Sea", "Ocean"]
 
         self.naming = [

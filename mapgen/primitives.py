@@ -17,6 +17,7 @@ class Point(object):
     def __hash__(self): return self.get_tuple().__hash__()
     
     def __eq__(self, b):
+        if type(b) == type(tuple()): return self.get_tuple() == b
         return self.get_tuple() == b.get_tuple()
     
     def __ne__(self, b):
@@ -55,10 +56,11 @@ class Line(object):
         return self.length
 
     def __hash__(self): 
-        t = (self.a.get_tuple(), self.b.get_tuple()).__hash_()
+        t = (self.a.get_tuple(), self.b.get_tuple())
         return t.__hash__()
 
     def __eq__(self, x):
+        if not x: return False
         return self.a == x.a and self.b == x.b
     
     def __ne__(self, b):
@@ -71,11 +73,15 @@ class Line(object):
 
 class Triangle(object):
     
-    def __init__(self, p1, p2, p3):
+    def __init__(self, p1, p2, p3, mid=None):
         self.p1 = p1
         self.p2 = p2
         self.p3 = p3
+        self.mid = mid
         self.adj = list()
+        self.__hash = None
+        self.lines = (Line(p1, p2), Line(p2, p3), Line(p3, p1))
+        
 
     def area(self):
         def length(a, b):
@@ -84,12 +90,20 @@ class Triangle(object):
         b = length(self.p2, self.p3)
         h = length(m, self.p1)
         return .5*(b)*(h)
+    
+    def dist_2(self, b):
+        return ((self.mid.x - b.mid.x)**2 + (self.mid.y - b.mid.y)**2)
+    
+    def get_tuple(self):
+        return (self.p1.get_tuple(), self.p2.get_tuple(), self.p3.get_tuple())
 
     def __hash__(self): 
+        if self.__hash: return self.__hash
         t = (self.p1.get_tuple(), self.p2.get_tuple(), self.p3.get_tuple())
         return t.__hash__()
 
     def __eq__(self, b):
+        if type(b) == type(tuple()): return self.get_tuple() == b
         return self.p1 == b.p1 and self.p2 == b.p2 and self.p3 == b.p3
     
     def __ne__(self, b):

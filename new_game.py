@@ -91,7 +91,7 @@ def start_game(user_dict):
     user_table = cur.fetchall()
     cur.close()
     
-    gen = mapgen.ContinentGenerator(num_countries=len(user_table), verbose=False)
+    gen = mapgen.behemoth.ContinentGenerator(num_countries=len(user_table), verbose=False)
     landmass = gen.generate()
     dest_real = mapgen.save_to_image(landmass)
     dest_saved = os.path.split(dest_real)[1]

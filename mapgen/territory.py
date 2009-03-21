@@ -12,12 +12,12 @@ class Territory(object):
         self.lines = []
         self.is_coastal = False
         self.has_supply_center = False
-        self.id = 0
         self.x, self.y = 0.0, 0.0
         self.name = ""
         self.abbreviation = ""
         self.ter_id = 0
         self.is_sea = False
+        self.pc_x, self.pc_y = 0, 0
     
 
 class SeaTerr(Territory):
@@ -45,15 +45,16 @@ class LandTerr(Territory):
         self.dist = 0
         self.combinations = 0
         self.offset = (0,0)
+        self.min_x, self.min_y, self.max_x, self.max_y = 0, 0, 0, 0
     
     def add_line(self, line):
         if line not in self.lines:
             self.lines.append(line)
-            line.land_terrs.append(self)
+            line.territories.append(self)
     
     def remove_line(self, line):
         self.lines.remove(line)
-        line.land_terrs.remove(self)
+        line.territories.remove(self)
     
     def add_triangle(self, x1, y1, x2, y2, x3, y3):
         self.triangles.append((x1, y1, x2, y2, x3, y3))
@@ -62,7 +63,7 @@ class LandTerr(Territory):
         self.adjacent_countries = []
         self.adjacencies = []
         for line in self.lines:
-            for terr in line.land_terrs:
+            for terr in line.territories:
                 if terr != self and terr not in self.adjacencies:
                     self.adjacencies.append(terr)
         for terr in self.adjacencies:
@@ -70,17 +71,79 @@ class LandTerr(Territory):
                 if terr.country != None:
                     self.adjacent_countries.append(terr.country)
     
+    def find_bounding_box(self):
+        self.min_x = self.lines[0].a.x
+        self.min_y = self.lines[0].a.y
+        self.max_x = self.min_x
+        self.max_y = self.min_y
+        for line in self.lines:
+            self.min_x = min(line.a.x, self.min_x)
+            self.min_x = min(line.b.x, self.min_x)
+            self.min_y = min(line.a.y, self.min_y)
+            self.min_y = min(line.b.y, self.min_y)
+            self.max_x = max(line.a.x, self.max_x)
+            self.max_x = max(line.b.x, self.max_x)
+            self.max_y = max(line.a.y, self.max_y)
+            self.max_y = max(line.b.y, self.max_y)
+        self.min_x = int(self.min_x)
+        self.min_y = int(self.min_y)
+        self.max_x = int(self.max_x)
+        self.max_y = int(self.max_y)
+    
+    def check_point(self, x, y, x_dist=12, y_dist=5):
+        if not self.point_inside(x, y): return False
+        if not self.point_inside(x+x_dist, y+y_dist): return False
+        if not self.point_inside(x-x_dist, y+y_dist): return False
+        if not self.point_inside(x+x_dist, y-y_dist): return False
+        if not self.point_inside(x-x_dist, y+y_dist): return False
+        return True
+    
     def place_piece(self):
         self.pc_x = self.x
         self.pc_y = self.y-10
-        if not self.point_inside(self.pc_x, self.pc_y):
+        if not self.point_inside(self.pc_x, self.pc_y-10):
             self.pc_x, self.pc_y = self.x+20, self.y
-        if not self.point_inside(self.pc_x, self.pc_y):
+        if not self.point_inside(self.pc_x+10, self.pc_y):
             self.pc_x, self.pc_y = self.x, self.y+10
-        if not self.point_inside(self.pc_x, self.pc_y):
+        if not self.point_inside(self.pc_x, self.pc_y+10):
             self.pc_x, self.pc_y = self.x-20, self.y
+        if not self.point_inside(self.pc_x-10, self.pc_y):
+            self.pc_x, self.pc_y = self.find_empty_space()
+            if self.pc_x == 0 and self.pc_y == 0:
+                self.pc_x, self.pc_y = self.x, self.y-10
     
-    def place_capitol(self):
+    def check_avoid(self, x, y, avoid_x, avoid_y):
+        if avoid_x == 0 and avoid_y == 0: return True
+        if (x-avoid_x)*(x-avoid_x)+(y-avoid_y)*(y-avoid_y) < 20*20:
+            return False
+        else:
+            return True
+    
+    def find_empty_space(self, avoid_x=0, avoid_y=0):
+        x = random.randint(self.min_x, self.max_x)
+        y = random.randint(self.min_y, self.max_y)
+        i = 0
+        while not self.check_point(x, y) and i < 200 and self.check_avoid(x, y, avoid_x, avoid_y):
+            x = random.randint(self.min_x, self.max_x)
+            y = random.randint(self.min_y, self.max_y)
+            i += 1
+        if i == 200:
+            return 0, 0
+        return x, y
+    
+    def place_text(self):
+        self.find_bounding_box()
+        self.x, self.y = self.find_empty_space()
+        if self.x == 0 and self.y == 0:
+            print self.abbreviation
+            self.place_text_old()
+            return
+        else:
+            self.place_piece()
+    
+    def place_text_old(self):
+        #This is a complicated block of code which attempts to place the text
+        #label in a sane place using a variety of methods.
         self.points = []
         for line in self.lines:
             if line.a not in self.points:
@@ -101,38 +164,6 @@ class LandTerr(Territory):
         if not self.point_inside(self.x-15, self.y): ok = False
         if not self.point_inside(self.x, self.y+15): ok = False
         if not self.point_inside(self.x, self.y-15): ok = False
-        if ok:
-            self.place_piece()
-            return
-        
-        cx, cy = self.x, self.y
-        i = 0
-        min_x, min_y = cx, cy
-        max_x, max_y = cx, cy
-        for line in self.lines:
-            min_x = min(line.a.x, min_x)
-            min_x = min(line.b.x, min_x)
-            min_y = min(line.a.y, min_y)
-            min_y = min(line.b.y, min_y)
-            max_x = max(line.a.x, max_x)
-            max_x = max(line.b.x, max_x)
-            max_y = max(line.a.y, max_y)
-            max_y = max(line.b.y, max_y)
-        rad = max(cx-min_x, max_x-cx)
-        rad = max(rad, cy-min_y, max_y-cy)
-        rad = int(rad-10)
-        ok = False
-        i = 0
-        while not ok and i < 1000:
-            self.x = cx + random.randint(-rad, rad)
-            self.y = cy + random.randint(-rad, rad)
-            ok = True
-            if not self.point_inside(self.x, self.y): ok = False
-            if not self.point_inside(self.x+15, self.y): ok = False
-            if not self.point_inside(self.x-15, self.y): ok = False
-            if not self.point_inside(self.x, self.y+7): ok = False
-            if not self.point_inside(self.x, self.y-7): ok = False
-            i += 1
         if ok:
             self.place_piece()
             return

@@ -44,21 +44,30 @@ def print_game_list(user_dict, ses_dict, switch, ng):
     game_table_info = (('label', "id"),('switch_link', ""))
     templater.print_template("templates/current_game.html", locals())
 
-def get_user_table(con):
+
+def get_table(con, name, args):
     cur = db.DictCursor(con)
-    cur.callproc('users_in_running_game', (ses_dict['gam_id'],))
-    user_table = cur.fetchall()
-    user_table_info = (('screen_name', "Screen Name"), ('name', "Country"))
+    cur.callproc(name, args)
+    table = cur.fetchall()
     cur.close()
+    return table
+
+def get_user_table(con):
+    user_table_info = (('screen_name', "Screen Name"), ('name', "Country"))
+    user_table = get_table(con, 'users_in_running_game', (ses_dict['gam_id'],))
     return user_table, user_table_info
 
-def get_supplier_table(con):    
-    cur = db.DictCursor(con)
-    cur.callproc('usr_suppliers_in_game', (ses_dict['gam_id'], user_dict['usr_id']))
-    suppliers = cur.fetchall()
-    supplier_table_info = (('abbrev', "Abbrev"), ('name', "Name"))
-    cur.close()
-    return suppliers, supplier_table_info
+def get_supplier_table(con):
+    supplier_table_info = (('abbrev', "Abbrev"), ('name', "Name"))  
+    supplier_table = get_table(
+        con, 'usr_suppliers_in_game', (ses_dict['gam_id'], user_dict['usr_id'])
+    )
+    return supplier_table, supplier_table_info
+
+def get_terr_table(con):
+    terr_table_info = (('abbrev', "Abbrev"), ('name', "Name"))
+    terr_table = get_table(con, 'terrs_in_game', (ses_dict['gam_id'],))
+    return terr_table, terr_table_info
 
 def print_game_info(user_dict, ses_dict, switch, ng):
     choose_game = False
@@ -76,6 +85,7 @@ def print_game_info(user_dict, ses_dict, switch, ng):
             map_name = map_data['world_name']
             map_path = map_data['pic']
             supplier_table, supplier_table_info = get_supplier_table(con)
+            terr_table, terr_table_info = get_terr_table(con)
         else:
             map_name = "No games in progress"
             map_path = "blank"

@@ -7,7 +7,8 @@ except:
     agg_enabled = False
 
 def basic(landmass, path="map_temp.png", draw_cities=False):
-    pad = 80
+    pad = 10
+    star_size = 15
     im = Image.new(
         'RGBA', (landmass.width+pad*2, landmass.height+pad*2),
         color=(50,50,200,255)
@@ -17,6 +18,7 @@ def basic(landmass, path="map_temp.png", draw_cities=False):
     if agg_enabled:
         draw = aggdraw.Draw(im)
         p = aggdraw.Pen("rgb(0,0,0)", 2.0, opacity=255)
+        b_white = aggdraw.Brush("rgb(255,255,255)")
         for terr in landmass.land_terrs:
             for tri in terr.triangles:
                 col = [int(c*255.0) for c in terr.color[0:3]]
@@ -34,6 +36,12 @@ def basic(landmass, path="map_temp.png", draw_cities=False):
                     line.a[0] + ox, line.a[1] + oy,
                     line.b[0] + ox, line.b[1] + oy
                 ), p)
+        for terr in landmass.land_terrs:
+            label_rect = (
+                terr.x + ox - 9, terr.y + oy + 4, 
+                terr.x + ox + 9, terr.y + oy - 4
+            )
+            draw.rectangle(label_rect, b_white)
         for terr in landmass.sea_terrs:        
             for line in terr.lines:
                 draw.line((
@@ -64,18 +72,7 @@ def basic(landmass, path="map_temp.png", draw_cities=False):
                     line.b[0] + ox, line.b[1] + oy
                 ), fill="rgb(0, 0, 0)")
         del draw
-    draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype("Inconsolata.otf", 9)
-    for terr in landmass.land_terrs.union(landmass.sea_terrs):
-        tx = terr.x + ox - draw.textsize(terr.abbreviation)[0]/2
-        ty = terr.y + oy - draw.textsize(terr.abbreviation)[1]/2
-        col = "rgb(255,255,255)"
-        if hasattr(terr, 'color'):
-            if terr.color[0] + terr.color[1] + terr.color[2] > 1.5:
-                col = "rgb(40, 40, 40)"
-        draw.text(
-            (tx, ty), terr.abbreviation, fill=col, font=font
-        )
+    draw = ImageDraw.Draw(im)    
     if draw_cities:
         star = Image.open("images/star.png")
         w = star.size[0]/2
@@ -86,5 +83,16 @@ def basic(landmass, path="map_temp.png", draw_cities=False):
                 y = int(terr.pc_y + oy)
                 box = (x-w, y-h, x+w, y+h)
                 im.paste(star, box, star)
+    font = ImageFont.truetype("Inconsolata.otf", 9)
+    for terr in landmass.land_terrs:
+        tx = terr.x + ox - draw.textsize(terr.abbreviation)[0]/3
+        ty = terr.y + oy - draw.textsize(terr.abbreviation)[1]/2
+        col = "rgb(40, 40, 40)"
+        draw.text((tx, ty), terr.abbreviation, fill=col, font=font)
+    for terr in landmass.sea_terrs:
+        tx = terr.x + ox - draw.textsize(terr.abbreviation)[0]/3
+        ty = terr.y + oy - draw.textsize(terr.abbreviation)[1]/2
+        col = "rgb(255,255,255)"
+        draw.text((tx, ty), terr.abbreviation, fill=col, font=font)
     im.save(path)
 
