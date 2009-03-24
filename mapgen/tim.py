@@ -6,7 +6,12 @@ import render
 import skeleton
 import sys
 import os
-os.chdir('..')
+import graph_algorithms
+import cPickle as pickle
+import sqlite3
+import shelve
+
+#os.chdir('..')
 
 def print_surface(surface):
     for row in surface:
@@ -23,6 +28,7 @@ def clamp(x, base, top):
 
 def make_tri_row(h, w, x_offset, y_offset, tri_size, points, flip=False, n=1):
     top_y = y_offset
+    mid_y = y_offset + tri_size/2
     bottom_y = y_offset + tri_size - 1
     
     mid_x_start = tri_size/2
@@ -55,10 +61,10 @@ def make_tri_row(h, w, x_offset, y_offset, tri_size, points, flip=False, n=1):
         #surface[p2.y][p2.x] = n
         #surface[p3.y][p3.x] = n
         
-        tri = primitives.Triangle(p1, p2, p3)
-        add_point(points, p1, tri)
-        add_point(points, p2, tri)
-        add_point(points, p3, tri)
+        tri = primitives.Triangle(p1, p2, p3, primitives.Point(mid_x, mid_y))
+        add_point(points, p1, tri.get_tuple())
+        add_point(points, p2, tri.get_tuple())
+        add_point(points, p3, tri.get_tuple())
         
         triangles.append(tri)
         
@@ -109,10 +115,66 @@ def gen(triangles):
     new_map.find_bounds()
     render.basic(new_map, 't.png')
 
-gen(make_triangles(100, 100, 9))
+def get_sep(a, b, G, path='mapgen/seperation-100'):
+    import db
+    con = db.connections.get_con()
+    cur = con.cursor()
+    cur.execute('''SELECT sep FROM seperation.sep_100 WHERE a = %s AND b = %s''', (G[a][0], G[b][0]))
+    r = cur.fetchone()
+    if r: sep = r[0]
+    else: raise Exception(), 'Triangles not in DB'
+    cur.close()
+    db.connections.release_con(con)
+    
+    return sep
 
+def load_graph():
+    tris = pickle.load(open('mapgen/triangles-100', 'rb'))
+    G = graph_algorithms.map_triangles(tris)
 
+#def rm(path='mapgen/seperation-100'):
+    #try: os.remove(path)
+    #except: pass
 
-#print make_tri_row(surface, 0, 0, tri_size, False)
-#print make_tri_row(surface, 0, tri_size-1, tri_size, True, 2)
-#print len(make_tri_row(surface, 0, (tri_size*2)-2, tri_size, False, 3))
+#def save_seperation(seperation, path='mapgen/seperation-100'):
+    #con = sqlite3.connect(path)
+    #cur = con.cursor()
+    #cur.execute('''create table seperation (a, b, sep)''')
+    #cur.close()
+    #cur = con.cursor()
+    #cur.execute('insert into seperation (a, b, sep) values (5,5,5)')
+    #cur.close()
+    #n = len(seperation)
+    #for i in xrange(n):
+        #for j in xrange(n):
+            #cur = con.cursor()
+            #cur.execute('INSERT INTO seperation (a, b, sep) values (?,?,?)', (i, j, seperation[i][j]))
+            #cur.close()
+    #con.commit()
+    #con.close()
+
+#def print_seperation(path='mapgen/seperation-100'):
+    #con = sqlite3.connect(path)
+    #cur = con.cursor()
+    #cur.execute('''SELECT * FROM seperation''')
+    #r = cur.fetchone()
+    #while r:
+        #print ', '.join((str(r[0]), str(r[1]), str(r[2])))
+        #r = cur.fetchone()
+    #cur.close()
+    #con.close()
+
+                #tris = list(make_triangles(100, 100, 9))
+                #tris.sort()
+                #print 'triangles made'
+                #seperation = graph_algorithms.seperation(tris)
+                #graph_algorithms.print_matrix(graph_algorithms.make_adj_matrix(tris))
+                #graph_algorithms._print_matrix(seperation)
+                #print 'seperation calculated'
+                #spap = graph_algorithms.floyd_warshall(tris)
+                #graph_algorithms.print_matrix(spap)
+                #sys.setrecursionlimit(2000)
+                #pickle.dump(tris, open('mapgen/triangles-100', 'wb'))
+                #rm()
+                #save_seperation(seperation)
+                #print_seperation()
