@@ -2,7 +2,7 @@
 PyWorldGen dbimport
 by Steve Johnson
 
-This module provides methods to get a Landmass from the database.
+This module provides methods to get a Landmass from the database. It does not fill in all data, just the things you need for drawing.
 """
 
 import db, skeleton, territory, primitives
@@ -98,9 +98,17 @@ def get(con, gam_id):
         for tdict in r:
             terrs[tdict['ter_id']].country = country
         cur.close()
-    
+
+    land_terrs = []
+    sea_terrs = []
     for ter_id, terr in terrs.iteritems():
+        if terr.is_sea:
+            sea_terrs.append(terr)
+        else:
+            land_terrs.append(terr)
+    
+    for terr in land_terrs:
         terr.color_self()
-    new_map = skeleton.Map(lines, lines, terrs.values(), [], countries.values())
+    new_map = skeleton.Map(lines, lines, land_terrs, sea_terrs, countries.values())
     new_map.find_bounds()
     return new_map

@@ -12,6 +12,7 @@ class Territory(object):
         self.lines = []
         self.is_coastal = False
         self.has_supply_center = False
+        self.occupied = False
         self.x, self.y = 0.0, 0.0
         self.name = ""
         self.abbreviation = ""
@@ -25,14 +26,17 @@ class SeaTerr(Territory):
     def __init__(self, line=None):
         super(SeaTerr, self).__init__()
         self.line = line
+        self.size = 0
+        self.is_sea = True
         if line != None:
             self.lines.append(line)
-        self.size = 0
-        self.x = (line.a.x + line.b.x) / 2
-        self.y = (line.a.y + line.b.y) / 2
-        self.pc_x = self.x
-        self.pc_y = self.y - 10
-        self.is_sea = True
+            self.x = (line.a.x + line.b.x) / 2
+            self.y = (line.a.y + line.b.y) / 2
+            self.pc_x = self.x
+            self.pc_y = self.y - 10
+        else:    
+            self.x, self.y = 0, 0
+            self.pc_x, self.pc_y = 0, 0
     
 
 class LandTerr(Territory):

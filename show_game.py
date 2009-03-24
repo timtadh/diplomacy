@@ -9,7 +9,7 @@ form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
 
 con = db.connections.get_con()
-landmass = mapgen.dbimport.get(con, 5)
+landmass = mapgen.dbimport.get(con, 6)
 db.connections.release_con(con)
 new_map_path = mapgen.save_to_image(landmass)
 
