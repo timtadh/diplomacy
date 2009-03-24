@@ -5,7 +5,7 @@ country =   'INSERT INTO country (usr_id, gam_id, name, color) VALUES '
 territory = 'INSERT INTO territory (map_id, name, abbrev, piece_x, piece_y, '\
             'label_x, label_y, ter_type, supply, coastal) VALUES '
 terr_fmt =  '(%(map_id)s, "%(name)s", "%(abbrev)s", %(piece_x)s, %(piece_y)s, '\
-            '%(label_x)s, %(label_y)s, "land", %(supply)s, %(coastal)s)'
+            '%(label_x)s, %(label_y)s, "%(ter_type)s", %(supply)s, %(coastal)s)'
 
 adjacent =  'INSERT INTO adjacent (ter_id, adj_ter_id) VALUES '
 

@@ -41,6 +41,7 @@ def terr_to_dict(terr, map_id, get_id):
     terr_dict['piece_y'] = terr.pc_y
     terr_dict['label_x'] = terr.x
     terr_dict['label_y'] = terr.y
+    terr_dict['ter_type'] = landsea
     if terr.has_supply_center:
         terr_dict['supply'] = 'TRUE'
     else:

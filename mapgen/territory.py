@@ -36,7 +36,7 @@ class SeaTerr(Territory):
     
 
 class LandTerr(Territory):
-    def __init__(self, lines, color=(0.5,0.5,0.5,1)):
+    def __init__(self, lines=[], color=(0.5,0.5,0.5,1)):
         super(LandTerr, self).__init__()
         for line in lines:
             self.add_line(line)
@@ -205,5 +205,5 @@ class LandTerr(Territory):
         return False
     
     def __repr__(self):
-        return str(self.id)
+        return str(self.ter_id)
     
