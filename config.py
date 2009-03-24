@@ -6,7 +6,6 @@ import warnings
 warnings.simplefilter('ignore', UserWarning)
 import db
 import mapgen.db as db2
-
-db2.connections = db.connections
-
+for attr in dir(db):
+    db2.__setattr__(attr, db.__getattribute__(attr))
 
