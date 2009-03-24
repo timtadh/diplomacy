@@ -8,10 +8,17 @@ import sys
 import os
 import graph_algorithms
 import cPickle as pickle
-import sqlite3
-import shelve
+import random
 
 #os.chdir('..')
+country_colors = [
+    (1.0, 0.0, 0.0, 1.0), (1.0, 0.5, 0.0, 1.0), (1.0, 1.0, 0.0, 1.0), 
+    (0.0, 1.0, 0.0, 1.0), (0.0, 1.0, 1.0, 1.0), (0.7, 0.0, 1.0, 1.0), 
+    (1.0, 0.5, 1.0, 1.0), (0.7, 0.3, 0.0, 1.0),
+    (7.0, 0.0, 0.0, 1.0), (7.0, 0.5, 0.0, 1.0), (7.0, 7.0, 0.0, 1.0), 
+    (0.0, 7.0, 0.0, 1.0), (0.0, 7.0, 1.0, 1.0), (0.7, 0.0, 7.0, 1.0), 
+    (7.0, 0.5, 7.0, 1.0), (0.4, 0.3, 0.0, 1.0)
+]
 
 def print_surface(surface):
     for row in surface:
@@ -115,6 +122,12 @@ def gen(triangles):
     new_map.find_bounds()
     render.basic(new_map, 't.png')
 
+def make_image(territories, lines):
+    new_map = skeleton.Map(lines, lines, territories, set())
+    new_map.find_bounds()
+    render.basic(new_map, 't2.png')
+    
+
 def get_sep(a, b, G, path='mapgen/seperation-100'):
     import db
     con = db.connections.get_con()
@@ -131,6 +144,70 @@ def get_sep(a, b, G, path='mapgen/seperation-100'):
 def load_graph():
     tris = pickle.load(open('mapgen/triangles-100', 'rb'))
     G = graph_algorithms.map_triangles(tris)
+    return tris, G
+
+def choose_start_triangles(triangles, G, number=60, min_sep=1500):
+    available = list(triangles)
+    chosen = set()
+    for i in xrange(number):
+        while True:
+            c = random.choice(available)
+            good = True
+            for tri in chosen:
+                if get_sep(tri, c, G) <= min_sep:
+                    good = False
+                    break
+            if good: 
+                chosen.add(c)
+                available.remove(c)
+                break
+    return chosen, available
+
+def build_map(triangles, G, chosen, available):
+    territories = list()
+    lines = set([])
+    for i, tri in enumerate(chosen):
+        terr = territory.LandTerr(tri.lines)
+        terr.id = i
+        terr.add_triangle(tri.p1.x, tri.p1.y, tri.p2.x, tri.p2.y, tri.p3.x, tri.p3.y)
+        terr.adjacencies += tri.adj
+        terr.done = False
+        terr.color = (random.random(), random.random(), random.random(), 1.0)
+        territories.append(terr)
+        lines = lines | set(tri.lines)
+    print len(available)
+    while len(available) > 0:
+        print len(available)
+        for terr in territories:
+            if terr.done: continue
+            a = list(terr.adjacencies)
+            good = False
+            while True:
+                c = random.choice(a)
+                a.remove(c)
+                good = True
+                if c in chosen: good = False
+                if not good and len(a) <= 0: 
+                    terr.done = True
+                    break
+                if good:
+                    c = G[c][1]
+                    chosen.add(c.get_tuple())
+                    available.remove(c)
+                    terr.add_triangle(c.p1.x, c.p1.y, c.p2.x, c.p2.y, c.p3.x, c.p3.y)
+                    terr.adjacencies = list((set(terr.adjacencies) | set(c.adj)) - set([c]))
+                    lines = lines | set(c.lines)
+                    break
+    return territories, lines
+
+tris, G = load_graph()
+print 'loaded'
+chosen, available = choose_start_triangles(tris, G)
+print chosen
+territories, lines = build_map(tris, G, chosen, available)
+print territories, len(available)
+make_image(territories, lines)
+print 'done'
 
 #def rm(path='mapgen/seperation-100'):
     #try: os.remove(path)
