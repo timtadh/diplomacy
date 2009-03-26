@@ -1,12 +1,29 @@
+'''
+Author: Tim Henderson
+Date Started: January 28, 2008
+
+This module does connection pooling for mysql connections. Handles connecting and and closing 
+connections for the user. Must be configured by user before use.
+
+Usage:
+    setup:
+        import db
+        db.HOST = HOST
+        db.PORT = PORT
+        db.USER = USER
+        db.PASSWD = PASSWD
+        db.DB = DB
+    
+    get connection:
+        con = db.connections.get_con()
+    
+    relase connection:
+        db.connections.release_con(con)
+'''
+
 import MySQLdb
 from MySQLdb.cursors import DictCursor
 from crypt_framework import authenticator as auth
-
-HOST = "masran.case.edu"
-PORT = 3306
-USER = 'diplomacy'
-PASSWD = "d!plomacy12"
-DB = "diplomacy"
 
 class Connections(object):
     
