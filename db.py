@@ -23,7 +23,6 @@ Usage:
 
 import MySQLdb
 from MySQLdb.cursors import DictCursor
-from crypt_framework import authenticator as auth
 
 class Connections(object):
     
@@ -47,9 +46,9 @@ class Connections(object):
         '''returns the connection object from a MySQL database. The parameters are specified by module wide
         variables. If you would like to change them simply reset them before any connections are made by this
         module with the following syntax:
-            import cookie_session
-            cookie_session.HOST = 'myhost' 
-            cookie_session.PORT = 12312
+            import db
+            db.HOST = 'myhost' 
+            db.PORT = 12312
             ...'''
         con = MySQLdb.connect(host=HOST, port=PORT, user=USER, passwd=PASSWD, db=DB)
         return con
