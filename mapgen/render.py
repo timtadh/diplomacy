@@ -8,7 +8,6 @@ except:
 
 def basic(landmass, path="map_temp.png", draw_cities=False):
     pad = 10
-    star_size = 15
     im = Image.new(
         'RGBA', (landmass.width+pad*2, landmass.height+pad*2),
         color=(50,50,200,255)
@@ -75,14 +74,33 @@ def basic(landmass, path="map_temp.png", draw_cities=False):
     draw = ImageDraw.Draw(im)    
     if draw_cities:
         star = Image.open("images/star.png")
-        w = star.size[0]/2
-        h = star.size[1]/2
+        both = Image.open("images/star_cannon.png")
+        cannon = Image.open("images/cannon.png")
+        anchor = Image.open("images/anchor.png")
+        sw = star.size[0]/2
+        sh = star.size[1]/2
+        lw = both.size[0]/2
+        lh = both.size[1]/2
         for terr in landmass.land_terrs:
             if terr.has_supply_center:
+                if terr.occupied:
+                    x = int(terr.pc_x + ox)
+                    y = int(terr.pc_y + oy)
+                    box = (x-lw, y-lh, x+lw, y+lh)
+                    im.paste(both, box, both)
+                else:
+                    x = int(terr.pc_x + ox)
+                    y = int(terr.pc_y + oy)
+                    box = (x-sw, y-sh, x+sw, y+sh)
+                    im.paste(star, box, star)
+            elif terr.occupied:
                 x = int(terr.pc_x + ox)
                 y = int(terr.pc_y + oy)
-                box = (x-w, y-h, x+w, y+h)
-                im.paste(star, box, star)
+                box = (x-sw, y-sh, x+sw, y+sh)
+                if terr.is_sea:
+                    im.paste(anchor, box, anchor)
+                else:
+                    im.paste(cannon, box, cannon)
     font = ImageFont.truetype("Inconsolata.otf", 9)
     for terr in landmass.land_terrs:
         tx = terr.x + ox - draw.textsize(terr.abbreviation)[0]/3

@@ -738,6 +738,8 @@ class ContinentGenerator(Generator):
                 t.has_supply_center = True
             for t in terr_list[3:]:
                 t.country = None
+            for t in terr_list[:3]:
+                t.occupied = True
     
     def color_territories(self):
         self.sort_countries()

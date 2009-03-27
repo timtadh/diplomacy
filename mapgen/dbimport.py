@@ -98,6 +98,13 @@ def get(con, gam_id):
         for tdict in r:
             terrs[tdict['ter_id']].country = country
         cur.close()
+        
+        cur = db.DictCursor(con)
+        cur.callproc('pieces_for_country', (cty_id,))
+        r = cur.fetchall()
+        for tdict in r:
+            terrs[tdict['ter_id']].occupied = True
+        cur.close()
 
     land_terrs = []
     sea_terrs = []

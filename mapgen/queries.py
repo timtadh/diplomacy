@@ -16,3 +16,5 @@ line =      'INSERT INTO line (x1, y1, x2, y2) VALUES '
 ln_terr =   'INSERT INTO ter_ln_relation (ter_id, ln_id) VALUES '
 
 supplier =  'INSERT INTO supplier (ter_id, cty_id) VALUES '
+
+piece =     'INSERT INTO piece (cty_id, ter_id, pce_type) VALUES '

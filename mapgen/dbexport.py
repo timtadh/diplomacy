@@ -124,10 +124,17 @@ def insert_suppliers(terrs, cur):
     sup_fmt = "(%s, %s)"
     sup_strs = []
     
+    pce_fmt = '(%s, %s, "army")'
+    pce_strs = []
+    
     for terr in terrs:
-        if terr.has_supply_center and terr.country != None:
+        if terr.has_supply_center and terr.occupied:
             sup_strs.append(sup_fmt % (terr.ter_id, terr.country.cty_id))
+        if terr.occupied:
+            pce_strs.append(pce_fmt % (terr.country.cty_id, terr.ter_id))
+            
     cur.execute(q.supplier + ",".join(sup_strs) + ";")
+    cur.execute(q.piece + ",".join(pce_strs) + ";")
 
 def export(cur, users, game_map, pic, gam_id):
     game_map.map_id = next_id("map", cur)
