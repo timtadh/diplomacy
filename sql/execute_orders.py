@@ -1,0 +1,1 @@
+update_map = 'UPDATE game SET pic = "%s", turn_stage = 1 WHERE game.gam_id = %s;'

@@ -1,0 +1,20 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <+ if not game_found:
+    <h2 class="main">No game selected</h2>
+    <a href="current_game.py">Select a game</a><br>
+    <a href="new_game.py">Start a new game</a>
+    |= else:
+    <h2 class="main">EXECUTE ZE ORDERS OMG</h2>
+    
+    <p><img src="map_images/<%map_path%>.png"></p>
+    ->
+</div>
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->
