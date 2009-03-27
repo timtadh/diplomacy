@@ -15,15 +15,18 @@ def get_table(con, name, args):
     return table
 
 def get_order_table(con):
-    piece_table_info = (("pce_type", "type"), ("name", "territory"), ("abbrev","abbrev"), ("order_type","order"))
+    piece_table_info = (
+        ("pce_type", "type"), ("name", "territory"), ("abbrev","abbrev"), ("order_type","order")
+    )
     piece_table = get_table(con, 'pieces_for_user', (ses_dict['gam_id'], user_dict['usr_id']))
     order_table = get_table(con, 'orders_for_user', (ses_dict['gam_id'], user_dict['usr_id']))
     
+    link_str = '<a href="change_orders.py?pce_id=%s">%s</a>'
     for piece in piece_table:
-        piece['order_type'] = 'Hold'
+        piece['order_type'] = link_str % (piece['pce_id'], 'hold')
         for order in order_table:
             if piece['pce_id'] == order['pce_id']:
-                piece['order_type'] = order['order_type']
+                piece['order_type'] = link_str % (piece['pce_id'], order['order_text'])
     return piece_table, piece_table_info
 
 def get_terr_table(con):

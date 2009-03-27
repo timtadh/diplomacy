@@ -9,22 +9,18 @@
         <h2 class="main">No game selected</h2>
         <a href="current_game.py">Choose a game</a>
     |= else:
-        <h2 class="main">Write Orders</h2>
+        <h2 class="main">Write Orders for Piece</h2>
         <p style="text-align: center">
-            <h3>Orders for your territories</h3>
-            Click an order to change it.<br><br>
-        <+ templater.print_table(ordersByTer_table, ordersByTer_table_info, "new_game.py", "orders") #
+            <h3>Current location: <%abbrev%></h3>
+            <a href="write_orders.py">Select a different piece</a><br>
+        </p>
+        <p style="text-align: center">
+            <h3>Select an order type:</h3>
+        <+ templater.print_table(order_table, order_table_info, "change_orders.py", "Orders") #
         ->
-        <br><a href="current_game.py?new_game=True">Select a different game</a><br>
         </p>
         <p style="text-align: center; margin_left:auto; margin_right:auto;">
-            <h3><%map_name%></h3>
             <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
-        </p>
-        <p style="text-align: center">
-            <h3>Territory Reference List:</h3>
-        <+ templater.print_table(terr_table, terr_table_info, "new_game.py", "territories") #
-        ->
         </p>
     ->
 </div>
