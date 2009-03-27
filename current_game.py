@@ -79,13 +79,13 @@ def print_game_info(user_dict, ses_dict, switch, ng):
         cur.callproc('map_data_for_game', (ses_dict['gam_id'],))
         map_data = cur.fetchall()
         cur.close()
+        supplier_table, supplier_table_info = get_supplier_table(con)
+        terr_table, terr_table_info = get_terr_table(con)
         db.connections.release_con(con)
         if len(map_data) > 0:
             map_data = map_data[0]
             map_name = map_data['world_name']
             map_path = map_data['pic']
-            supplier_table, supplier_table_info = get_supplier_table(con)
-            terr_table, terr_table_info = get_terr_table(con)
         else:
             map_name = "No games in progress"
             map_path = "blank"

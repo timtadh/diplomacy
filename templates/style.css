@@ -273,4 +273,8 @@ tr.grey
     background-color: #DFDFDF;
 }
 
-
+table.generated td
+{
+    padding-left: 0.25em;
+    padding-right: 0.3em;
+}

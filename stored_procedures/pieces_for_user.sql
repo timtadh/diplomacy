@@ -12,7 +12,8 @@ BEGIN
         ON (piece.cty_id = country.cty_id)
     INNER JOIN territory
         ON (territory.ter_id = piece.ter_id)
-    WHERE country.usr_id = uid AND country.gam_id = gid;
+    WHERE country.usr_id = uid AND country.gam_id = gid
+    ORDER BY territory.abbrev;
 END
 $$
 
