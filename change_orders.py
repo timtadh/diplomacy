@@ -44,7 +44,6 @@ def print_change_orders(user_dict, ses_dict, pce_id, odt_id=None):
             cur = db.DictCursor(con)
             cur.callproc('new_order_for_piece', (pce_id, odt_id))
             cur.close()
-            print odt_id
         
         cur = db.DictCursor(con)
         cur.callproc('piece_info', (pce_id,))

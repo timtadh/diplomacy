@@ -40,6 +40,16 @@ def del_user_from_game(sn, game_data, con):
     cur.execute(q.del_user % (usr_data[0]['usr_id'], game_data['gam_id']))
     cur.close()
 
+def insert_default_orders(gam_id, con):
+    cur = db.DictCursor(con)
+    cur.callproc('pieces_for_game', (gam_id,))
+    pieces = cur.fetchall()
+    cur.close()
+    for piece in pieces:
+        cur = db.DictCursor(con)
+        cur.callproc('new_order_for_piece', (piece['pce_id'], 5))
+        cur.close()
+
 def get_user_table(con, gam_id):    
     cur = db.DictCursor(con)
     cur.callproc('users_in_game', (gam_id,))
@@ -119,6 +129,8 @@ def start_game(user_dict):
     cur.callproc('set_session_gam_id', (ses_dict['session_id'], user_dict['usr_id'], r[0]['gam_id']))
     user_table = cur.fetchall()
     cur.close()
+    
+    insert_default_orders(r[0]['gam_id'], con)
     
     db.connections.release_con(con)
     templater.print_template("templates/game_created.html", locals())
