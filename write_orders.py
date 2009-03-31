@@ -3,6 +3,7 @@
 import config
 import os, re, cgi, templater, db, sys
 import cookie_session, user_manager
+import mapgen.dbimport
 
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
@@ -46,6 +47,45 @@ def get_orders_given(con):
     cur.close()
     return result, all_given
 
+def update_map(con):
+    landmass = mapgen.dbimport.get(con, ses_dict['gam_id'])
+    dest_real = mapgen.save_to_image(landmass)
+    dest_saved = os.path.split(dest_real)[1]
+    return os.path.splitext(dest_saved)[0]
+
+def insert_default_orders(gam_id, con):
+    cur = db.DictCursor(con)
+    cur.callproc('pieces_for_game', (gam_id,))
+    pieces = cur.fetchall()
+    cur.close()
+    for piece in pieces:
+        cur = db.DictCursor(con)
+        cur.callproc('new_order_for_piece', (piece['pce_id'], 5, None))
+        cur.close()
+
+def roll_over_turn(con):
+    cur = db.DictCursor(con)
+    #I am a lazy bastard.
+    cur.execute('SELECT * FROM game WHERE game.gam_id = %s;' % str(ses_dict['gam_id']))
+    game_data = cur.fetchall()[0]
+    cur.close()
+    
+    year = game_data['gam_year']
+    season = game_data['gam_season']
+    if season == 'fall':
+        year += 1
+        season = 'spring'
+    else:
+        season = 'fall'
+    
+    dest_saved = update_map(con)
+    
+    cur = db.DictCursor(con)
+    cur.callproc('roll_over_turn', (ses_dict['gam_id'], dest_saved, season, year))
+    cur.close()
+    
+    insert_default_orders(ses_dict['gam_id'], con)
+
 def print_order_screen(user_dict, ses_dict, execute):
     game_found = False
     if ses_dict['gam_id'] != None:
@@ -62,6 +102,10 @@ def print_order_screen(user_dict, ses_dict, execute):
             cur.close()
         
         orders_given, all_orders_given = get_orders_given(con)
+        if all_orders_given:
+            roll_over_turn(con)
+            all_orders_given = False
+            orders_given = False
         
         db.connections.release_con(con)
         
