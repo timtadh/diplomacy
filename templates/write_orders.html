@@ -13,7 +13,12 @@
         <p style="text-align: center">
             <h3>Orders for your territories</h3>
             Click an order to change it.<br><br>
-        <+ templater.print_table(ordersByTer_table, ordersByTer_table_info, "new_game.py", "orders") #
+        <+ templater.print_table(ter_orders_table, ter_orders_table_info, "new_game.py", "orders") #
+        ->
+        <+ if orders_given:
+            <br>The turn will end when all players are finished writing orders.
+        |= else:
+            <br><a href="write_orders.py?execute=True">Execute orders</a>
         ->
         <br><a href="current_game.py?new_game=True">Select a different game</a><br>
         </p>

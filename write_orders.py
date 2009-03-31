@@ -34,7 +34,19 @@ def get_terr_table(con):
     terr_table = get_table(con, 'terrs_in_game', (ses_dict['gam_id'],))
     return terr_table, terr_table_info
 
-def print_game_info(user_dict, ses_dict):
+def get_orders_given(con):
+    cur = db.DictCursor(con)
+    cur.callproc('game_membership_data', (ses_dict['gam_id'],))
+    result = None
+    all_given = True
+    for m in cur.fetchall():
+        if not m['orders_given']: all_given = False
+        if m['usr_id'] == user_dict['usr_id']:
+            result = m['orders_given']
+    cur.close()
+    return result, all_given
+
+def print_order_screen(user_dict, ses_dict, execute):
     game_found = False
     if ses_dict['gam_id'] != None:
         game_found = True
@@ -43,16 +55,29 @@ def print_game_info(user_dict, ses_dict):
         cur.callproc('map_data_for_game', (ses_dict['gam_id'],))
         map_data = cur.fetchall()
         cur.close()
+        
+        if execute:
+            cur = db.DictCursor(con)
+            cur.callproc('set_orders_given', (user_dict['usr_id'], ses_dict['gam_id']))
+            cur.close()
+        
+        orders_given, all_orders_given = get_orders_given(con)
+        
         db.connections.release_con(con)
+        
         map_data = map_data[0]
         map_name = map_data['world_name']
         map_path = map_data['pic']
-        ordersByTer_table, ordersByTer_table_info = get_order_table(con)
+        ter_orders_table, ter_orders_table_info = get_order_table(con)
         terr_table, terr_table_info = get_terr_table(con)
+        
     templater.print_template("templates/write_orders.html", locals())
 
 if user_dict == {}:
     target_page = 'user_list.py'
     templater.print_template("templates/login_template.html", locals())
 else:
-    print_game_info(user_dict, ses_dict)
+    execute = False
+    if form.has_key('execute'):
+        execute = form['execute'].value
+    print_order_screen(user_dict, ses_dict, execute)

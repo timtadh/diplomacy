@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS usr_games $$
 
 CREATE PROCEDURE usr_games(IN usr_id VARCHAR(256))
 BEGIN
-    SELECT g.gam_id, g.pic, g.gam_season, g.gam_year, g.turn_start, g.turn_length, g.turn_stage, g.ended
+    SELECT g.gam_id, g.pic, g.gam_season, g.gam_year, g.turn_start, g.turn_length, g.turn_stage, g.ended, gm.orders_given
     FROM users AS usr
     INNER JOIN game_membership AS gm
         ON (gm.usr_id = usr.usr_id)

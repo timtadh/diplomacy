@@ -7,6 +7,8 @@ import cookie_session, user_manager
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
 
+moving_orders = [1, 2, 3, 4, 6] #order_types that use destinations
+
 def get_table(con, name, args):
     cur = db.DictCursor(con)
     cur.callproc(name, args)
@@ -14,7 +16,7 @@ def get_table(con, name, args):
     cur.close()
     return table
 
-def get_order_table(con, pce_id):
+def get_order_table(con, pce_id, piece_order):
     cur = db.DictCursor(con)
     cur.close()
     piece_order = get_table(con, 'orders_for_piece', (pce_id,))[0]
@@ -28,9 +30,21 @@ def get_order_table(con, pce_id):
             o['order_link'] = o['order_text']
         else:
             o['order_link'] = order_string % (pce_id, o['odt_id'], o['order_text'])
-    return type_table, type_table_info
+    return type_table, type_table_info, which_order
 
-def print_change_orders(user_dict, ses_dict, pce_id, odt_id=None):
+def get_terr_table(con, pce_id, ter_id):
+    terr_table_info = (('abbrev', "Abbrev"), ('name', "Name"))
+    terr_table = get_table(con, 'terrs_in_game', (ses_dict['gam_id'],))
+    
+    link_string = '<a href="change_orders.py?pce_id=%s&ter_id=%s">%s</a>'
+    for terr in terr_table:
+        if terr['ter_id'] != ter_id:
+            terr['abbrev'] = link_string % (pce_id, terr['ter_id'], terr['abbrev'])
+            terr['name'] = link_string % (pce_id, terr['ter_id'], terr['name'])
+    
+    return terr_table, terr_table_info
+
+def print_change_orders(user_dict, ses_dict, pce_id, odt_id=None, ter_id=None):
     game_found = False
     if ses_dict['gam_id'] != None:
         game_found = True
@@ -40,10 +54,26 @@ def print_change_orders(user_dict, ses_dict, pce_id, odt_id=None):
         map_data = cur.fetchall()
         cur.close()
         
-        if odt_id != None:
+        existing_orders = get_table(con, 'orders_for_piece', (pce_id,))[0]
+        update = False
+        if ter_id == None:
+            ter_id = existing_orders['destination']
+        else:
+            ter_id = int(ter_id)
+            update = True
+        if odt_id == None:
+            odt_id = existing_orders['order_type']
+        else:
+            odt_id = int(odt_id)
+            update = True
+        
+        if update:
             cur = db.DictCursor(con)
-            cur.callproc('new_order_for_piece', (pce_id, odt_id))
+            cur.callproc('new_order_for_piece', (pce_id, odt_id, ter_id))
             cur.close()
+            existing_orders = get_table(con, 'orders_for_piece', (pce_id,))[0]
+        
+        show_done_link = existing_orders['executed']
         
         cur = db.DictCursor(con)
         cur.callproc('piece_info', (pce_id,))
@@ -55,8 +85,13 @@ def print_change_orders(user_dict, ses_dict, pce_id, odt_id=None):
             return
         
         map_path = map_data[0]['pic']
-        order_table, order_table_info = get_order_table(con, pce_id)
-        #terr_table, terr_table_info = get_terr_table(con)
+        order_table, order_table_info, which_order = get_order_table(con, pce_id, existing_orders)
+        
+        print_terr_table = False
+        if which_order in moving_orders:
+            print_terr_table = True
+            terr_table, terr_table_info = get_terr_table(con, pce_id, ter_id)
+        
         db.connections.release_con(con)
     templater.print_template("templates/change_orders.html", locals())
 
@@ -65,9 +100,12 @@ if user_dict == {}:
     templater.print_template("templates/login_template.html", locals())
 else:
     odt_id = None
+    ter_id = None
     if form.has_key('odt_id'):
         odt_id = form['odt_id'].value
+    if form.has_key('ter_id'):
+        ter_id = form['ter_id'].value
     if form.has_key('pce_id'):
-        print_change_orders(user_dict, ses_dict, form['pce_id'].value, odt_id)
+        print_change_orders(user_dict, ses_dict, form['pce_id'].value, odt_id, ter_id)
     else:
         print '<a href="write_orders.py">You want to be here.</a>'

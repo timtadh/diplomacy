@@ -11,15 +11,22 @@
     |= else:
         <h2 class="main">Write Orders for Piece</h2>
         <p style="text-align: center">
-            <h3>Current location: <%abbrev%></h3>
+            <h3>Current location:&nbsp;<%abbrev%></h3>
             <a href="write_orders.py">Select a different piece</a><br>
         </p>
         <p style="text-align: center">
             <h3>Select an order type:</h3>
         <+ templater.print_table(order_table, order_table_info, "change_orders.py", "Orders") #
         ->
+        <+ if print_terr_table:
+        <p style="text-align: center">
+            <h3>Select a destination:</h3>
+        <+ templater.print_table(terr_table, terr_table_info, "change_orders.py", "Territories") #
+        ->
         </p>
-        <p style="text-align: center; margin_left:auto; margin_right:auto;">
+        ->
+        <p">
+        <br>
             <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
         </p>
     ->

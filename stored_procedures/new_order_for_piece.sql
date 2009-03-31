@@ -4,7 +4,7 @@ USE diplomacy
 
 DROP PROCEDURE IF EXISTS new_order_for_piece $$
 
-CREATE PROCEDURE new_order_for_piece(IN pid INT(11), IN odt INT(11))
+CREATE PROCEDURE new_order_for_piece(IN pid INT(11), IN odt INT(11), IN tid INT(11))
 BEGIN
     DECLARE c_gam_season ENUM('spring', 'fall');
     DECLARE c_gam_year YEAR(4);
@@ -27,7 +27,7 @@ BEGIN
         AND orders.gam_year = c_gam_year;
     
     INSERT INTO orders (cty_id, pce_id, gam_season, gam_year, order_type, destination, executed)
-    VALUES (c_cty_id, pid, c_gam_season, c_gam_year, odt, NULL, 0);
+    VALUES (c_cty_id, pid, c_gam_season, c_gam_year, odt, tid, 0);
 END
 $$
 

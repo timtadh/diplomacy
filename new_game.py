@@ -47,7 +47,7 @@ def insert_default_orders(gam_id, con):
     cur.close()
     for piece in pieces:
         cur = db.DictCursor(con)
-        cur.callproc('new_order_for_piece', (piece['pce_id'], 5))
+        cur.callproc('new_order_for_piece', (piece['pce_id'], 5, None))
         cur.close()
 
 def get_user_table(con, gam_id):    
