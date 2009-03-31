@@ -8,6 +8,9 @@ import mapgen.dbimport
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
 
+def resolve_orders():
+    pass #do order magic here!
+
 def get_table(con, name, args):
     cur = db.DictCursor(con)
     cur.callproc(name, args)
@@ -64,9 +67,10 @@ def insert_default_orders(gam_id, con):
         cur.close()
 
 def roll_over_turn(con):
+    resolve_orders()
+    
     cur = db.DictCursor(con)
-    #I am a lazy bastard.
-    cur.execute('SELECT * FROM game WHERE game.gam_id = %s;' % str(ses_dict['gam_id']))
+    cur.callproc('game_data', (ses_dict['gam_id'],))
     game_data = cur.fetchall()[0]
     cur.close()
     
