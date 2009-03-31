@@ -24,6 +24,13 @@ Usage:
 import MySQLdb
 from MySQLdb.cursors import DictCursor
 
+def __results_gen(cur):
+    r = cur.fetchall()
+    if r: yield r
+    else: return
+    n = cur.nextset()
+    while n: yield cur.fetchall()
+
 class Connections(object):
     
     def __init__(self):
@@ -66,5 +73,30 @@ class Connections(object):
     def release_con(self, con):
         if con in self.in_use: self.in_use.remove(con)
         self.free.add(con)
+        
+    def callproc(self, name, *args):
+        con = self.get_con()
+        cur = db.DictCursor(con)
+        cur.callproc(name, args)
+        results = tuple(__results_gen(cur))
+        cur.close()
+        self.release_con(cur)
+        
+        if not results: return None
+        elif len(results) == 1: return results[0]
+        else: return results
+    
+    def execute(self, query, *args):
+        con = self.get_con()
+        cur = db.DictCursor(con)
+        cur.execute(query, args)
+        results = tuple(__results_gen(cur))
+        cur.close()
+        self.release_con(cur)
+        
+        if not results: return None
+        elif len(results) == 1: return results[0]
+        else: return results
+        
 
 connections = Connections()
