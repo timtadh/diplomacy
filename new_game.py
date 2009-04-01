@@ -139,7 +139,7 @@ if user_dict == {}:
     target_page = 'new_game.py'
     templater.print_template("templates/login_template.html", locals())
 else:
-    import mapgen, os, mapgen.dbexport, templater
+    import mapgen, os, mapgen.dbexport
     import psyco
     psyco.full()
     if form.has_key('Start Game'):
