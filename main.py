@@ -11,8 +11,11 @@ def print_main(user_dict):
     num_users = db.callproc('count_users', user_dict['usr_id'])[0]['num_users']
     num_games_total = db.callproc('count_games')[0]['num_games_total']
     num_games_active = db.callproc('count_active_games')[0]['num_games_active']
-    num_games_usr = len(db.callproc('usr_games', user_dict['usr_id']))
+    usr_games = db.callproc('usr_games', user_dict['usr_id'])
     unread_msges = db.callproc('count_unread_msges', user_dict['usr_id'])[0]['unread_msges']
+    
+    if not usr_games: num_games_usr = 0
+    else: num_games_usr = len(usr_games)
     
     templater.print_template("templates/main.html", locals())
 
