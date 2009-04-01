@@ -8,98 +8,69 @@ import sql.new_game as q
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
 
-def games_for_current_user(con):
-    cur = db.DictCursor(con)
-    cur.callproc('new_gam_id_for_usr', (user_dict['screen_name'],))
-    r = cur.fetchall()
-    cur.close()
-    return r
-
-def make_new_game(con):
+def make_new_game():
+    con = db.connections.get_con()
     cur = db.DictCursor(con)
     gam_id = mapgen.dbexport.next_id('game', cur)
-    cur.execute(q.new_game % user_dict['usr_id'])
-    cur.execute(q.add_user % (user_dict['usr_id'], gam_id))
     cur.close()
+    db.connections.release_con(con)
+    db.execute(q.new_game % user_dict['usr_id'])
+    db.execute(q.add_user % (user_dict['usr_id'], gam_id))
 
-def add_user_to_game(sn, game_data, con):
-    cur = db.DictCursor(con)
-    cur.callproc('user_data_bysn', (sn,))
-    usr_data = cur.fetchall()
-    cur.close()
-    cur = db.DictCursor(con)
-    cur.execute(q.add_user % (usr_data[0]['usr_id'], game_data['gam_id']))
-    cur.close()
+def add_user_to_game(sn, game_data):
+    usr_data = db.callproc('user_data_bysn', sn)
+    db.execute(q.add_user % (usr_data[0]['usr_id'], game_data['gam_id']))
 
-def del_user_from_game(sn, game_data, con):
-    cur = db.DictCursor(con)
-    cur.callproc('user_data_bysn', (sn,))
-    usr_data = cur.fetchall()
-    cur.close()
-    cur = db.DictCursor(con)
-    cur.execute(q.del_user % (usr_data[0]['usr_id'], game_data['gam_id']))
-    cur.close()
+def del_user_from_game(sn, game_data):
+    usr_data = db.callproc('user_data_bysn', sn)
+    db.execute(q.del_user % (usr_data[0]['usr_id'], game_data['gam_id']))
 
-def insert_default_orders(gam_id, con):
-    cur = db.DictCursor(con)
-    cur.callproc('pieces_for_game', (gam_id,))
-    pieces = cur.fetchall()
-    cur.close()
+def insert_default_orders(gam_id):
+    pieces = db.callproc('pieces_for_game', gam_id)
     for piece in pieces:
-        cur = db.DictCursor(con)
-        cur.callproc('new_order_for_piece', (piece['pce_id'], 5, None))
-        cur.close()
+        db.callproc('new_order_for_piece', piece['pce_id'], 5, None)
 
-def get_user_table(con, gam_id):    
-    cur = db.DictCursor(con)
-    cur.callproc('users_in_game', (gam_id,))
-    user_table = cur.fetchall()
-    cur.close()
-    return user_table, (('screen_name', "Screen Name"),('remove_link', ""))
+def get_user_table(gam_id):
+    user_table_info = (('screen_name', "Screen Name"),('remove_link', ""))
+    user_table = db.callproc('users_in_game', gam_id)
+    return user_table, user_table_info
 
 def print_new_game(user_dict, form, user_to_add="", user_to_remove=""):    
     error = ""
-    con = db.connections.get_con()
     this_game = {}
     
-    r = games_for_current_user(con)
+    r = db.callproc('new_gam_id_for_usr', user_dict['screen_name'])
     if not r:
-        make_new_game(con)
-        r = games_for_current_user(con)
+        make_new_game()
+        r = db.callproc('new_gam_id_for_usr', user_dict['screen_name'])
     this_game = r[0]
-    #'Existing image:<br><img src="map_images/%s.png">' % r[0]['pic']
     
     if user_to_add != "":
         try:
-            add_user_to_game(user_to_add, this_game, con)
+            add_user_to_game(user_to_add, this_game)
         except:
             error = "Could not add user "+user_to_add
     
     if user_to_remove != "":
         try:
-            del_user_from_game(user_to_remove, this_game, con)
+            del_user_from_game(user_to_remove, this_game)
         except:
             error = "Could not remove user "+user_to_add
 
     screen_name = ""
-    user_table, user_table_info = get_user_table(con, this_game['gam_id'])
+    user_table, user_table_info = get_user_table(this_game['gam_id'])
     for usr in user_table:
         if usr['screen_name'] == user_dict['screen_name']:
             usr['remove_link'] = "--"
         else:
             usr['remove_link'] = "<a class='inline' href='new_game.py?rm_sn="+usr['screen_name']+"'>remove</a>"
-    db.connections.release_con(con)
     templater.print_template("templates/new_game.html", locals())
 
-def start_game(user_dict):    
-    con = db.connections.get_con()
+def start_game(user_dict):
     
-    r = games_for_current_user(con)
+    r = db.callproc('new_gam_id_for_usr', user_dict['screen_name'])
     
-    cur = db.DictCursor(con)
-    cur.callproc('users_in_game', (r[0]['gam_id'],))
-    user_table = cur.fetchall()
-    cur.close()
+    user_table, user_table_info = get_user_table(r[0]['gam_id'])
     
     gen = mapgen.behemoth.ContinentGenerator(num_countries=len(user_table), verbose=False)
     landmass = gen.generate()
@@ -109,30 +80,24 @@ def start_game(user_dict):
     
     #landmass.name = "Test World "+dest_saved[:5]
     
-    user_table, user_table_info = get_user_table(con, r[0]['gam_id'])
+    user_table, user_table_info = get_user_table(r[0]['gam_id'])
     user_list = [i['usr_id'] for i in user_table]
     
+    con = db.connections.get_con()
     cur = db.DictCursor(con)
     mapgen.dbexport.export(cur, user_list, landmass, dest_saved, r[0]['gam_id'])
     cur.close()
-    
-    cur = db.DictCursor(con)
-    cur.execute(q.give_map_to_game % (landmass.map_id, dest_saved, r[0]['gam_id']))
-    cur.close()
-    
-    cur = db.DictCursor(con)
-    for usr, cty in zip(user_table, landmass.countries):
-        cur.execute(q.give_cty_to_usr % (usr['usr_id'], cty.cty_id, r[0]['gam_id']))
-    cur.close()
-    
-    cur = db.DictCursor(con)
-    cur.callproc('set_session_gam_id', (ses_dict['session_id'], user_dict['usr_id'], r[0]['gam_id']))
-    user_table = cur.fetchall()
-    cur.close()
-    
-    insert_default_orders(r[0]['gam_id'], con)
-    
     db.connections.release_con(con)
+    
+    db.execute(q.give_map_to_game % (landmass.map_id, dest_saved, r[0]['gam_id']))
+    
+    for usr, cty in zip(user_table, landmass.countries):
+        db.execute(q.give_cty_to_usr % (usr['usr_id'], cty.cty_id, r[0]['gam_id']))
+    
+    db.callproc('set_session_gam_id', ses_dict['session_id'], user_dict['usr_id'], r[0]['gam_id'])
+    #user_table = cur.fetchall()
+    
+    insert_default_orders(r[0]['gam_id'])
     templater.print_template("templates/game_created.html", locals())
 
 if user_dict == {}:

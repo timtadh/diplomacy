@@ -13,20 +13,11 @@ def update_ses_dict():
 
 def check_switch(switch, ng):
     if switch:
-        con = db.connections.get_con()
-        cur = db.DictCursor(con)
-        cur.callproc('set_session_gam_id', (ses_dict['session_id'], user_dict['usr_id'], ng))
-        db.connections.release_con(con)
+        db.callproc('set_session_gam_id', ses_dict['session_id'], user_dict['usr_id'], ng)
         update_ses_dict()
 
 def get_game_table(switch=False, ng=-1):
-    con = db.connections.get_con()
-    cur = db.DictCursor(con)
-    #check_switch(cur, switch, ng)
-    cur.callproc('usr_games', (user_dict['usr_id'],))
-    game_table = cur.fetchall()
-    cur.close()
-    db.connections.release_con(con)
+    game_table = db.callproc('usr_games', user_dict['usr_id'])
     update_ses_dict()
     return game_table
 
@@ -44,44 +35,28 @@ def print_game_list(user_dict, ses_dict, switch, ng):
     game_table_info = (('label', "id"),('switch_link', ""))
     templater.print_template("templates/current_game.html", locals())
 
-
-def get_table(con, name, args):
-    cur = db.DictCursor(con)
-    cur.callproc(name, args)
-    table = cur.fetchall()
-    cur.close()
-    return table
-
-def get_user_table(con):
+def get_user_table():
     user_table_info = (('screen_name', "Screen Name"), ('name', "Country"))
-    user_table = get_table(con, 'users_in_running_game', (ses_dict['gam_id'],))
+    user_table = db.callproc('users_in_running_game', ses_dict['gam_id'])
     return user_table, user_table_info
 
-def get_supplier_table(con):
+def get_supplier_table():
     supplier_table_info = (('abbrev', "Abbrev"), ('name', "Name"))  
-    supplier_table = get_table(
-        con, 'usr_suppliers_in_game', (ses_dict['gam_id'], user_dict['usr_id'])
-    )
+    supplier_table = db.callproc('usr_suppliers_in_game', ses_dict['gam_id'], user_dict['usr_id'])
     return supplier_table, supplier_table_info
 
-def get_terr_table(con):
+def get_terr_table():
     terr_table_info = (('abbrev', "Abbrev"), ('name', "Name"))
-    terr_table = get_table(con, 'terrs_in_game', (ses_dict['gam_id'],))
+    terr_table = db.callproc('terrs_in_game', ses_dict['gam_id'])
     return terr_table, terr_table_info
 
 def print_game_info(user_dict, ses_dict, switch, ng):
     choose_game = False
     if ses_dict['gam_id'] != None:
-        con = db.connections.get_con()
-        user_table, user_table_info = get_user_table(con)
-        cur = db.DictCursor(con)
-        #check_switch(cur, switch, ng)
-        cur.callproc('map_data_for_game', (ses_dict['gam_id'],))
-        map_data = cur.fetchall()
-        cur.close()
-        supplier_table, supplier_table_info = get_supplier_table(con)
-        terr_table, terr_table_info = get_terr_table(con)
-        db.connections.release_con(con)
+        map_data = db.callproc('map_data_for_game', ses_dict['gam_id'])
+        user_table, user_table_info = get_user_table()
+        supplier_table, supplier_table_info = get_supplier_table()
+        terr_table, terr_table_info = get_terr_table()
         if len(map_data) > 0:
             map_data = map_data[0]
             map_name = map_data['world_name']
@@ -101,9 +76,6 @@ else:
         try:
             ng = int(form['ng'].value)
             switch = True
-            #Fix the session dictionary, which will not be updated until later
-            #after one of the page printing funcs checks the switch var
-            # ses_dict['gam_id'] = ng
         except:
             templater.print_error('invalid value passed to this page')
             sys.exit()
