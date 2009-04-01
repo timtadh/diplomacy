@@ -10,7 +10,6 @@ from Crypto.Hash import SHA256
 import Cookie
 import nDDB
 import db
-from crypt_framework import authenticator as auth
 from logger import Logger
 logger = Logger(__file__)
 
