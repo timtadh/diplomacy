@@ -4,7 +4,6 @@ warnings.simplefilter('ignore', UserWarning)
 import formencode
 from formencode import validators
 warnings.simplefilter('default', UserWarning)
-from crypt_framework import qcrypt
 import string
 import base64
 
