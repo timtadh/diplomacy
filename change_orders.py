@@ -7,15 +7,14 @@ from twik import *
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
 
-c = db.connections
 moving_orders = [1, 2, 3, 4, 6] #order_types that use destinations
 
 def get_order_table(pce_id, piece_order):
-    piece_order = c.callproc('orders_for_piece', pce_id)[0]
+    piece_order = db.callproc('orders_for_piece', pce_id)[0]
     which_order = piece_order['order_type']
     
     type_table_info = (("order_link", "Order"),)
-    type_table = c.callproc('order_types')
+    type_table = db.callproc('order_types')
     order_string = '<a href="change_orders.py?pce_id=%s&odt_id=%s">%s</a>'
     for o in type_table:
         if o['odt_id'] == which_order:
@@ -26,7 +25,7 @@ def get_order_table(pce_id, piece_order):
 
 def get_order_dest_table(pce_id, ter_id):
     terr_table_info = (('abbrev', "Abbrev"), ('name', "Name"))
-    terr_table = c.callproc('terrs_in_game', ses_dict['gam_id'])
+    terr_table = db.callproc('terrs_in_game', ses_dict['gam_id'])
     
     link_string = '<a href="change_orders.py?pce_id=%s&ter_id=%s">%s</a>'
     for terr in terr_table:
@@ -40,9 +39,9 @@ def print_change_orders(user_dict, ses_dict, pce_id, odt_id=None, ter_id=None):
     game_found = False
     if ses_dict['gam_id'] != None:
         game_found = True
-        map_data = c.callproc('map_data_for_game', ses_dict['gam_id'])
+        map_data = db.callproc('map_data_for_game', ses_dict['gam_id'])
         
-        existing_orders = c.callproc('orders_for_piece', pce_id)[0]
+        existing_orders = db.callproc('orders_for_piece', pce_id)[0]
         update = False
         if ter_id == None:
             ter_id = existing_orders['destination']
@@ -56,12 +55,12 @@ def print_change_orders(user_dict, ses_dict, pce_id, odt_id=None, ter_id=None):
             update = True
         
         if update:
-            c.callproc('new_order_for_piece', pce_id, odt_id, ter_id)
-            existing_orders = c.callproc('orders_for_piece', pce_id)[0]
+            db.callproc('new_order_for_piece', pce_id, odt_id, ter_id)
+            existing_orders = db.callproc('orders_for_piece', pce_id)[0]
         
         show_done_link = existing_orders['executed']
         
-        p = c.callproc('piece_info', pce_id)[0]
+        p = db.callproc('piece_info', pce_id)[0]
         abbrev = p['abbrev']
         if p['usr_id'] != user_dict['usr_id']:
             print "Naught naughty!"

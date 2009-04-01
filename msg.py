@@ -13,7 +13,7 @@ def print_messages(user_dict, page=0):
     #cur.close()
     #db.connections.release_con(con)
     
-    msgs = db.connections.callproc('usr_messages', user_dict['usr_id'])
+    msgs = db.callproc('usr_messages', user_dict['usr_id'])
     
     table_info = (("from", "from"), ("subject", "subject"), ("msg", "message"),
                   ("time", "time sent"), ("delete", ""))
