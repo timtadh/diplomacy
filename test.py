@@ -1,4 +1,4 @@
-import db
+import twik.db as db
 import config_db_con
 from MySQLdb.cursors import DictCursor
 

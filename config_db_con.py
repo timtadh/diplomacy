@@ -10,7 +10,7 @@ Usage:
     db.connections.release_con(con)
 '''
 
-import db
+import twik.db as db
 
 HOST = "localhost"
 PORT = 3306

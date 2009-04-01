@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 import config
-import os, re, cgi, templater, db
-import cookie_session, user_manager
+import os, re, cgi, sys
+from twik import *
 
 
 def print_user_list(user_dict):

@@ -1,9 +1,8 @@
 #!/usr/bin/python
 
 import config
-import os, re, cgi, templater, db
-import cookie_session, user_manager
-import sys
+import os, re, cgi, sys
+from twik import *
     
 
 form = cgi.FieldStorage()

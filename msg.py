@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import config
-import os, re, cgi, templater, db
-import cookie_session, user_manager
+import os, re, cgi, sys
+from twik import *
 
 def print_messages(user_dict, page=0):
     #con = db.connections.get_con()

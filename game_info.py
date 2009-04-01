@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 import config
-import os, re, cgi, templater, db, sys
-import cookie_session, user_manager
+import os, re, cgi, sys
+from twik import *
 
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)

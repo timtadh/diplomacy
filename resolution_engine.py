@@ -1,4 +1,4 @@
 #!/usr/bin/python
 
-import db
+import twik.db as db
 
