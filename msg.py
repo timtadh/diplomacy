@@ -1,16 +1,19 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import config
 import os, re, cgi, templater, db
 import cookie_session, user_manager
 
 def print_messages(user_dict, page=0):
-    con = db.connections.get_con()
-    cur = db.DictCursor(con)
-    cur.callproc('usr_messages', (user_dict['usr_id'],))
-    msgs = cur.fetchall()
-    cur.close()
-    db.connections.release_con(con)
+    #con = db.connections.get_con()
+    #cur = db.DictCursor(con)
+    #cur.callproc('usr_messages', (user_dict['usr_id'],))
+    #msgs = cur.fetchall()
+    #cur.close()
+    #db.connections.release_con(con)
+    
+    msgs = db.connections.callproc('usr_messages', user_dict['usr_id'])
     
     table_info = (("from", "from"), ("subject", "subject"), ("msg", "message"),
                   ("time", "time sent"), ("delete", ""))
