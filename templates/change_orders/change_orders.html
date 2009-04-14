@@ -5,10 +5,6 @@
 
 
 <div class="main">
-    <+ if not game_found:
-        <h2 class="main">No game selected</h2>
-        <a href="current_game.py">Choose a game</a>
-    |= else:
         <h2 class="main">Write Orders for Piece</h2>
         <p style="text-align: center">
             <h3>Current location:&nbsp;<%abbrev%></h3>
@@ -25,11 +21,9 @@
         ->
         </p>
         ->
-        <p">
         <br>
             <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
         </p>
-    ->
 </div>
 
 

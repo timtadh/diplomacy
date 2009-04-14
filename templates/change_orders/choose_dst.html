@@ -1,0 +1,25 @@
+<+ templater.print_template("templates/header_part1.html", globals()) #
+|= templater.print_template("templates/header_part2.html", globals()) #
+|= templater.print_template("templates/sidebar.html", globals()) #
+->
+
+
+<div class="main">
+    <h2 class="main">Choose Order</h2>
+    <p style="text-align: center">
+        <h3>Current location: <%abbrev%></h3>
+        <a href="write_orders.py">Select a different piece</a><br>
+    </p>
+    <p style="text-align: center">
+        <h3>Select a destination:</h3>
+    <+ templater.print_table(terr_table, terr_table_info, "change_orders.py", "Territories") #
+    ->
+    <p>
+    <br>
+        <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
+    </p>
+</div>
+
+
+<+ templater.print_template("templates/footer.html", globals()) #
+->

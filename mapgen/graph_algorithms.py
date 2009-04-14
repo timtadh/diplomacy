@@ -54,13 +54,13 @@ def print_matrix(matrix):
 def _print_matrix(m):
     s = '   '
     for x in xrange(len(m)):
-        s += str(x) + ' '*(5-len(str(x)))
+        s += str(x) + ' '*(3-len(str(x)))
     print s
     for i, row in enumerate(m):
         s = str(i) + ' '*(3-len(str(i)))
         for col in row:
             if col == sys.maxint: col = '~'
-            s += str(col) + ' '*(5-len(str(col)))
+            s += str(col) + ' '*(3-len(str(col)))
         print s
 
 def make_adj_matrix(triangles):

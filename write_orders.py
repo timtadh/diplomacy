@@ -5,18 +5,16 @@ import os, re, cgi, sys
 from twik import *
 import mapgen.dbimport
 
-form = cgi.FieldStorage()
-ses_dict, user_dict = user_manager.init_user_session(form)
 
 def resolve_orders():
     pass #do order magic here!
 
-def get_order_table():
+def get_order_table(usr_id, gam_id):
     piece_table_info = (
         ("pce_type", "type"), ("name", "territory"), ("abbrev","abbrev"), ("order_type","order")
     )
-    piece_table = db.callproc('pieces_for_user', ses_dict['gam_id'], user_dict['usr_id'])
-    order_table = db.callproc('orders_for_user', ses_dict['gam_id'], user_dict['usr_id'])
+    piece_table = db.callproc('pieces_for_user', gam_id, usr_id)
+    order_table = db.callproc('orders_for_user', gam_id, usr_id)
     
     link_str = '<a href="change_orders.py?pce_id=%s">%s</a>'
     for piece in piece_table:
@@ -26,18 +24,18 @@ def get_order_table():
                 piece['order_type'] = link_str % (piece['pce_id'], order['order_text'])
     return piece_table, piece_table_info
 
-def get_terr_table():
+def get_terr_table(gam_id):
     terr_table_info = (('abbrev', "Abbrev"), ('name', "Name"))
-    terr_table = db.callproc('terrs_in_game', ses_dict['gam_id'])
+    terr_table = db.callproc('terrs_in_game', gam_id)
     return terr_table, terr_table_info
 
-def get_orders_given():
-    game_membership_data = db.callproc('game_membership_data', ses_dict['gam_id'])
+def get_orders_given(usr_id, gam_id):
+    game_membership_data = db.callproc('game_membership_data', gam_id)
     result = None
     all_given = True
     for m in game_membership_data:
         if not m['orders_given']: all_given = False
-        if m['usr_id'] == user_dict['usr_id']:
+        if m['usr_id'] == usr_id:
             result = m['orders_given']
     return result, all_given
 
@@ -81,8 +79,9 @@ def print_order_screen(user_dict, ses_dict, execute):
         
         if execute: db.callproc('set_orders_given', user_dict['usr_id'], ses_dict['gam_id'])
         
-        orders_given, all_orders_given = get_orders_given()
-        if all_orders_given:
+        orders_given, all_orders_given = get_orders_given(user_dict['usr_id'], ses_dict['gam_id'])
+        
+        if orders_given and all_orders_given:
             roll_over_turn()
             all_orders_given = False
             orders_given = False
@@ -90,16 +89,19 @@ def print_order_screen(user_dict, ses_dict, execute):
         map_data = map_data[0]
         map_name = map_data['world_name']
         map_path = map_data['pic']
-        ter_orders_table, ter_orders_table_info = get_order_table()
-        terr_table, terr_table_info = get_terr_table()
+        ter_orders_table, ter_orders_table_info = get_order_table(user_dict['usr_id'], ses_dict['gam_id'])
+        terr_table, terr_table_info = get_terr_table(ses_dict['gam_id'])
         
     templater.print_template("templates/write_orders.html", locals())
 
-if user_dict == {}:
-    target_page = 'user_list.py'
-    templater.print_template("templates/login_template.html", locals())
-else:
-    execute = False
-    if form.has_key('execute'):
-        execute = form['execute'].value
+if __name__ == '__main__':
+    form = cgi.FieldStorage()
+    ses_dict, user_dict = user_manager.init_user_session(form)
+    if user_dict == {}:
+        target_page = 'user_list.py'
+        templater.print_template("templates/login_template.html", locals())
+    else:
+        execute = False
+        if form.has_key('execute'):
+            execute = form['execute'].value
     print_order_screen(user_dict, ses_dict, execute)
