@@ -13,7 +13,7 @@ BEGIN
     INNER JOIN game AS g
         ON (g.gam_id = gm.gam_id)
     WHERE
-        usr.usr_id = usr_id;
+        usr.usr_id = usr_id AND g.turn_stage != 0;
 END
 $$
 

@@ -53,7 +53,8 @@ USE diplomacy;
 --         pce_type : enum('fleet', 'army'))
 --  
 --  order_type (odt_id : int(11), order_text : varchar(128), destination : tinyint(1), 
---              operands : int(11), turn_stage : int(11))
+--              operands : int(11), turn_stage : int(11), dest_text : varchar(128),
+--              op_text : varchar(128))
 --  
 --  orders (ord_id : int(11), cty_id : int(11), pce_id : int(11), 
 --          season : enum('spring', 'fall'), year : year(4), order_type : int(11), 
@@ -286,6 +287,8 @@ CREATE TABLE order_type
     destination tinyint(1) DEFAULT 1,
     operands int(11) DEFAULT 0,
     turn_stage int(11) DEFAULT 1,
+    dest_text varchar(128),
+    op_text varchar(128),
     CONSTRAINT pk_order_type PRIMARY KEY (odt_id),
     CONSTRAINT fk_turn_stage FOREIGN KEY (turn_stage)
         REFERENCES turn_stages(trs_id) ON DELETE RESTRICT
