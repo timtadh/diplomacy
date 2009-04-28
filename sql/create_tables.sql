@@ -52,7 +52,8 @@ USE diplomacy;
 --  piece (pce_id : int(11), cty_id : int(11), ter_id : int(11), 
 --         pce_type : enum('fleet', 'army'))
 --  
---  order_type (odt_id : int(11), order_text : varchar(128))
+--  order_type (odt_id : int(11), order_text : varchar(128), operands : int(11), 
+--              turn_stage : int(11))
 --  
 --  orders (ord_id : int(11), cty_id : int(11), pce_id : int(11), 
 --          season : enum('spring', 'fall'), year : year(4), order_type : int(11), 
@@ -160,7 +161,9 @@ CREATE TABLE sessions
     last_update datetime NOT NULL,
     CONSTRAINT pk_session PRIMARY KEY (session_id),
     CONSTRAINT fk_usr_id FOREIGN KEY (usr_id)
-        REFERENCES users(usr_id) ON DELETE RESTRICT 
+        REFERENCES users(usr_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_gam_id FOREIGN KEY (gam_id)
+        REFERENCES game(gam_id) ON DELETE RESTRICT
 );
 
 DROP TABLE IF EXISTS country;
@@ -280,7 +283,11 @@ CREATE TABLE order_type
 (
     odt_id int(11) AUTO_INCREMENT,
     order_text varchar(128) NOT NULL,
-    CONSTRAINT pk_order_type PRIMARY KEY (odt_id)
+    operands int(11) DEFAULT 0,
+    turn_stage int(11) DEFAULT 1,
+    CONSTRAINT pk_order_type PRIMARY KEY (odt_id),
+    CONSTRAINT fk_turn_stage FOREIGN KEY (turn_stage)
+        REFERENCES turn_stages(trs_id) ON DELETE RESTRICT
 );
 
 DROP TABLE IF EXISTS orders;

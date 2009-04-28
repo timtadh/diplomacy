@@ -9,17 +9,27 @@ ses_dict, user_dict = user_manager.init_user_session(form)
 
 moving_orders = [1, 2, 3, 4, 6] #order_types that use destinations
 
-def get_order_table(pce_id, piece_order):
-    piece_order = db.callproc('orders_for_piece', pce_id)[0]
-    which_order = piece_order['order_type']
+def get_order_table(gam_id, pce_id, piece_order):
+    orders_for_piece = db.callproc('orders_for_piece', pce_id)
+    if orders_for_piece: 
+        piece_order = orders_for_piece[0]
+        which_order = piece_order['order_type']
+    else: 
+        piece_order = list()
+        which_order = 'hold'
+    
+    game_data = db.callproc('game_data', gam_id)
+    if game_data: game_data = game_data[0]
+    else: raise Exception
     
     type_table_info = (("order_link", "Order"),)
-    type_table = db.callproc('order_types')
+    type_table = db.callproc('order_types', game_data['turn_stage'])
     order_string  = '<form action="change_orders.py" method="post">\n'
     order_string += '<input type="hidden" value="%s" name="pce_id"/>'
     order_string += '<input type="hidden" value="%s" name="odt_id"/>'
     order_string += '<input type="submit" value="%s"/>'
     order_string += '</form>'
+    
     for o in type_table:
         if o['odt_id'] == which_order:
             o['order_link'] = o['order_text']
@@ -43,7 +53,9 @@ def get_order_dest_table(pce_id, ter_id):
     return terr_table, terr_table_info
 
 def update_orders(pce_id, odt_id=None, ter_id=None):
-    existing_orders = db.callproc('orders_for_piece', pce_id)[0]
+    orders_for_piece = db.callproc('orders_for_piece', pce_id)
+    if orders_for_piece: existing_orders = orders_for_piece[0]
+    else: return
     
     update = False
     if ter_id == None:
@@ -66,7 +78,9 @@ def update_orders(pce_id, odt_id=None, ter_id=None):
 
 def get_db_data(gam_id, pce_id):
     map_data = db.callproc('map_data_for_game', gam_id)
-    existing_orders = db.callproc('orders_for_piece', pce_id)[0]
+    orders_for_piece = db.callproc('orders_for_piece', pce_id)
+    if orders_for_piece: existing_orders = orders_for_piece[0]
+    else: existing_orders = list()
     piece_info = db.callproc('piece_info', pce_id)[0]
     
     if piece_info['usr_id'] != user_dict['usr_id']:
@@ -84,11 +98,11 @@ def print_choose_dst(user_dict, piece_info, map_data, existing_orders, ter_id):
     templater.print_template("templates/change_orders/choose_dst.html", locals())
     
 
-def print_choose_orders(user_dict, piece_info, map_data, existing_orders):
+def print_choose_orders(user_dict, gam_id, piece_info, map_data, existing_orders):
     abbrev = piece_info['abbrev']
     
     map_path = map_data[0]['pic']
-    order_table, order_table_info, which_order = get_order_table(pce_id, ter_id)
+    order_table, order_table_info, which_order = get_order_table(gam_id, pce_id, ter_id)
     
     templater.print_template("templates/change_orders/choose_order.html", locals())
 
@@ -135,6 +149,6 @@ else:
         else:
             update_orders(pce_id, odt_id, ter_id)
             piece_info, map_data, existing_orders = get_db_data(gam_id, pce_id)
-            print_choose_orders(user_dict, piece_info, map_data, existing_orders)
+            print_choose_orders(user_dict, gam_id, piece_info, map_data, existing_orders)
     else:
         templater.print_error('<a href="write_orders.py">You want to be here.</a>')
