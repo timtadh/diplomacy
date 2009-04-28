@@ -60,6 +60,7 @@ def _print_matrix(m):
         s = str(i) + ' '*(3-len(str(i)))
         for col in row:
             if col == sys.maxint: col = '~'
+            if col == 0: col = ' '
             s += str(col) + ' '*(3-len(str(col)))
         print s
 

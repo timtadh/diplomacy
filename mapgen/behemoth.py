@@ -856,3 +856,4 @@ class ContinentGenerator(Generator):
             terr.name, terr.abbreviation = self.namer.create('sea')
         for country in self.countries:
             country.name, country.abbreviation = self.namer.create('land')
+    

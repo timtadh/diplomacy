@@ -49,9 +49,11 @@ def get_orders_given(usr_id, gam_id):
             result = m['orders_given']
     return result, all_given
 
-def update_map():
+def update_map(gam_id=0):
+    if gam_id == 0:
+        gam_id = ses_dict['gam_id']
     con = db.connections.get_con()
-    landmass = mapgen.dbimport.get(con, ses_dict['gam_id'])
+    landmass = mapgen.dbimport.get(con, gam_id)
     dest_real = mapgen.save_to_image(landmass)
     dest_saved = os.path.split(dest_real)[1]
     db.connections.release_con(con)
@@ -60,12 +62,12 @@ def update_map():
 def insert_default_orders(gam_id):
     pieces = db.callproc('pieces_for_game', gam_id)
     for piece in pieces:
-        db.callproc('new_order_for_piece', piece['pce_id'], 5, None)
+        db.callproc('new_order_for_piece', piece['pce_id'], 3, None)
 
 def roll_over_turn():
     resolve_orders()
     
-    game_data = db.callproc('game_data', ses_dict['gam_id'])
+    game_data = db.callproc('game_data', ses_dict['gam_id'])[0]
     
     year = game_data['gam_year']
     season = game_data['gam_season']

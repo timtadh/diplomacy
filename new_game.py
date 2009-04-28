@@ -4,6 +4,7 @@ import config
 import os, re, cgi, sys
 from twik import *
 import sql.new_game as q
+import write_orders
 
 form = cgi.FieldStorage()
 ses_dict, user_dict = user_manager.init_user_session(form)
@@ -24,11 +25,6 @@ def add_user_to_game(sn, game_data):
 def del_user_from_game(sn, game_data):
     usr_data = db.callproc('user_data_bysn', sn)
     db.execute(q.del_user % (usr_data[0]['usr_id'], game_data['gam_id']))
-
-def insert_default_orders(gam_id):
-    pieces = db.callproc('pieces_for_game', gam_id)
-    for piece in pieces:
-        db.callproc('new_order_for_piece', piece['pce_id'], 3, None)
 
 def get_user_table(gam_id):
     user_table_info = (('screen_name', "Screen Name"),('remove_link', ""))
@@ -95,9 +91,11 @@ def start_game(user_dict):
         db.execute(q.give_cty_to_usr % (usr['usr_id'], cty.cty_id, r[0]['gam_id']))
     
     db.callproc('set_session_gam_id', ses_dict['session_id'], user_dict['usr_id'], r[0]['gam_id'])
-    #user_table = cur.fetchall()
     
-    insert_default_orders(r[0]['gam_id'])
+    write_orders.insert_default_orders(r[0]['gam_id'])
+    
+    #write_orders.update_map(r[0]['gam_id'])
+    
     templater.print_template("templates/game_created.html", locals())
 
 if user_dict == {}:

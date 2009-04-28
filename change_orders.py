@@ -32,10 +32,7 @@ def get_order_table(gam_id, pce_id, piece_order):
     order_string += '</form>'
     
     for o in type_table:
-        if o['odt_id'] == which_order:
-            o['order_link'] = o['order_text']
-        else:
-            o['order_link'] = order_string % (pce_id, o['odt_id'], o['order_text'])
+        o['order_link'] = order_string % (pce_id, o['odt_id'], o['order_text'])
     return type_table, type_table_info, which_order
 
 def get_order_dest_table(pce_id, ter_id):
@@ -50,6 +47,7 @@ def get_order_dest_table(pce_id, ter_id):
     for terr in terr_table:
         if terr['ter_id'] != ter_id:
             terr['abbrev'] = order_string % (pce_id, terr['ter_id'], terr['abbrev'])
+    
     
     return terr_table, terr_table_info
         
@@ -113,6 +111,8 @@ def print_choose_op(user_dict, piece_info, map_data, existing_orders, ter_id):
     map_path = map_data[0]['pic']
     terr_table, terr_table_info = get_order_op_table(pce_id, existing_orders['destination'], piece_info['ter_id'])
     
+    order_type = db.callproc('order_type', existing_orders['order_type'])[0]
+    
     templater.print_template("templates/change_orders/choose_op.html", locals())
     
 def print_choose_dst(user_dict, piece_info, map_data, existing_orders, ter_id):
@@ -120,6 +120,8 @@ def print_choose_dst(user_dict, piece_info, map_data, existing_orders, ter_id):
     
     map_path = map_data[0]['pic']
     terr_table, terr_table_info = get_order_dest_table(pce_id, piece_info['ter_id'])
+    
+    order_type = db.callproc('order_type', existing_orders['order_type'])[0]
     
     templater.print_template("templates/change_orders/choose_dst.html", locals())
     

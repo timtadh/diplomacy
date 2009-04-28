@@ -188,7 +188,7 @@ class LandTerr(Territory):
     
     def color_self(self):
         darken_amt = (1.0-random.random()*0.15)
-        if self.country != None:
+        if self.country != None and self.has_supply_center:
             col = self.country.color
         else:
             col = (1.0, 1.0, 1.0, 1.0)
