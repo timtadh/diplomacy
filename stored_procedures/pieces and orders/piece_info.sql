@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS piece_info $$
 
 CREATE PROCEDURE piece_info(IN pid INT(11))
 BEGIN
-    SELECT piece.pce_type, piece.pce_id, territory.name, territory.abbrev, users.usr_id
+    SELECT piece.pce_type, piece.pce_id, piece.ter_id, territory.name, territory.abbrev, users.usr_id
     FROM piece
     INNER JOIN territory
         ON (territory.ter_id = piece.ter_id)

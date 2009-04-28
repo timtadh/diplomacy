@@ -28,7 +28,7 @@ def del_user_from_game(sn, game_data):
 def insert_default_orders(gam_id):
     pieces = db.callproc('pieces_for_game', gam_id)
     for piece in pieces:
-        db.callproc('new_order_for_piece', piece['pce_id'], 5, None)
+        db.callproc('new_order_for_piece', piece['pce_id'], 3, None)
 
 def get_user_table(gam_id):
     user_table_info = (('screen_name', "Screen Name"),('remove_link', ""))

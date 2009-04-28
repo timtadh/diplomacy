@@ -5,13 +5,15 @@ import os, re, cgi, sys
 from twik import *
 import mapgen.dbimport
 
+import resolution_engine
 
 def resolve_orders():
     pass #do order magic here!
 
 def get_order_table(usr_id, gam_id):
     piece_table_info = (
-        ("pce_type", "type"), ("name", "territory"), ("abbrev","abbrev"), ("order_type","order")
+        ("pce_type", "type"), ("name", "territory"), ("abbrev","abbrev"), ("order_type","order"),
+        ("destination", "destination"), ('op', 'operands')
     )
     piece_table = db.callproc('pieces_for_user', gam_id, usr_id)
     order_table = db.callproc('orders_for_user', gam_id, usr_id)
@@ -22,6 +24,14 @@ def get_order_table(usr_id, gam_id):
         for order in order_table:
             if piece['pce_id'] == order['pce_id']:
                 piece['order_type'] = link_str % (piece['pce_id'], order['order_text'])
+                if order['has_dst'] == 1:
+                    if order['destination']: piece['destination'] = order['dst_name']
+                    else: piece['destination'] = ''
+                else: piece['destination'] = ''
+        if resolution_engine.has_op(piece['pce_id']):
+            s = ', '.join([op['name'] for op in db.callproc('operands_for_piece', piece['pce_id'])])
+            piece['op'] = s
+        else: piece['op'] = ''
     return piece_table, piece_table_info
 
 def get_terr_table(gam_id):
@@ -95,8 +105,10 @@ def print_order_screen(user_dict, ses_dict, execute):
     templater.print_template("templates/write_orders.html", locals())
 
 if __name__ == '__main__':
+    
     form = cgi.FieldStorage()
     ses_dict, user_dict = user_manager.init_user_session(form)
+    
     if user_dict == {}:
         target_page = 'user_list.py'
         templater.print_template("templates/login_template.html", locals())

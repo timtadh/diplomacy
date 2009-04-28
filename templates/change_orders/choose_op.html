@@ -5,7 +5,7 @@
 
 
 <div class="main">
-    <h2 class="main">Choose Order</h2>
+    <h2 class="main">Choose Operand</h2>
     <p style="text-align: center">
         <h3>Select a destination:</h3>
     <+ templater.print_table(terr_table, terr_table_info, "change_orders.py", "Territories") #
@@ -15,6 +15,7 @@
         <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
     </p>
 </div>
+
 
 
 <+ templater.print_template("templates/footer.html", globals()) #

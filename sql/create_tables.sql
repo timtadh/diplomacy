@@ -52,8 +52,8 @@ USE diplomacy;
 --  piece (pce_id : int(11), cty_id : int(11), ter_id : int(11), 
 --         pce_type : enum('fleet', 'army'))
 --  
---  order_type (odt_id : int(11), order_text : varchar(128), operands : int(11), 
---              turn_stage : int(11))
+--  order_type (odt_id : int(11), order_text : varchar(128), destination : tinyint(1), 
+--              operands : int(11), turn_stage : int(11))
 --  
 --  orders (ord_id : int(11), cty_id : int(11), pce_id : int(11), 
 --          season : enum('spring', 'fall'), year : year(4), order_type : int(11), 
@@ -283,6 +283,7 @@ CREATE TABLE order_type
 (
     odt_id int(11) AUTO_INCREMENT,
     order_text varchar(128) NOT NULL,
+    destination tinyint(1) DEFAULT 1,
     operands int(11) DEFAULT 0,
     turn_stage int(11) DEFAULT 1,
     CONSTRAINT pk_order_type PRIMARY KEY (odt_id),

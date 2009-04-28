@@ -18,14 +18,14 @@ VALUES
     ('ex_builds', 'executing builds', 1),
     ('end', 'game completed', 0);
 
-INSERT INTO order_type (order_text, operands, turn_stage)
-VALUES ('move', 0, 1), 
-       ('move via convoy', -1, 1), 
-       ('support', 1, 1), 
-       ('convoy', 1, 1), 
-       ('hold', 0, 1), 
-       ('retreat', 0, 3), 
-       ('disband', 0, 3), 
-       ('build', 0, 5);
+INSERT INTO order_type (order_text, destination, operands, turn_stage)
+VALUES ('move', 1, 0, 1), 
+       ('support', 1, 1, 1), 
+       ('hold', 0, 0, 1), 
+--        ('move via convoy', -1, 1), 
+--        ('convoy', 1, 1), 
+       ('retreat', 1, 0, 3), 
+       ('disband', 0, 0, 3), 
+       ('build', 1, 0, 5);
 
 COMMIT;

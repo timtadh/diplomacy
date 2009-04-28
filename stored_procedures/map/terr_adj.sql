@@ -8,8 +8,10 @@ DROP PROCEDURE IF EXISTS terr_adj $$
 
 CREATE PROCEDURE terr_adj(IN tid INT(11))
 BEGIN
-    SELECT adj.adj_ter_id AS "ter_id"
+    SELECT territory.*
     FROM adjacent AS adj
+    INNER JOIN territory
+        ON (territory.ter_id = adj.adj_ter_id)
     WHERE adj.ter_id = tid;
 END
 $$
