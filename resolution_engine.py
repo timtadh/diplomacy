@@ -145,12 +145,68 @@ class graph(object):
             if break_sup:
                 for j in xrange(len(self.pce_m)):
                     if self.pce_m[i][j] == 2: self.pce_m[i][j] = 0
-        print count
+        #print count
+    
+    def adj(self, v):
+        a = list()
+        for j in xrange(len(self.pce_m)):
+            if self.pce_m[v][j] != 0:  a.append(j)
+        return a
+        
+    def sup(self, v):
+        s = 1
+        for j in xrange(len(self.pce_m)):
+            if self.pce_m[v][j] == 2: s += 1
+        return s
+    
+    def dfs(self):
+        color = [0 for i in self.pieces]
+        path = [None for i in self.pieces]
+        
+        def dfs_visit(v):
+            color[v] = 1
+            print v
+            for u in self.adj(v):
+                if color[u] == 0:
+                    path[u] = v
+                    dfs_visit(u)
+            color[v] = 2
+        
+        for v in xrange(len(self.pce_m)):
+            #print v, color[v], path[v], self.adj(v)
+            if color[v] == 0:
+                dfs_visit(v)
+        
+    
+    def step_two(self):
+        dislodged = list()
+        color = [0 for i in self.pieces]
+        path = [None for i in self.pieces]
+        
+        def dfs_visit(v):
+            color[v] = 1
+            #print v-
+            max_sup = 0
+            for u in self.adj(v):
+                if color[u] == 0:
+                    path[u] = v
+                    dfs_visit(u)
+                if self.sup(u) > max_sup: max_sup = self.sup(u)
+            color[v] = 2
+            print v, self.sup(v), max_sup, self.sup(v) > max_sup
+        
+        for v in xrange(len(self.pce_m)):
+            #print v, color[v], path[v], self.adj(v)
+            if color[v] == 0:
+                dfs_visit(v)
+        
+        print path
 
 
 
 if __name__ == '__main__':
     g = graph(1)
     g.step_one()
-    #g.create_order_graph()
     graph_algorithms._print_matrix(g.pce_m)
+    g.step_two()
+    #g.create_order_graph()
