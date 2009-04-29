@@ -19,10 +19,13 @@ def has_op(pce_id):
     
     return False
 
-def dislodge(pce_id, ter_id):
+def dislodge(pce_id, ter_id, notin):
+    #print pce_id
+    #print ter_id
     for adj_ter in db.callproc('terr_adj', ter_id):
-        if not db.callproc('terr_occupied', adj_ter):
-            db.callproc('move_piece', pce_id, ter_id)
+        #print adj_ter
+        if not db.callproc('terr_occupied', adj_ter['ter_id']) and adj_ter['ter_id'] not in notin:
+            db.callproc('move_piece', pce_id, adj_ter['ter_id'])
             break
 
 def execute(pce_id):
@@ -223,7 +226,8 @@ class graph(object):
         for pce in list(exe - dislodged):
             if not dont: execute(self.pieces[pce])
         for pce in list(dislodged):
-            if not dont: dislodge(self.pieces[pce], self.piece_info[self.pieces[pce]]['ter_id'])
+            if not dont: dislodge(self.pieces[pce], self.pieces_info[self.pieces[pce]]['ter_id'], 
+                                  [self.pieces[p] for p in list(exe - dislodged)])
         print dislodged
 
 def resolve(gam_id):
@@ -233,8 +237,10 @@ def resolve(gam_id):
     g.step_two()
 
 if __name__ == '__main__':
-    g = graph(1)
-    g.step_one()
-    #graph_algorithms._print_matrix(g.pce_m)
-    g.step_two(True)
+    pass
+    #dislodge(1, 5)
+    #g = graph(1)
+    #g.step_one()
+    ##graph_algorithms._print_matrix(g.pce_m)
+    #g.step_two(True)
     #g.create_order_graph()

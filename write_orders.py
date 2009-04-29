@@ -87,7 +87,6 @@ def print_order_screen(user_dict, ses_dict, execute):
     game_found = False
     if ses_dict['gam_id'] != None:
         game_found = True
-        map_data = db.callproc('map_data_for_game', ses_dict['gam_id'])
         
         if execute: db.callproc('set_orders_given', user_dict['usr_id'], ses_dict['gam_id'])
         
@@ -98,6 +97,7 @@ def print_order_screen(user_dict, ses_dict, execute):
             all_orders_given = False
             orders_given = False
         
+        map_data = db.callproc('map_data_for_game', ses_dict['gam_id'])
         map_data = map_data[0]
         map_name = map_data['world_name']
         map_path = map_data['pic']
