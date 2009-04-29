@@ -29,6 +29,7 @@ def execute(pce_id):
     order = db.callproc('orders_for_piece', pce_id)
     if order and order[0]['order_type'] == 1:
         db.callproc('move_piece', pce_id, order[0]['destination'])
+    print 'executed'
 
 class graph(object):
     
@@ -185,7 +186,7 @@ class graph(object):
                 dfs_visit(v)
         
     
-    def step_two(self):
+    def step_two(self, dont=False):
         dislodged = set()
         exe = set()
         color = [0 for i in self.pieces]
@@ -202,7 +203,7 @@ class graph(object):
                 if self.sup(u) > max_sup: max_sup = self.sup(u)
             color[v] = 2
             
-            #print v, self.sup(v), max_sup, self.sup(v) > max_sup
+            print v, self.sup(v), max_sup, self.sup(v) > max_sup
             if self.sup(v) > max_sup: 
                 exe.add(v)
                 for u in self.adj(v):
@@ -220,9 +221,9 @@ class graph(object):
         
         print exe - dislodged
         for pce in list(exe - dislodged):
-            execute(pce)
+            if not dont: execute(self.pieces[pce])
         for pce in list(dislodged):
-            dislodge(pce, self.piece_info[self.pieces[pce]]['ter_id'])
+            if not dont: dislodge(self.pieces[pce], self.piece_info[self.pieces[pce]]['ter_id'])
         print dislodged
 
 def resolve(gam_id):
@@ -232,5 +233,8 @@ def resolve(gam_id):
     g.step_two()
 
 if __name__ == '__main__':
-    pass
+    g = graph(1)
+    g.step_one()
+    #graph_algorithms._print_matrix(g.pce_m)
+    g.step_two(True)
     #g.create_order_graph()
