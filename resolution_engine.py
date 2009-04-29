@@ -21,7 +21,7 @@ def has_op(pce_id):
 
 def execute_order(pce_id):
     pass
-    #print db.callproc('orders_for_piece', pce_id)
+    print db.callproc('orders_for_piece', pce_id)
 
 class graph(object):
     
@@ -61,15 +61,15 @@ class graph(object):
                                 for ter_id in self.loc_pce.keys()
                         ])
         #print self.loc_pce, self.pce_loc
-        #self.dst_pce = dict([
-                        #(int(o['destination']), self.piece_map[int(o['pce_id'])]) 
-                                #for o in self.orders 
-                                #if o['destination'] != None and o['order_type'] == 1
-                        #])
-        #self.pce_dst = dict([
-                        #(self.dst_pce[ter_id], ter_id) 
-                                #for ter_id in self.dst_pce.keys()
-                        #])
+        self.dst_pce = dict([
+                        (int(o['destination']), self.piece_map[int(o['pce_id'])]) 
+                                for o in self.orders 
+                                if o['destination'] != None
+                        ])
+        self.pce_dst = dict([
+                        (self.dst_pce[ter_id], ter_id) 
+                                for ter_id in self.dst_pce.keys()
+                        ])
         #print self.dst_pce, self.pce_dst
         #self.op_pce = dict([
                         #(int(o['ter_id']), self.piece_map[int(o['pce_id'])]) 
@@ -141,7 +141,7 @@ class graph(object):
             for j in xrange(len(self.pce_m)):
                 if self.pce_m[i][j] != 0:  conflicts = True
                 if self.pce_m[j][i] != 0:  break_sup = True
-            if not conflicts: count += 1; execute_order(self.pieces[i])
+            #if not conflicts: count += 1; execute_order(self.pieces[i])
             if break_sup:
                 for j in xrange(len(self.pce_m)):
                     if self.pce_m[i][j] == 2: self.pce_m[i][j] = 0
@@ -156,7 +156,7 @@ class graph(object):
     def sup(self, v):
         s = 1
         for j in xrange(len(self.pce_m)):
-            if self.pce_m[v][j] == 2: s += 1
+            if self.pce_m[j][v] == 2: s += 1
         return s
     
     def dfs(self):
@@ -179,7 +179,8 @@ class graph(object):
         
     
     def step_two(self):
-        dislodged = list()
+        dislodged = set()
+        execute = set()
         color = [0 for i in self.pieces]
         path = [None for i in self.pieces]
         
@@ -193,14 +194,25 @@ class graph(object):
                     dfs_visit(u)
                 if self.sup(u) > max_sup: max_sup = self.sup(u)
             color[v] = 2
-            print v, self.sup(v), max_sup, self.sup(v) > max_sup
+            
+            #print v, self.sup(v), max_sup, self.sup(v) > max_sup
+            if self.sup(v) > max_sup: 
+                execute.add(v)
+                for u in self.adj(v):
+                    #print self.pce_loc[u],
+                    #print self.pce_dst[v]
+                    #print self.pce_m[v][u],
+                    if self.pce_m[v][u] == 1 and self.pce_loc[u] == self.pce_dst[v]: dislodged.add(u)
+                #print
+            
         
         for v in xrange(len(self.pce_m)):
             #print v, color[v], path[v], self.adj(v)
             if color[v] == 0:
                 dfs_visit(v)
         
-        print path
+        print execute - dislodged
+        print dislodged
 
 
 
