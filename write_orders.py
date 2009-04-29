@@ -7,8 +7,8 @@ import mapgen.dbimport
 
 import resolution_engine
 
-def resolve_orders():
-    pass #do order magic here!
+def resolve_orders(gam_id):
+    resolution_engine.resolve(gam_id)
 
 def get_order_table(usr_id, gam_id):
     piece_table_info = (
@@ -64,10 +64,10 @@ def insert_default_orders(gam_id):
     for piece in pieces:
         db.callproc('new_order_for_piece', piece['pce_id'], 3, None)
 
-def roll_over_turn():
-    resolve_orders()
+def roll_over_turn(gam_id):
+    resolve_orders(gam_id)
     
-    game_data = db.callproc('game_data', ses_dict['gam_id'])[0]
+    game_data = db.callproc('game_data', gam_id)[0]
     
     year = game_data['gam_year']
     season = game_data['gam_season']
@@ -79,9 +79,9 @@ def roll_over_turn():
     
     dest_saved = update_map()
     
-    db.callproc('roll_over_turn', ses_dict['gam_id'], dest_saved, season, year)
+    db.callproc('roll_over_turn', gam_id, dest_saved, season, year)
     
-    insert_default_orders(ses_dict['gam_id'])
+    insert_default_orders(gam_id)
 
 def print_order_screen(user_dict, ses_dict, execute):
     game_found = False
@@ -94,7 +94,7 @@ def print_order_screen(user_dict, ses_dict, execute):
         orders_given, all_orders_given = get_orders_given(user_dict['usr_id'], ses_dict['gam_id'])
         
         if orders_given and all_orders_given:
-            roll_over_turn()
+            roll_over_turn(ses_dict['gam_id'])
             all_orders_given = False
             orders_given = False
         
@@ -118,4 +118,4 @@ if __name__ == '__main__':
         execute = False
         if form.has_key('execute'):
             execute = form['execute'].value
-    print_order_screen(user_dict, ses_dict, execute)
+        print_order_screen(user_dict, ses_dict, execute)

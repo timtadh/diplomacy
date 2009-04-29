@@ -19,9 +19,16 @@ def has_op(pce_id):
     
     return False
 
-def execute_order(pce_id):
-    pass
-    print db.callproc('orders_for_piece', pce_id)
+def dislodge(pce_id, ter_id):
+    for adj_ter in db.callproc('terr_adj', ter_id):
+        if not db.callproc('terr_occupied', adj_ter):
+            db.callproc('move_piece', pce_id, ter_id)
+            break
+
+def execute(pce_id):
+    order = db.callproc('orders_for_piece', pce_id)
+    if order and order[0]['order_type'] == 1:
+        db.callproc('move_piece', pce_id, order[0]['destination'])
 
 class graph(object):
     
@@ -180,7 +187,7 @@ class graph(object):
     
     def step_two(self):
         dislodged = set()
-        execute = set()
+        exe = set()
         color = [0 for i in self.pieces]
         path = [None for i in self.pieces]
         
@@ -197,7 +204,7 @@ class graph(object):
             
             #print v, self.sup(v), max_sup, self.sup(v) > max_sup
             if self.sup(v) > max_sup: 
-                execute.add(v)
+                exe.add(v)
                 for u in self.adj(v):
                     #print self.pce_loc[u],
                     #print self.pce_dst[v]
@@ -211,14 +218,19 @@ class graph(object):
             if color[v] == 0:
                 dfs_visit(v)
         
-        print execute - dislodged
+        print exe - dislodged
+        for pce in list(exe - dislodged):
+            execute(pce)
+        for pce in list(dislodged):
+            dislodge(pce, self.piece_info[self.pieces[pce]]['ter_id'])
         print dislodged
 
-
+def resolve(gam_id):
+    g = graph(gam_id)
+    g.step_one()
+    #graph_algorithms._print_matrix(g.pce_m)
+    g.step_two()
 
 if __name__ == '__main__':
-    g = graph(1)
-    g.step_one()
-    graph_algorithms._print_matrix(g.pce_m)
-    g.step_two()
+    pass
     #g.create_order_graph()
