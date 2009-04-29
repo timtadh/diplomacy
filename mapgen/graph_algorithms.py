@@ -53,7 +53,7 @@ def print_matrix(matrix):
 
 def _print_matrix(m):
     s = '   '
-    for x in xrange(len(m)):
+    for x in xrange(len(m[0])):
         s += str(x) + ' '*(3-len(str(x)))
     print s
     for i, row in enumerate(m):
