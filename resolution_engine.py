@@ -19,6 +19,10 @@ def has_op(pce_id):
     
     return False
 
+def execute_order(pce_id):
+    pass
+    #print db.callproc('orders_for_piece', pce_id)
+
 class graph(object):
     
     def __init__(self, gam_id):
@@ -128,10 +132,25 @@ class graph(object):
                         #print i, self.dst_pce[dst], len(self.pce_m[i])
         
         graph_algorithms._print_matrix(self.pce_m)
+    
+    def step_one(self):
+        count = 0
+        for i in xrange(len(self.pce_m)):
+            conflicts = False
+            break_sup = False
+            for j in xrange(len(self.pce_m)):
+                if self.pce_m[i][j] != 0:  conflicts = True
+                if self.pce_m[j][i] != 0:  break_sup = True
+            if not conflicts: count += 1; execute_order(self.pieces[i])
+            if break_sup:
+                for j in xrange(len(self.pce_m)):
+                    if self.pce_m[i][j] == 2: self.pce_m[i][j] = 0
+        print count
 
 
 
 if __name__ == '__main__':
     g = graph(1)
+    g.step_one()
     #g.create_order_graph()
-    #graph_algorithms._print_matrix(g.m)
+    graph_algorithms._print_matrix(g.pce_m)
