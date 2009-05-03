@@ -22,7 +22,6 @@ def get_game_table(switch=False, ng=-1):
     return game_table
 
 def print_game_list(user_dict, ses_dict, switch, ng):
-    choose_game = True
     game_table = get_game_table(switch, ng)
     
     for game in game_table:
@@ -33,11 +32,15 @@ def print_game_list(user_dict, ses_dict, switch, ng):
             game['label'] = "Game "+str(game['gam_id'])
             game['switch_link'] = "<a class='inline' href='current_game.py?ng="+str(game['gam_id'])+"'>make active</a>"
     game_table_info = (('label', "id"),('switch_link', ""))
-    templater.print_template("templates/current_game.html", locals())
+    templater.print_template("templates/current_game_noneselected.html", locals())
 
 def get_user_table():
     user_table_info = (('screen_name', "Screen Name"), ('name', "Country"))
     user_table = db.callproc('users_in_running_game', ses_dict['gam_id'])
+    
+    for usr in user_table:
+        usr['name'] = '<div style="background-color:%s; padding-left:0.2em; padding-right:0.2em">%s</div>' % (usr['color'], usr['name'])
+    
     return user_table, user_table_info
 
 def get_supplier_table():
@@ -51,7 +54,6 @@ def get_terr_table():
     return terr_table, terr_table_info
 
 def print_game_info(user_dict, ses_dict, switch, ng):
-    choose_game = False
     if ses_dict['gam_id'] != None:
         map_data = db.callproc('map_data_for_game', ses_dict['gam_id'])
         user_table, user_table_info = get_user_table()

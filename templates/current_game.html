@@ -5,35 +5,27 @@
 
 
 <div class="main">
-    <+ if choose_game:
-        <h2 class="main">Select a Game</h2>
-        <p>
-        <+ templater.print_table(game_table, game_table_info, "game_list.py", "games") #
-        ->
-        </p>
-    |= else:
-        <h2 class="main">Game Info</h2>
-        <p style="text-align: center; margin_left:auto; margin_right:auto;">
-            <h3><%map_name%></h3>
-            <a href="current_game.py?new_game=True">Select a different game</a><br>
-            <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
-        </p>
-        <p style="text-align: center">
-            <h3>Users:</h3>
-        <+ templater.print_table(user_table, user_table_info, "new_game.py", "users_in_game") #
-        ->
-        </p>
-        <p style="text-align: center">
-            <h3>My Suppliers:</h3>
-        <+ templater.print_table(supplier_table, supplier_table_info, "new_game.py", "user_suppliers") #
-        ->
-        </p>
-        <p style="text-align: center">
-            <h3>Territory Reference List:</h3>
-        <+ templater.print_table(terr_table, terr_table_info, "new_game.py", "territories") #
-        ->
-        </p>
+    <h2 class="main">Game Info</h2>
+    <p style="text-align: center; margin_left:auto; margin_right:auto;">
+        <h3><%map_name%></h3>
+        <a href="current_game.py?new_game=True">Select a different game</a><br>
+        <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
+    </p>
+    <p style="text-align: center">
+        <h3>Users:</h3>
+    <+ templater.print_table(user_table, user_table_info, "new_game.py", "users_in_game") #
     ->
+    </p>
+    <p style="text-align: center">
+        <h3>My Suppliers:</h3>
+    <+ templater.print_table(supplier_table, supplier_table_info, "new_game.py", "user_suppliers") #
+    ->
+    </p>
+    <p style="text-align: center">
+        <h3>Territory Reference List:</h3>
+    <+ templater.print_table(terr_table, terr_table_info, "new_game.py", "territories") #
+    ->
+    </p>
 </div>
 
 

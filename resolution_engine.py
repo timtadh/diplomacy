@@ -19,28 +19,32 @@ def has_op(pce_id):
     
     return False
 
-def dislodge(pce_id, ter_id, notin):
-    #print pce_id
-    #print ter_id
+def dislodge(pce_id, ter_id, exclude):
+    """ Moves specified piece to a territory adjacent to ter_id but not in exclude.
+        Returns True if successful, False if not.
+    """
     for adj_ter in db.callproc('terr_adj', ter_id):
         #print adj_ter
-        if not db.callproc('terr_occupied', adj_ter['ter_id']) and adj_ter['ter_id'] not in notin:
+        if not db.callproc('terr_occupied', adj_ter['ter_id']) and adj_ter['ter_id'] not in exclude:
             db.callproc('move_piece', pce_id, adj_ter['ter_id'])
-            break
+            return True
+    return False
 
 def execute(pce_id):
+    """So far, only supports move orders"""
     order = db.callproc('orders_for_piece', pce_id)
     if order and order[0]['order_type'] == 1:
         db.callproc('move_piece', pce_id, order[0]['destination'])
-    print 'executed'
+        print "Move order by", pce_id, "executed<br>"
 
 class graph(object):
-    
     def __init__(self, gam_id):
         self.gam_id = gam_id
-        self.terr_list = [int(row['ter_id']) for row in db.callproc('terrs_in_game', gam_id)]
-        self.terr_list.sort()
-        self.terr_map = dict([(self.terr_list[i], i) for i in xrange(len(self.terr_list))])
+        self.terr_list = sorted(
+            [int(row['ter_id']) for row in db.callproc('terrs_in_game', gam_id)]
+        )
+        self.terr_map = dict(zip(self.terr_list, xrange(len(self.terr_list))))
+        #self.terr_map = dict([(self.terr_list[i], i) for i in xrange(len(self.terr_list))])
         self.ter_m = [[0 for x in xrange(len(self.terr_list))] for y in xrange(len(self.terr_list))]
         for ter_id in self.terr_list:
             for row in db.callproc('terr_adj', ter_id):
@@ -221,7 +225,7 @@ class graph(object):
             #print v, color[v], path[v], self.adj(v)
             if color[v] == 0:
                 dfs_visit(v)
-        
+        print path
         print exe - dislodged
         for pce in list(exe - dislodged):
             if not dont: execute(self.pieces[pce])
@@ -239,8 +243,8 @@ def resolve(gam_id):
 if __name__ == '__main__':
     pass
     #dislodge(1, 5)
-    #g = graph(1)
-    #g.step_one()
-    ##graph_algorithms._print_matrix(g.pce_m)
-    #g.step_two(True)
+    g = graph(1)
+    g.step_one()
+    graph_algorithms._print_matrix(g.pce_m)
+    g.step_two(True)
     #g.create_order_graph()

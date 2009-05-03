@@ -44,7 +44,7 @@ if user_dict == {}:
             templater.print_error("that email address already has a user registered to it")
             sys.exit()
         
-        print 'heyhey<br><br>'
+        #print 'heyhey<br><br>'
         user_manager.add_user(user_manager.gen_userID(), name, email,
                               screen_name, ps)
         templater.print_template("templates/login_template.html", {'target_page':'main.py'})
