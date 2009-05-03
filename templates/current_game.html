@@ -7,17 +7,23 @@
 <div class="main">
     <h2 class="main">Game Info</h2>
     <p style="text-align: center; margin_left:auto; margin_right:auto;">
-        <h3><%map_name%>: <%season%></h3>
-        <+ templater.print_table(user_table, user_table_info, "new_game.py", "users_in_game") #
-        ->
-        <br>
+        <h3 style="margin-bottom: 0"><%map_name%>: <%season%></h3>
+        <table style="width:100%; border: none; margin: 0; margin-bottom: 1em;">
+            <tr style="margin: none">
+                <td style="border: none; margin: none">
+                    <h3 style="margin-top: 0">Users:</h3>
+                    <+ templater.print_table(user_table, user_table_info, "new_game.py", "users_in_game") #
+                    ->
+                </td>
+                <td style="border: none">
+                    <h3 style="margin-top: 0;">My Suppliers:</h3>
+                    <+ templater.print_table(supplier_table, supplier_table_info, "new_game.py", "user_suppliers") #
+                    ->
+                </td>
+            </tr>
+        </table>
         <a href="current_game.py?new_game=True">Select a different game</a><br>
         <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
-    </p>
-    <p style="text-align: center">
-        <h3>My Suppliers:</h3>
-    <+ templater.print_table(supplier_table, supplier_table_info, "new_game.py", "user_suppliers") #
-    ->
     </p>
     <p style="text-align: center">
         <h3>Territory Reference List:</h3>
