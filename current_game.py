@@ -63,9 +63,11 @@ def print_game_info(user_dict, ses_dict, switch, ng):
             map_data = map_data[0]
             map_name = map_data['world_name']
             map_path = map_data['pic']
+            season = db.callproc('game_data', ses_dict['gam_id'])[0]['gam_season'].capitalize()
         else:
             map_name = "No games in progress"
             map_path = "blank"
+            season = ""
     templater.print_template("templates/current_game.html", locals())
 
 if user_dict == {}:
