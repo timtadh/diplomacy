@@ -104,6 +104,7 @@ def get(con, gam_id):
         r = cur.fetchall()
         for tdict in r:
             terrs[tdict['ter_id']].occupied = True
+            terrs[tdict['ter_id']].country = country
         cur.close()
 
     land_terrs = []
