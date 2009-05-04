@@ -5,10 +5,26 @@ import os, re, cgi, sys
 from twik import *
 import mapgen.dbimport
 
-import resolution_engine
+import resolution_engine, current_game
+import mapgen.queries as q
 
 def resolve_orders(gam_id):
     resolution_engine.resolve(gam_id)
+
+def update_occupations(gam_id):
+    terr_table = db.callproc('terrs_to_update', gam_id)
+    piece_table = db.callproc('pieces_on_suppliers_in_game', gam_id)
+    
+    for t_dict in terr_table:
+        db.callproc('delete_supplier_in_game', gam_id, int(t_dict['ter_id']))
+        print str(t_dict['ter_id'])+" "
+    
+    qstr = q.supplier
+    qstr_pred = []
+    for p_dict in piece_table:
+        qstr_pred.append('(%s, %s)' % (p_dict['ter_id'], p_dict['cty_id']))
+    print qstr + ', '.join(qstr_pred)
+    db.execute(qstr + ', '.join(qstr_pred))
 
 def get_order_table(usr_id, gam_id):
     piece_table_info = (
@@ -66,7 +82,6 @@ def insert_default_orders(gam_id):
 
 def roll_over_turn(gam_id):
     resolve_orders(gam_id)
-    
     game_data = db.callproc('game_data', gam_id)[0]
     
     year = game_data['gam_year']
@@ -75,6 +90,7 @@ def roll_over_turn(gam_id):
         year += 1
         season = 'spring'
     else:
+        update_occupations(gam_id)
         season = 'fall'
     
     dest_saved = update_map()
@@ -84,10 +100,7 @@ def roll_over_turn(gam_id):
     insert_default_orders(gam_id)
 
 def print_order_screen(user_dict, ses_dict, execute):
-    game_found = False
     if ses_dict['gam_id'] != None:
-        game_found = True
-        
         if execute: db.callproc('set_orders_given', user_dict['usr_id'], ses_dict['gam_id'])
         
         orders_given, all_orders_given = get_orders_given(user_dict['usr_id'], ses_dict['gam_id'])
@@ -103,11 +116,13 @@ def print_order_screen(user_dict, ses_dict, execute):
         map_path = map_data['pic']
         ter_orders_table, ter_orders_table_info = get_order_table(user_dict['usr_id'], ses_dict['gam_id'])
         terr_table, terr_table_info = get_terr_table(ses_dict['gam_id'])
-        
-    templater.print_template("templates/write_orders.html", locals())
+        templater.print_template("templates/write_orders.html", locals())
+    else:
+        current_game.user_dict = user_dict
+        current_game.ses_dict = ses_dict
+        current_game.print_game_list(user_dict, ses_dict, False, -1)
 
 if __name__ == '__main__':
-    
     form = cgi.FieldStorage()
     ses_dict, user_dict = user_manager.init_user_session(form)
     

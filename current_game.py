@@ -4,8 +4,9 @@ import config
 import os, re, cgi, sys
 from twik import *
 
-form = cgi.FieldStorage()
-ses_dict, user_dict = user_manager.init_user_session(form)
+if __name__ == "__main__":
+    form = cgi.FieldStorage()
+    ses_dict, user_dict = user_manager.init_user_session(form)
 
 def update_ses_dict():
     global ses_dict
@@ -18,11 +19,12 @@ def check_switch(switch, ng):
 
 def get_game_table(switch=False, ng=-1):
     game_table = db.callproc('usr_games', user_dict['usr_id'])
+    game_table_info = (('label', "id"),('switch_link', ""))
     update_ses_dict()
-    return game_table
+    return game_table, game_table_info
 
 def print_game_list(user_dict, ses_dict, switch, ng):
-    game_table = get_game_table(switch, ng)
+    game_table, game_table_info = get_game_table(switch, ng)
     
     for game in game_table:
         if game['gam_id'] == ses_dict['gam_id']:
@@ -31,7 +33,6 @@ def print_game_list(user_dict, ses_dict, switch, ng):
         else:
             game['label'] = "Game "+str(game['gam_id'])
             game['switch_link'] = "<a class='inline' href='current_game.py?ng="+str(game['gam_id'])+"'>make active</a>"
-    game_table_info = (('label', "id"),('switch_link', ""))
     templater.print_template("templates/current_game_noneselected.html", locals())
 
 def get_user_table():
@@ -70,21 +71,22 @@ def print_game_info(user_dict, ses_dict, switch, ng):
             season = ""
     templater.print_template("templates/current_game.html", locals())
 
-if user_dict == {}:
-    target_page = 'user_list.py'
-    templater.print_template("templates/login_template.html", locals())
-else:
-    ng = -1
-    switch = False
-    if form.has_key('ng'):
-        try:
-            ng = int(form['ng'].value)
-            switch = True
-        except:
-            templater.print_error('invalid value passed to this page')
-            sys.exit()
-    check_switch(switch, ng)
-    if form.has_key('new_game') and form['new_game'] or ses_dict['gam_id'] == None:
-        print_game_list(user_dict, ses_dict, switch, ng)
+if __name__ == "__main__":
+    if user_dict == {}:
+        target_page = 'user_list.py'
+        templater.print_template("templates/login_template.html", locals())
     else:
-        print_game_info(user_dict, ses_dict, switch, ng)
+        ng = -1
+        switch = False
+        if form.has_key('ng'):
+            try:
+                ng = int(form['ng'].value)
+                switch = True
+            except:
+                templater.print_error('invalid value passed to this page')
+                sys.exit()
+        check_switch(switch, ng)
+        if form.has_key('new_game') and form['new_game'] or ses_dict['gam_id'] == None:
+            print_game_list(user_dict, ses_dict, switch, ng)
+        else:
+            print_game_info(user_dict, ses_dict, switch, ng)

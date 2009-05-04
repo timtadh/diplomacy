@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS users_in_running_game $$
 
 CREATE PROCEDURE users_in_running_game(IN gid INT(11))
 BEGIN
-    SELECT users.screen_name, users.usr_id, country.name, country.color
+    SELECT users.screen_name, users.usr_id, country.name, country.color, country.cty_id
     FROM (users INNER JOIN game_membership
         ON (users.usr_id = game_membership.usr_id))
     INNER JOIN game

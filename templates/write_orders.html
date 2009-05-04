@@ -5,33 +5,28 @@
 
 
 <div class="main">
-    <+ if not game_found:
-        <h2 class="main">No game selected</h2>
-        <a href="current_game.py">Choose a game</a>
-    |= else:
-        <h2 class="main">Write Orders</h2>
-        <p style="text-align: center">
-            <h3>Orders for your territories</h3>
-            Click an order to change it.<br><br>
-        <+ templater.print_table(ter_orders_table, ter_orders_table_info, "new_game.py", "orders") #
-        ->
-        <+ if orders_given:
-            <br>The turn will end when all players are finished writing orders.
-        |= else:
-            <br><a href="write_orders.py?execute=True">Execute orders</a>
-        ->
-        <br><a href="current_game.py?new_game=True">Select a different game</a><br>
-        </p>
-        <p style="text-align: center; margin_left:auto; margin_right:auto;">
-            <h3><%map_name%></h3>
-            <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
-        </p>
-        <p style="text-align: center">
-            <h3>Territory Reference List:</h3>
-        <+ templater.print_table(terr_table, terr_table_info, "new_game.py", "territories") #
-        ->
-        </p>
+    <h2 class="main">Write Orders</h2>
+    <p style="text-align: center">
+        <h3>Orders for your territories</h3>
+        Click an order to change it.<br><br>
+    <+ templater.print_table(ter_orders_table, ter_orders_table_info, "new_game.py", "orders") #
     ->
+    <+ if orders_given:
+        <br>The turn will end when all players are finished writing orders.
+    |= else:
+        <br><a href="write_orders.py?execute=True">Execute orders</a>
+    ->
+    <br><a href="current_game.py?new_game=True">Select a different game</a><br>
+    </p>
+    <p style="text-align: center; margin_left:auto; margin_right:auto;">
+        <h3><%map_name%></h3>
+        <img src="map_images/<%map_path%>.png" alt="Map Image"><br>
+    </p>
+    <p style="text-align: center">
+        <h3>Territory Reference List:</h3>
+    <+ templater.print_table(terr_table, terr_table_info, "new_game.py", "territories") #
+    ->
+    </p>
 </div>
 
 
