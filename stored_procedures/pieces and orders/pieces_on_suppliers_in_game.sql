@@ -18,4 +18,4 @@ $$
 
 DELIMITER ;
 
---SOURCE /srv/diplomacy/stored_procedures/pieces_on_suppliers_in_game.sql
+--SOURCE /srv/diplomacy/stored_procedures/pieces and orders/pieces_on_suppliers_in_game.sql

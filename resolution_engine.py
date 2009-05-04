@@ -43,9 +43,9 @@ class graph(object):
         self.terr_list = sorted(
             [int(row['ter_id']) for row in db.callproc('terrs_in_game', gam_id)]
         )
-        self.terr_map = dict(zip(self.terr_list, xrange(len(self.terr_list))))
+        self.terr_map = dict([(t, i) for i, t in enumerate(self.terr_list)])
         #self.terr_map = dict([(self.terr_list[i], i) for i in xrange(len(self.terr_list))])
-        self.ter_m = [[0 for x in xrange(len(self.terr_list))] for y in xrange(len(self.terr_list))]
+        self.ter_m = [[0 for x in self.terr_list] for y in self.terr_list]
         for ter_id in self.terr_list:
             for row in db.callproc('terr_adj', ter_id):
                 ter = self.terr_map[ter_id]
@@ -58,9 +58,11 @@ class graph(object):
         self.create_supports()
     
     def get_orders(self):
-        self.pieces_info = dict([(int(p['pce_id']), p) for p in db.callproc('pieces_for_game', self.gam_id)])
-        self.pieces = [k for k in self.pieces_info.keys()]
-        self.pieces.sort()
+        pieces_for_game = db.callproc('pieces_for_game', self.gam_id)
+        self.pieces = [int(p['pce_id']) for p in pieces_for_game]
+        self.pieces_info = dict(zip(self.pieces, pieces_for_game))
+        #[(int(p['pce_id']), p) for p in db.callproc('pieces_for_game', self.gam_id)]
+        #self.pieces = sorted(self.pieces_info.keys())
         self.piece_map = dict([(pce_id, i) for i, pce_id in enumerate(self.pieces)])
         
         self.orders = db.callproc('orders_for_game', self.gam_id)
@@ -96,7 +98,7 @@ class graph(object):
                         #])
         #print self.op_pce, self.pce_op
         
-        self.pce_m = [[0 for x in xrange(len(self.pieces))] for y in xrange(len(self.pieces))]
+        self.pce_m = [[0 for x in self.pieces] for y in self.pieces]
         
     
     def create_moves(self):
