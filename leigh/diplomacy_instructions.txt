@@ -1,0 +1,124 @@
+logging into masran (the linux server):
+    open PuTTY (start, all programs, putty)
+    select masran from saved sessions. click load click open
+        or: type "masran.case.edu" into host name 
+            port should equal "22"
+            connection type should equal "SSH"
+            click open
+    type in praskacl
+    type in password (GraniteM00)
+
+logging into mysql on command line:
+    command: mysql -u diplomacy -p
+             Enter Password: d!plomacy12
+    should see
+    mysql>
+
+Using mysql on command line:
+    First thing select diplomacy database:
+        USE diplomacy;
+        
+    to see the tables in the database:
+        SHOW TABLES;
+    
+    SOURCE /home/praskacl/diplomacy/stored_procedures/example.sql
+
+Exit mysql on command line:
+    mysql> quit
+
+file view:
+	open FileZilla
+	file -> site manager
+	masran.case.edu, port 22, ssh
+
+using php MyAdmin:
+	http://masran.case.edu/myadmin/
+	login with diplomacy and d!plomacy12
+
+logging onto the website http://masran.case.edu/diplomacy/main.py
+	lxp
+	test
+
+_______________________________________________________________________
+
+creating a python file that interfaces with a webpage AND the diplomacy database
+	see example db_example.py and corresponding file db_example.html
+
+creating a stored proceture (save as .sql or .txt in stored procedures folder)
+	need these lines:
+		DELIMITER $$
+		USE diplomacy
+		DROP PROCEDURE IF EXISTS name_of_procedure $$
+		CREATE PROCEDURE name_of_procedure()
+			# if you want to be able to pass in variables, may do name_of_procedure(IN variable_name VARIABLETYPE(), IN variable_name2 VARIABLETYPE()... )
+		BEGIN
+
+		(put new commands here)
+
+		END
+		$$
+		Delimiter ;
+
+	once a file is created, put it into the diplomacy database using command line sql:
+		SOURCE /srv/diplomacy/stored_procedures/name_of_file.sql;
+		note- the first time you put it in, there will be a WARNING given. This is ok. 
+
+Use a stored procedure directly from command line sql:
+	CALL name_of_procedure();
+		# if you have variables to pass in, use name_of_procedure(variable, variable2)
+
+use a stored procedure from a python file:
+	see example db_example.py
+____________________________________________________________________________
+
+How to add a file to diplomacy:
+
+1) log in to filezilla
+2) drag and drop the file into the correct folder inside diplomacy
+
+3) log in to diplomacy command prompt using putty (do not log into mySQL)
+4) "cd diplomacy"
+5) "git" gives you a list of commands
+6) "git add _____" ____ is the name of the file or folder
+7) "git commit"
+	-This takes you to a comment screen. Type your comments followed by 
+	Leigh Praskac <leigh.praskac@case.edu>
+	-Exiting without committing will cancel the commit
+8) "git push"
+9) "tig" 
+	-This allows you to view your commit
+	-Pressing h brings up the help screen
+
+* typing q quits the current screen you are in, Q quits the entire program
+
+_____________________________________________________________________________
+
+How to use a file to run SQL commands with command prompt:
+
+Create a new .sql file on FileZilla (make it with the same format as hw5.sql)
+in mysql with command prompt, type source filename.sql
+
+_____________________________________________________________________________
+
+To run a java shell script (see homework 7):
+
+praskacl@masran:~$ cd java
+praskacl@masran:~/java$ ls
+hw7_q3.class  hw7_q3_run.sh     LoadDriver.java
+hw7_q3.java   LoadDriver.class  run.sh
+praskacl@masran:~/java$ ./hw7_q3_run.sh
+
+_____________________________________________________________________________
+
+To run a python shell script (see homework 7):
+
+*need to have #! /usr/bin/env python at the top of the .py file
+
+1) login to diplomacy
+3) $ chmod +x filename.py
+	this makes the file executable
+2) python filename.py
+
+______________________________________________________________________________
+Any time you create a new .py file that you want 
+		
